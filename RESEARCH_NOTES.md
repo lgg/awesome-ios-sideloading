@@ -125,4 +125,52 @@ The fastest-moving failure points remain Apple Account authentication/Anisette s
 
 If further evidence contradicts any claim, prefer updating the entry and accompanying [COMPATIBILITY.md](COMPATIBILITY.md) with reproducible upstream links over creating another speculative entry.
 
+## Third research pass: iOS 27 installers, modern device tools and support forums (2026-10-25)
+
+**Goal:** go beyond broad GitHub stars and find narrow tools that actually sign, install, refresh, develop, or distribute iOS/iPadOS/tvOS apps. Upstream project documentation was used as evidence of **claimed** features; forum anecdotes were used to detect common failure modes, **not** establish universal compatibility.
+
+### Added to the curated catalog
+
+| Project | Reason | Important condition |
+| --- | --- | --- |
+| [AltLoad](https://github.com/mirazbakis/AltLoad) | On-device AltStore/SideStore/LiveContainer installer with on-device AltServer behavior | Author documents self-pairing on **iOS 27+**; **iOS 18–26 still needs a computer-created pairing file**. Its bootstrap options include shared-certificate/DNS methods, which have distinct risks. |
+| [ModStaller](https://github.com/Crafttino21/ModStaller) | Linux/Windows Apple-account sideloading, JIT and optional tvOS workflows | New project with very little community validation; author labels some platform support beta. **Android-host implementation is on its roadmap, not available.** |
+| [Torch](https://github.com/trollzem/torch) | macOS menu-bar signing and six-day scheduled refresh, including Apple TV | Small experimental project; modifies/ships signing tool binaries and has install scripts. Review locally before granting credentials/admin permissions. |
+| [App Distribution Server](https://github.com/significa/app-distribution-server) | Host installation/QR pages for pre-signed internal IPA/APK builds | **Not** an IPA signer and not an App Store/AltStore source. Upstream docs show a default token `secret`; change it for real deployments. |
+| [go-ios](https://github.com/danielpaulus/go-ios) | Device transport, pairing, app install, test automation on multiple operating systems | Installation alone does not provide a valid development signature or bypass iOS restrictions. |
+| [xtool](https://github.com/xtool-org/xtool) | Linux/Windows/macOS SwiftPM toolchain with iOS development, code signing and deployment | Developer build/deploy tooling; it is not a replacement for an IPA catalog or universal compatibility claim. |
+| [atv-sideload](https://github.com/Lauch2/atv-sideload) | Linux tvOS scripts with separate `plumesign` dependency and .deb-to-.ipa packaging | Upstream explicitly says its stand-alone experimental pairing code is incomplete. Not turnkey; very small project. |
+
+### Communities and first-party support sources
+
+- [Sideloadly official FAQ](https://sideloadly.io/faq.html) explicitly directs users to **[r/Sideloadly](https://www.reddit.com/r/Sideloadly/)**. Useful for Wi-Fi refresh-daemon problems, iTunes/Windows driver requirements and tvOS compatibility. Prefer it over non-maintainer download mirrors.
+- [r/LegacyJailbreak](https://www.reddit.com/r/LegacyJailbreak/) helps with old devices, legacy jailbreak-only app installs and obsolete iOS signing behavior. This is **adjacent**, not the default no-jailbreak workflow.
+- [r/jailbreak](https://www.reddit.com/r/jailbreak/) regularly discusses firmware-specific sideloading versus jailbreak/TrollStore tradeoffs; use maintainer guides to confirm exploits and available releases.
+- [SideStore official issues](https://github.com/SideStore/SideStore/issues) and [SideStore organization discussions](https://github.com/orgs/SideStore/discussions) contain often more reproducible issue reports than chat/Reddit alone.
+- [r/AltStore](https://www.reddit.com/r/AltStore/) and [r/sideloaded](https://www.reddit.com/r/sideloaded/) surfaced October 2026 signing/authentication discussions and contrasting personal experiences. **Claims that Apple is banning all sideloading accounts are not corroborated by these anecdotes alone.**
+
+### October 2026 sign-in changes: what is verified
+
+- [SideStore issue #1647](https://github.com/SideStore/SideStore/issues/1647) was opened **13 October 2026** and documents reports of `-80045` during sign-in.
+- [SideStore PR #1683](https://github.com/SideStore/SideStore/pull/1683) describes client-information/Anisette and 2FA handling changes; it was **still an open PR on the date of review**. Do not present its changes as an established stable release.
+- [SideStore discussion #1666](https://github.com/orgs/SideStore/discussions/1666) has community-specific temporary changes for `503`, `-80045` and `-22411`. Advice may conflict between builds.
+- [AltServer macOS 27 Anisette Fix](https://github.com/kimziro/altserver-macos27-anisette-fix) documents an **unofficial and unnotarized** arm64 macOS 27 package. Its author tested USB installation but did not establish unattended refresh/remote compatibility. This is kept as a **context link**, not promoted to the primary installer list.
+- [SideStore official Anisette directory](https://github.com/SideStore/anisette-servers) is the safer place to find *current* candidate servers, although listing there does not guarantee privacy.
+- Some guides claim a specific hard-coded Windows/Android/Mac identity is the universal fix; server-side Apple changes make such statements fragile. We intentionally **do not pin literal client-header workarounds in the catalog**.
+
+### Considered but not elevated as general recommendations
+
+- [nquangdungg/LiveContainer-Extended](https://github.com/nquangdungg/LiveContainer-Extended): recent fork that largely repeats upstream's README, without clearly established distinct, independently verified capabilities. Prefer [official LiveContainer](https://github.com/LiveContainer/LiveContainer).
+- [guansiriustar-prog/ios-sideload-kit](https://github.com/guansiriustar-prog/ios-sideload-kit): detailed but narrowly tested Chinese-language guide; some Anisette identity instructions risk becoming stale very quickly. More suitable as background reading than a recommended official guide.
+- [pwnapplehat/EscapeOS](https://github.com/pwnapplehat/EscapeOS): actively maintained no-jailbreak app-data browser/backup utility, but still outside the core *sign/install/refresh* category.
+- [fastlane/fastlane](https://github.com/fastlane/fastlane) and [codemagic-ci-cd/cli-tools](https://github.com/codemagic-ci-cd/cli-tools): reputable build/CI tools but broad mobile release automation, not specialized sideloaders.
+- Projects suggesting a permanent TrollStore exploit on arbitrary new iOS builds, unverified Enterprise certificate distributors, or offering pre-signed pirated app archives: not credible/suitable for this curated list.
+- **Torch**, **AltLoad**, **ModStaller** and **atv-sideload** remain **experimental** until substantial independent device testing confirms the vendor claims.
+
+### Ongoing curation rules
+
+Track **four different questions** independently: does a tool sign IPAs; install on the device; automatically renew provisioning; and run without desktop/host involvement? The words *on-device*, *untethered*, *no PC* and *permanent* should never be treated as synonyms. Free development signing normally retains Apple's provisioning limitations, and multiple Apple Accounts do not inherently multiply a device's three simultaneous free-app slots.
+
+For any future compatibility PR, provide the **OS build, exact app version, signing method and observed steps**, not only the project's GitHub activity.
+
 Back to [README](README.md).
