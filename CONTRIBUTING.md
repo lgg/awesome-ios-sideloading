@@ -34,8 +34,9 @@ Projects **do not need to be open source** (they must be clearly identified as p
 4. Add the link in the most relevant category, alphabetically by project name where practical. Format:
    `- **[Project](https://github.com/owner/repo)** — One-sentence description with the main distinguishing feature or requirement.`
 5. If installation prerequisites, iOS ranges, signing, renewal, or JIT compatibility changes, update **[COMPATIBILITY.md](COMPATIBILITY.md)** as well.
-6. Check relative links and run the local validator (described below).
-7. In the PR description, tell us what changed, why it belongs, and where the claims come from.
+6. For significant research, removals, disputed claims, or candidate decisions, update **[RESEARCH_NOTES.md](RESEARCH_NOTES.md)** with first-party evidence and a review date.
+7. Check relative links and run the local validator (described below).
+8. In the PR description, tell us what changed, why it belongs, and where the claims come from.
 
 ### Evidence checklist
 
