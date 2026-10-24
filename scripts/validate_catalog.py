@@ -19,7 +19,7 @@ from collections import Counter
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-FILES = ("README.md", "COMPATIBILITY.md", "CONTRIBUTING.md")
+FILES = ("README.md", "COMPATIBILITY.md", "RESEARCH_NOTES.md", "CONTRIBUTING.md")
 LINK = re.compile(r"(?<!!)\[([^\]]+)\]\(([^\s)]+)(?:\s+[^)]*)?\)")
 HEADER = re.compile(r"^\s{0,3}#{1,6}\s+(.+?)\s*#*\s*$", re.MULTILINE)
 PROJECT = re.compile(r"^\s*-\s+\*\*\[[^\]]+\]\((https?://[^)]+)\)\*\*", re.MULTILINE)
