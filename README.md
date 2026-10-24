@@ -96,8 +96,8 @@ These smaller or newer projects offer interesting functionality, but **activity 
 - **[anisette-v3-server](https://github.com/Dadoum/anisette-v3-server)** — Self-hosted Anisette v1/v3 identity service compatible with SideStore-style signing and AltServer-Linux; Apple authentication changes can break compatibility.
 - **[omnisette-server](https://github.com/SideStore/omnisette-server)** — SideStore-maintained HTTP wrapper around Omnisette supporting Anisette v1/v3 protocols.
 - **[SideStore Auto Refresh](https://github.com/NRG-Wardog/sidestore-auto-refresh)** — Community project combining LiveContainer and SideStore with an automatic-refresh workflow; check upstream prerequisites.
-- **[SignTools](https://github.com/SignTools/SignTools)** — Self-hosted web service for signing and installing apps using a macOS signing builder.
 - **[Sideloop](https://github.com/filippofinke/sideloop)** — Self-hosted Linux/macOS service to re-sign and reinstall IPAs over local Wi-Fi before free provisioning expires; host must remain available and the iPhone unlocked for refresh.
+- **[SignTools](https://github.com/SignTools/SignTools)** — Self-hosted web service for signing and installing apps using a macOS signing builder.
 
 **Related:** AltStore Classic 2.3 introduced [Remote AltServer support](https://github.com/altstoreio/AltStore/releases); it is no longer accurate to describe every AltStore setup as requiring a continuously running desktop AltServer.
 
@@ -120,10 +120,11 @@ These help inspect or extract app packages **you own or are authorized to resear
 
 ### TrollStore ecosystem
 
+- **[TrollApps](https://github.com/TheResonanceTeam/TrollApps)** — Alternative app browser/catalog for TrollStore installations.
 - **[TrollFools](https://github.com/Lessica/TrollFools)** — In-place tweak injection for apps on supported TrollStore-based setups.
 - **[TrollInstallerX](https://github.com/alfiecg24/TrollInstallerX)** — TrollStore installer for documented iOS 14–16 firmware ranges.
 - **[TrollRestore](https://github.com/JJTech0130/TrollRestore)** — Installation route for TrollStore on iOS 17.0.
-- **[TrollApps](https://github.com/TheResonanceTeam/TrollApps)** — Alternative app browser/catalog for TrollStore installations.
+
 See the **[main TrollStore project](https://github.com/opa334/TrollStore)** for firmware compatibility and installation guidance.
 
 **Important:** TrollStore installation methods are **firmware-specific**. They do not turn newer iOS versions into generally supported targets.
