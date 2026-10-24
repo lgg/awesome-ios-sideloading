@@ -173,4 +173,46 @@ Track **four different questions** independently: does a tool sign IPAs; install
 
 For any future compatibility PR, provide the **OS build, exact app version, signing method and observed steps**, not only the project's GitHub activity.
 
+## Fourth research pass: official signing libraries and release verification (25 Oct 2026)
+
+**What changed in this pass:** rather than adding another dozen near-identical IPA installers, this pass prioritizes first-party signing frameworks and resolves version-specific setup traps observed in SideStore/AltStore/LiveContainer discussions.
+
+### Added: developer signing/authentication libraries
+
+| Project | Why added | Boundary |
+| --- | --- | --- |
+| [AltSign](https://github.com/rileytestut/AltSign) | Original code-signing framework published by the AltStore developer; the [podspec](https://github.com/rileytestut/AltSign/blob/master/AltSign.podspec) describes Apple developer-account management and app re-signing | iOS framework, not a desktop installer; public root has no README |
+| [SideSign](https://github.com/SideStore/SideSign) | Current **SideStore-owned** Swift framework for developer-account APIs, provisioning, nested IPA signing and certificates | Cryptographic signing is not equivalent to a supported installation path |
+| [AnisetteKit](https://github.com/mahee96/AnisetteKit) | Local Anisette header generation/ADI emulation for iOS/macOS/tvOS/visionOS | Local Anisette alone does **not** remove server-side Apple authentication changes |
+| [CodeSignKit](https://github.com/mahee96/CodeSignKit) | Swift Mach-O/CMS/entitlements/app-framework signer underpinning SideSign | AGPL-license and practical firmware/device compatibility need evaluation by integrators |
+| [GSACryptoKit](https://github.com/mahee96/GSACryptoKit) | SRP-6a library used by SideSign to communicate with Apple GrandSlam Authentication | Low-level cryptographic library, **not** an app signer or Apple ID workaround |
+
+The underlying implementation matters more than GitHub popularity here: [SideSign](https://github.com/SideStore/SideSign) actually names CodeSignKit, GSACryptoKit and AnisetteKit as core components. These are listed together under a clearly developer-oriented README category rather than as five consumer “installers.”
+
+### Important changes verified against first-party releases
+
+- **AltStore Classic 2.3.1 (21 October 2026):** the [official FAQ changelog](https://github.com/altstoreio/FAQ/blob/main/release-notes/altstore.md) says it fixes `-80045`, 2FA prompts, background refresh and Remote AltServer issues. **2.3.0 raised the minimum iOS version to 17.4**, so do not recommend Classic 2.3 for iOS 15/16.
+- **SideStore 0.6.4 (9 September 2026):** [release notes](https://github.com/SideStore/SideStore/releases/tag/0.6.4) say **DO NOT USE — SIGN-IN IS BROKEN ON 0.6.4 AND BEFORE**. A subsequent [0.7.0-alpha](https://github.com/SideStore/SideStore/releases/tag/0.7.0-alpha) addresses a server-side 503 issue, but [newer open issues](https://github.com/SideStore/SideStore/issues/1652) show that later versions may still fail in certain conditions.
+- **LiveContainer 3.8.0:** [official release](https://github.com/LiveContainer/LiveContainer/releases/tag/3.8.0) and [installation documentation](https://livecontainer.github.io/docs/installation) require appropriate SideStore/AltStore versions. Importantly, **Sideloadly and most online signing services are explicitly unsupported**. LiveContainer+SideStore should be installed through documented installers such as iloader/Impactor; a generic code-signing success is not enough.
+- **SideInstaller 1.5.0:** [changelog](https://github.com/FrizzleM/SideInstaller/blob/main/CHANGELOG.md) reports Apple-sign-in adjustments after 12 October, not a general bypass of Apple policy. Check firmware-specific pairing requirements.
+- **SideStore PR #1683:** [open on 25 October 2026](https://github.com/SideStore/SideStore/pull/1683). Do **not** treat unmerged authentication changes as released fixes.
+
+### Additional communities investigated
+
+- [r/SideStore](https://www.reddit.com/r/SideStore/) — narrower SideStore installation, pairing, renewal and server-error discussion; useful for detecting breakages, but comments about “bans” or fixes are not authoritative.
+- [r/Trollstore](https://www.reddit.com/r/Trollstore/) — discussions include **TrollStore Lite** under jailbreak-specific conditions. They do **not** imply ordinary TrollStore is compatible with new firmware. [Example of confusion in October](https://www.reddit.com/r/Trollstore/comments/1x7d36l/trollstore_is_working_fine_on_iphone_11_ios_1862/).
+- [r/sideloaded](https://www.reddit.com/r/sideloaded/) — multiple conflicting recommendations for SideStore vs AltStore vs iloader. Useful for locating symptoms, not proving universal workarounds. [Discussion example](https://www.reddit.com/r/SideStore/comments/1x23zp3/can_anyone_give_me_some_sidestore_alternatives/).
+- [SideStore JIT guide](https://docs.sidestore.io/docs/advanced/jit) — warns that iOS 26/27 JIT works only in certain apps/builds. A successful JIT debugger attach does not imply an emulator will run with unrestricted JIT.
+
+### Considered and not promoted
+
+- [TrollStore Lite copies](https://github.com/TequilaDash/TrollStoreLite27): repositories found were small forks or potentially misleading newer-version claims, rather than a verified canonical upstream with independent compatibility evidence. Keep TrollStore Lite in the community discussion, not the “latest TrollStore for all iOS” list.
+- [AltKit](https://github.com/altstoreio/AltKit): older AltServer communication package with no recent meaningful upstream activity; AltSign and SideSign are the stronger maintainer-supported code-signing references.
+- General alternative app-source directories containing patched paid apps: source URLs and reachability cannot be treated as permission to redistribute third-party IPAs.
+- One-off third-party “Apple ID banned” claims: do not infer a permanent ban from client error `-80045`; compare account status in Apple's legitimate account settings and upstream error reports before concluding anything.
+
+### Conclusions
+
+The most valuable gap in the previous version was **compatibility guidance**, not a raw project count. Fixing the version-specific AltStore/SideStore/LiveContainer information is intended to prevent broken real-world setups. All “works on iOS X” statements remain upstream claims unless accompanied by independent reproducible test evidence.
+
 Back to [README](README.md).
