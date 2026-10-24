@@ -26,7 +26,7 @@ _Last catalog review: 2026-10-25. Project descriptions are based on upstream doc
   - [JIT and local networking](#jit-and-local-networking)
   - [Device pairing and developer infrastructure](#device-pairing-and-developer-infrastructure)
   - [App sources and discovery](#app-sources-and-discovery)
-  - [Self-hosted app sources](#self-hosted-app-sources)
+  - [Self-hosted distribution and app sources](#self-hosted-distribution-and-app-sources)
   - [Projects in development](#projects-in-development)
   - [Apple TV and legacy devices](#apple-tv-and-legacy-devices)
 - [Region-specific marketplaces](#region-specific-marketplaces)
@@ -58,6 +58,7 @@ Short descriptions deliberately keep this page readable. Technical prerequisites
 ### App installers and managers
 
 - **[AltStore Classic](https://github.com/altstoreio/AltStore)** — Open-source app manager that signs IPAs through an Apple Account; recent versions also support remote AltServer setups. [Website](https://altstore.io/).
+- **[AltLoad](https://github.com/mirazbakis/AltLoad)** — Experimental on-device installer for AltStore, SideStore and LiveContainer. Its author documents iOS 27+ self-pairing; iOS 18–26 requires a pairing file from a computer. Avoid relying on third-party shared certificates/DNS install shortcuts.
 - **[Feather](https://github.com/claration/feather)** — Open-source, on-device IPA signing, installation, and source management using developer certificates.
 - **[Ksign](https://github.com/Nyasami/Ksign)** — Open-source on-device IPA signer and installer.
 - **[LiveContainer](https://github.com/LiveContainer/LiveContainer)** — Runs guest iOS apps inside a signed container rather than installing each guest as a separate Home Screen app; some apps and capabilities are incompatible.
@@ -95,6 +96,7 @@ These smaller or newer projects offer interesting functionality, but **activity 
 - **[iPASide](https://github.com/pwnapplehat/iPASide)** — Open-source Windows-focused IPA installer using an Apple Account.
 - **[iOS App Signer](https://github.com/DanTheMan827/ios-app-signer)** — macOS utility for re-signing apps and producing installable IPA files.
 - **[IPASIGN](https://github.com/CyberTKR/IpaSigner)** — Qt 6 macOS GUI/CLI for local IPA re-signing with zsign and optional App Store Connect provisioning; early-stage project.
+- **[ModStaller](https://github.com/Crafttino21/ModStaller)** — Early-stage Linux/Windows IPA installer with Apple Account signing, Wi-Fi renewal and JIT; upstream claims iOS 27 and tvOS support, but Android-host installation is **planned, not available**.
 - **[ios-deploy](https://github.com/ios-control/ios-deploy)** — macOS command-line installation and debugging of apps on physical iOS devices; older development workflow, check recent device support.
 - **[Sideloadly](https://sideloadly.io/)** — Windows/macOS sideloading utility with Wi-Fi installation and optional automatic refresh. Proprietary; official website.
 - **[Sideloader](https://github.com/Dadoum/Sideloader)** — Open-source cross-platform IPA installation alternative, including Linux.
@@ -111,6 +113,7 @@ These smaller or newer projects offer interesting functionality, but **activity 
 - **[SideStore Auto Refresh](https://github.com/NRG-Wardog/sidestore-auto-refresh)** — Community project combining LiveContainer and SideStore with an automatic-refresh workflow; check upstream prerequisites.
 - **[Sideloop](https://github.com/filippofinke/sideloop)** — Self-hosted Linux/macOS service to re-sign and reinstall IPAs over local Wi-Fi before free provisioning expires; host must remain available and the iPhone unlocked for refresh.
 - **[SignTools](https://github.com/SignTools/SignTools)** — Self-hosted web service for signing and installing apps using a macOS signing builder.
+- **[Torch](https://github.com/trollzem/torch)** — Experimental macOS menu-bar app for free-account signing and 6-day re-installation of iPhone, iPad and Apple TV IPAs; host must remain available for refresh.
 - **[IPA Signer (self-hosted)](https://github.com/aoyn1xw/ipa-signer)** — Node.js/Docker web interface and API for re-signing IPAs with zsign and serving OTA links; **self-host it privately**, as uploaded certificates and app packages reach the server.
 
 **Related:** AltStore Classic 2.3 introduced [Remote AltServer support](https://github.com/altstoreio/AltStore/releases); it is no longer accurate to describe every AltStore setup as requiring a continuously running desktop AltServer.
@@ -157,6 +160,7 @@ JIT capability is **not** implied by successful IPA installation; check the app,
 
 ### Device pairing and developer infrastructure
 
+- **[go-ios](https://github.com/danielpaulus/go-ios)** — Cross-platform Go CLI/library for pairing, deploying apps and testing/debugging devices; complements, rather than replaces, an Apple signing identity.
 - **[idevice](https://github.com/jkcoxson/idevice)** — Rust libraries for interacting with iOS services.
 - **[idevice_pair](https://github.com/jkcoxson/idevice_pair)** — Desktop utility to generate/export pairing records for newer iOS connectivity workflows.
 - **[ideviceinstaller](https://github.com/libimobiledevice/ideviceinstaller)** — Command-line management of installed iOS apps.
@@ -166,6 +170,7 @@ JIT capability is **not** implied by successful IPA installation; check the app,
 - **[libusbmuxd](https://github.com/libimobiledevice/libusbmuxd)** — Client-side USB multiplexing transport used by desktop device-installation utilities.
 - **[pymobiledevice3](https://github.com/doronz88/pymobiledevice3)** — Python CLI/library for device pairing, app/profile management, and developer-device services.
 - **[usbmuxd](https://github.com/libimobiledevice/usbmuxd)** — Daemon that multiplexes USB connections between host tools and iOS devices.
+- **[xtool](https://github.com/xtool-org/xtool)** — Cross-platform SwiftPM/Xcode-alternative developer CLI for building, signing and deploying apps from Linux, Windows/WSL and macOS; not a general IPA source manager.
 
 ### App sources and discovery
 
@@ -183,7 +188,9 @@ These are **source catalogs and developer tools**, not assurances that all third
 - **[Sideload-Sources](https://github.com/KB01111/Sideload-Sources)** — Community source pointing to upstream GitHub Release assets; verify individual apps before installing.
 - **[ShrubLibrary](https://github.com/ShrubHub-iOS/ShrubLibrary)** — Web directory of iOS apps and AltStore-compatible repositories, with search and source import; **repository documents the website, not its source code**, and third-party IPA listings aren't vetted.
 
-### Self-hosted app sources
+### Self-hosted distribution and app sources
+
+- **[App Distribution Server](https://github.com/significa/app-distribution-server)** — Docker service for distributing **already signed** iOS IPA/Android APK builds through an installation page and QR code; no Apple Account signing or provisioning. Change its documented default upload token before deployment.
 
 - **[GithubStore](https://github.com/yazdipour/GithubStore)** — Docker-hosted AltStore/SideStore/LiveContainer feed generated from selected GitHub releases; optional configuration web UI has **no authentication** and should stay private.
 - **[TeleStore](https://github.com/yazdipour/TeleStore)** — Self-hosted AltStore-compatible feed from Telegram channels; requires your Telegram API credentials/session and may expose unauthorized third-party IPAs. Use only channels and apps you have rights to distribute.
@@ -196,6 +203,7 @@ These are **source catalogs and developer tools**, not assurances that all third
 ### Apple TV and legacy devices
 
 - **[atvloadly](https://github.com/bitxeno/atvloadly)** — Apple TV IPA sideloading and self-hosted workflows.
+- **[atv-sideload](https://github.com/Lauch2/atv-sideload)** — Experimental Linux scripts to package tvOS apps and install them via a separately supplied `plumesign` binary. Upstream pairing scripts are incomplete; not a turnkey installer.
 - **[Legacy iOS Kit](https://github.com/LukeZGD/Legacy-iOS-Kit)** — Toolkit for older iOS devices with a [Linux sideloading guide](https://github.com/LukeZGD/Legacy-iOS-Kit/wiki/Sideloading-on-Linux). Best treated separately from modern signing methods.
 
 ## Region-specific marketplaces
@@ -215,6 +223,8 @@ These are **source catalogs and developer tools**, not assurances that all third
 - [iOS Hub sideloading comparison](https://caseycz.github.io/iOS-Hub/guide.html) — Community-maintained overview; double-check claims against upstream.
 - [Apple Developer: Code signing](https://developer.apple.com/support/code-signing/)
 - [Compatibility and caveats in this repository](COMPATIBILITY.md)
+- [SideStore: reported October 2026 Apple ID login errors](https://github.com/SideStore/SideStore/issues/1647) — Follow maintainer updates rather than copying outdated Anisette identity strings from old guides.
+- [SideStore: community authentication troubleshooting](https://github.com/orgs/SideStore/discussions/1666) — Discussion of temporary `-80045` / HTTP 503 / 2FA problems; solutions vary by build.
 
 ## Research notes and scope
 
@@ -225,6 +235,7 @@ The [research notes](RESEARCH_NOTES.md) explain which entries from [awesome-iOS-
 These are independent discussion and support venues, **not verified download sources**. For installation binaries and credentials, follow the original project's documentation rather than unsolicited messages, mirrors, or certificates shared in a chat.
 
 - **[r/AltStore](https://www.reddit.com/r/AltStore/)** — AltStore Classic/PAL, AltServer, installation and provisioning troubleshooting; compare community advice against [official AltStore documentation](https://faq.altstore.io/).
+- **[r/jailbreak](https://www.reddit.com/r/jailbreak/)** — Adjacent jailbreak/firmware and TrollStore discussions; **not** a substitute for normal sideloading support and not every jailbreak applies to every OS version.
 - **[r/sideloaded](https://www.reddit.com/r/sideloaded/)** — Large subreddit dedicated to non-jailbreak sideloading tools, setup, troubleshooting and release discussions. [Community Discord](https://discord.gg/pUHBuxYzSG) is advertised by the subreddit; its invite may change.
 - **[SideStore Discord](https://discord.gg/sidestore)** — Official community support linked from the [verified SideStore organization](https://github.com/SideStore). Also see [SideStore Discussions](https://github.com/orgs/SideStore/discussions) for feature reports and reproducible issues.
 - **[Apple Developer Forums: Code Signing](https://developer.apple.com/forums/topics/code-signing-topic/code-signing-topic-general)** — Primary-source discussion for signing identities, entitlements and provisioning-profile problems; not support for unauthorized signing services.
@@ -237,7 +248,7 @@ These are independent discussion and support venues, **not verified download sou
 - **Credentials:** use official tools and inspect how they handle passwords, 2FA, pairing records, and .p12 certificates. A pairing record and a signing identity are sensitive secrets. **A website that forwards your .p12 and its password to a third-party API crosses a major trust boundary.**
 - **AltKeeper:** its unattended-renewal mode documents a saved Apple Account password in clear text with restricted file permissions. Do not expose its storage, logs, web UI, or AltServer endpoint to the public internet without carefully reviewing the threat model.
 - **Certificates:** never upload a private .p12, password, or provisioning file to a web signer without independently assessing the operator. Publicly shared enterprise certificates, DNS blocking tricks, and third-party pre-signed IPAs can be unreliable or unsafe. They are not presented as equivalent to your own signing identity.
-- **Compatibility:** iOS 17, 18, 26, and 27 have meaningfully different pairing, JIT, and signing paths. Do not generalize a result across firmware versions.
+- **Compatibility:** iOS 17, 18, 26, and 27 have meaningfully different pairing, JIT, and signing paths. Do not generalize a result across firmware versions. October 2026 Apple-authentication changes have also broken some Anisette/client identity combinations; see [the current troubleshooting notes](COMPATIBILITY.md#october-2026-apple-id--anisette-disruptions).
 - **Legality and trust:** only install software you are authorized to use, and prefer releases and source code from the original maintainer. A source directory's `online` status only establishes that its feed could be reached, not that the distributed IPA is authentic, legal or safe.
 
 ## License
