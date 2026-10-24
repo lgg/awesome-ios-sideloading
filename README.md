@@ -23,6 +23,7 @@ _Last catalog review: 2026-10-25. Individual entries are not all tested on physi
   - [JIT and local networking](#jit-and-local-networking)
   - [Device pairing and developer infrastructure](#device-pairing-and-developer-infrastructure)
   - [App sources and discovery](#app-sources-and-discovery)
+  - [Projects in development](#projects-in-development)
   - [Apple TV and legacy devices](#apple-tv-and-legacy-devices)
 - [Region-specific marketplaces](#region-specific-marketplaces)
 - [Documentation](#documentation)
@@ -54,6 +55,9 @@ Short descriptions deliberately keep this page readable. Technical prerequisites
 - **[Feather](https://github.com/claration/feather)** — Open-source, on-device IPA signing, installation, and source management using developer certificates.
 - **[Ksign](https://github.com/Nyasami/Ksign)** — Open-source on-device IPA signer and installer.
 - **[LiveContainer](https://github.com/LiveContainer/LiveContainer)** — Runs guest iOS apps inside a signed container rather than installing each guest as a separate Home Screen app; some apps and capabilities are incompatible.
+- **[NexStore](https://github.com/NexSideloading/NexStore)** — Open-source, certificate-based on-device app signer and AltStore-source-compatible manager.
+- **[RyukSign](https://github.com/faroukbmiled/RyukSign)** — Feather-derived signer with on-device tweak management, local file transfer, and app-source support.
+- **[SideInstaller](https://github.com/FrizzleM/SideInstaller)** — On-device SideStore/LiveContainer setup, including a no-PC path on supported iOS 27+ devices; earlier supported versions may still require a pairing file. **Use only [the author's official download site](https://sideinstaller.net/).**
 - **[SideStore](https://github.com/SideStore/SideStore)** — AltStore-derived sideloading manager designed to install and refresh apps on-device after setup.
 - **[TrollStore](https://github.com/opa334/TrollStore)** — Installs IPAs persistently via a CoreTrust vulnerability on **specific older firmware versions only**.
 
@@ -65,7 +69,6 @@ Short descriptions deliberately keep this page readable. Technical prerequisites
 - **[iOS App Signer](https://github.com/DanTheMan827/ios-app-signer)** — macOS utility for re-signing apps and producing installable IPA files.
 - **[Sideloadly](https://sideloadly.io/)** — Windows/macOS sideloading utility with Wi-Fi installation and optional automatic refresh. Proprietary; official website.
 - **[Sideloader](https://github.com/Dadoum/Sideloader)** — Open-source cross-platform IPA installation alternative, including Linux.
-- **[SideInstaller](https://github.com/FrizzleM/SideInstaller)** — On-device SideStore/LiveContainer setup, including a no-PC path on supported iOS 27+ devices; earlier supported versions may still require a pairing file. **Use only [the author's official download site](https://sideinstaller.net/).**
 
 ### Refresh, AltServer, and self-hosting
 
@@ -117,11 +120,16 @@ These are **source catalogs and developer tools**, not assurances that all third
 
 - **[AltDirect](https://github.com/StikDebug/altdirect)** — Redirects AltStore-compatible source URLs to compatible installers.
 - **[AltGallery](https://github.com/bebound/AltGallery)** — Discovers AltStore sources and apps hosted by projects on GitHub.
+- **[appdb](https://appdb.to/)** — Proprietary app-discovery and installation platform; availability and certificate/signing requirements vary by workflow.
 - **[AltSource Viewer](https://github.com/therealFoxster/altsource-viewer)** — Viewer for AltStore-format sources.
 - **[awesome-altstore](https://github.com/victordedomenico/awesome-altstore)** — Separate curated collection focused on AltStore JSON sources.
 - **[SideStore Community Source](https://github.com/SideStore/Community-Source)** — Official SideStore community/trusted source submission project.
 - **[SideStoreAndAltStore-Sources](https://github.com/luh-99/SideStoreAndAltStore-Sources)** — Community collection of source URLs for AltStore and SideStore.
 - **[Sideload-Sources](https://github.com/KB01111/Sideload-Sources)** — Community source pointing to upstream GitHub Release assets; verify individual apps before installing.
+
+### Projects in development
+
+- **[StikStore](https://stikstore.app/)** — Announced on-device app manager with planned Apple Account/certificate signing and JIT. **Not yet a generally released solution** at the time of review; distinguish roadmap features from working functionality.
 
 ### Apple TV and legacy devices
 
@@ -154,6 +162,10 @@ These are **source catalogs and developer tools**, not assurances that all third
 - **Certificates:** publicly shared enterprise certificates, DNS blocking tricks, and third-party pre-signed IPAs can be unreliable or unsafe. They are not presented as equivalent to your own signing identity.
 - **Compatibility:** iOS 17, 18, 26, and 27 have meaningfully different pairing, JIT, and signing paths. Do not generalize a result across firmware versions.
 - **Legality and trust:** only install software you are authorized to use, and prefer releases and source code from the original maintainer.
+
+## License
+
+This list's original compilation and descriptions are dedicated to the public domain under [CC0 1.0](LICENSE). Linked projects retain **their own** licenses and copyrights.
 
 ## Contributing
 
