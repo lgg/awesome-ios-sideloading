@@ -71,7 +71,7 @@ From the repository root:
 python3 scripts/validate_catalog.py
 ```
 
-The stdlib-only script checks internal relative links, duplicate project targets, section formatting, and basic Markdown structure. For optional live HTTP checks, use:
+The stdlib-only script checks internal relative links, duplicate project targets, section formatting, and basic Markdown structure. GitHub Actions also runs this check on relevant pull requests and pushes to `master` via [catalog-validation.yml](.github/workflows/catalog-validation.yml). For optional live HTTP checks, use:
 
 ```bash
 python3 scripts/validate_catalog.py --online
