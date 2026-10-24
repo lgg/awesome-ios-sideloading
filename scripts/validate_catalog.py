@@ -127,7 +127,16 @@ def main() -> int:
                 if problem:
                     failures.append(f"{name}:{lineno}: {problem}")
         if name == "README.md":
-            project_targets = PROJECT.findall(data)
+            # Count actual catalog projects, not regional marketplace links or
+            # discussion communities. Those are useful links but not tools.
+            start_marker = "\n## Projects\n"
+            end_marker = "\n## Region-specific marketplaces\n"
+            if start_marker not in data or end_marker not in data:
+                failures.append("README.md catalog section markers missing")
+                catalog = ""
+            else:
+                catalog = data.split(start_marker, 1)[1].split(end_marker, 1)[0]
+            project_targets = PROJECT.findall(catalog)
             duplicates = [
                 name for name, count in Counter(project_targets).items() if count > 1
             ]
