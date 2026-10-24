@@ -61,6 +61,7 @@ Short descriptions deliberately keep this page readable. Technical prerequisites
 - **[MultiStore](https://github.com/lungustefan/MultiStore)** — Community SideStore fork that associates apps with multiple Apple Accounts and refreshes them per account; each account still has Apple's limits.
 - **[NexStore](https://github.com/NexSideloading/NexStore)** — Open-source, certificate-based on-device app signer and AltStore-source-compatible manager.
 - **[RyukSign](https://github.com/faroukbmiled/RyukSign)** — Feather-derived signer with on-device tweak management, local file transfer, and app-source support.
+- **[Scarlet](https://usescarlet.com/)** — Proprietary on-device app installer and source manager with direct-install, certificate-based and computer-assisted methods; shared certificates can be revoked. [Developer's GitHub page](https://github.com/DebianArch64/Scarlet).
 - **[SideInstaller](https://github.com/FrizzleM/SideInstaller)** — On-device SideStore/LiveContainer setup, including a no-PC path on supported iOS 27+ devices; earlier supported versions may still require a pairing file. **Use only [the author's official download site](https://sideinstaller.net/).**
 - **[SideStore](https://github.com/SideStore/SideStore)** — AltStore-derived sideloading manager designed to install and refresh apps on-device after setup.
 - **[TrollStore](https://github.com/opa334/TrollStore)** — Installs IPAs persistently via a CoreTrust vulnerability on **specific older firmware versions only**.
