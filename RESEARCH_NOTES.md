@@ -80,4 +80,49 @@ These have repository code and descriptions of relevant features, but their secu
 
 Future pull requests should prioritize updates to support tables and maintainer status over simply increasing the number of links. Prefer first-party compatibility evidence; flag uncertain claims. Run `python3 scripts/validate_catalog.py` before merging.
 
+
+## Follow-up research: forums, signing APIs and source builders (2026-10-25)
+
+This pass combined GitHub topic search (`sideloading`, `sidestore`, `altstore-source`, `anisette`), project READMEs, up-to-date public guides, and contemporary **r/sideloaded** discussions. It is a research snapshot, **not** device testing or an endorsement of every third-party project.
+
+### Newly added projects
+
+| Project | Rationale | Important trust/maintenance note |
+| --- | --- | --- |
+| [SideStore/anisette-servers](https://github.com/SideStore/anisette-servers) | Official directory of suggested Anisette services, relevant to free-account sideloading reliability | Directory inclusion and uptime should not be mistaken for a full privacy/security audit |
+| [SideStore/apps.json](https://github.com/SideStore/apps.json) | First-party feed of SideStore-related releases | Distinguished from the community source |
+| [CaseyCZ/iOS-Hub](https://github.com/CaseyCZ/iOS-Hub) | Active multilingual source discovery and troubleshooting, with availability checks | Its directory includes community/modified feeds; reachability does not establish app provenance |
+| [ShrubHub-iOS/ShrubLibrary](https://github.com/ShrubHub-iOS/ShrubLibrary) | Large searchable source directory | GitHub repo is **not the application source code**; directory also promotes certificate offerings |
+| [yazdipour/GithubStore](https://github.com/yazdipour/GithubStore) | Self-hosted AltStore source generator from selected GitHub release IPAs | Web configuration UI documented as unauthenticated |
+| [yazdipour/TeleStore](https://github.com/yazdipour/TeleStore) | Self-hosted, Telegram-channel-backed AltStore source | Telegram session/credentials and legal distribution rights require care |
+| [aoyn1xw/ipa-signer](https://github.com/aoyn1xw/ipa-signer) | Source-available web/API IPA signer, usable on a private host | Uploaded IPAs, certificates and profiles land on server; do not expose publicly |
+| [CyberTKR/IpaSigner](https://github.com/CyberTKR/IpaSigner) | Local macOS GUI for IPA codesigning plus optional App Store Connect workflow | Early-stage Qt tool; double-check signing keys and bundle-ID changes |
+| [asdfzxcvbn/pyzule-rw](https://github.com/asdfzxcvbn/pyzule-rw) | `cyan` IPA inspection/repacking/tweak injection CLI with Linux/macOS/WSL support | Not a standalone replacement for legitimate signing and provisioning |
+| [username252510/Purple-Installer](https://github.com/username252510/Purple-Installer) | Web installer for Feather, Ksign and SideInstaller | **README explicitly says it transmits .p12, provisioning profile and password to the Daisuke Signer API**; front-end local storage does not make it local signing |
+| [yodaluca23/Feather-Installer](https://github.com/yodaluca23/Feather-Installer) | Web-based Feather setup with certificate import | **README says certificate files and password are transmitted to the ipasign.cc signing backend** |
+
+### Forums, documentation and communities checked
+
+- [r/sideloaded](https://www.reddit.com/r/sideloaded/) and its [advertised Discord invite](https://discord.gg/pUHBuxYzSG): active community for recent setup problems and release feedback; user reports are anecdotes and may reflect particular firmware only.
+- [SideStore GitHub organization](https://github.com/SideStore), its [official Discord](https://discord.gg/sidestore), [GitHub Discussions](https://github.com/SideStore/SideStore/discussions), and [docs](https://docs.sidestore.io/): preferred starting points for version-specific SideStore troubleshooting.
+- [Apple Developer Forums — Code Signing](https://developer.apple.com/forums/topics/code-signing-topic/code-signing-topic-general): first-party Apple provisioning, entitlement and certificate diagnostics.
+- [iOS Guide TrollStore documentation](https://ios.cfw.guide/installing-trollstore/): device/firmware-specific methods; compare against [TrollStore upstream](https://github.com/opa334/TrollStore).
+- [GitHub sidestore topic](https://github.com/topics/sidestore), [sideloading topic](https://github.com/topics/sideloading): discovery only; tag placement and recent commits do not mean a feature works.
+
+### Evaluated and not included in the main catalog
+
+- [Nemesis-Surf/webipagui](https://github.com/Nemesis-Surf/webipagui) was **archived**; not presented as an actively maintained front end.
+- [SignOs](https://github.com/ihateios/SignOs) and similar Feather forks claim unattended, silent signing/update workflows; insufficient independent test evidence to add yet another near-identical alternative alongside BatSign.
+- [aoyn1xw/ipa-signer](https://github.com/aoyn1xw/ipa-signer) was included strictly as a **self-hosted signing server**, not a recommended public website to submit credentials to.
+- [EscapeOS](https://github.com/pwnapplehat/EscapeOS) is a firmware-specific app data browser / backup utility rather than a tool for **installing or signing** IPAs; useful adjacent reference but outside the narrow main catalog.
+- [Feather Installer](https://github.com/yodaluca23/Feather-Installer) and [Purple Installer](https://github.com/username252510/Purple-Installer) are included in a visibly separated risk section, **not the quick-start recommendations**.
+- [ShrubLibrary](https://github.com/ShrubHub-iOS/ShrubLibrary) and [iOS Hub](https://github.com/CaseyCZ/iOS-Hub) are **source browsers**: catalogs can contain third-party modified IPAs. Linking to the directory is not endorsement of those IPAs.
+- [SideKit](https://github.com/SideStore/SideKit) is described as WIP and had no recent substantial updates; it should not be mistaken for today's mainstream JIT or installer framework.
+
+### Maintenance implications
+
+The fastest-moving failure points remain Apple Account authentication/Anisette services, iOS **remote pairing** variants, certificate revocation, and future iOS release compatibility. Source listings need source-provenance review as well as reachability checks. A private-key upload to an untrusted signing endpoint can lead to unauthorized use of the key **even when the front-end code is open source**.
+
+If further evidence contradicts any claim, prefer updating the entry and accompanying [COMPATIBILITY.md](COMPATIBILITY.md) with reproducible upstream links over creating another speculative entry.
+
 Back to [README](README.md).
