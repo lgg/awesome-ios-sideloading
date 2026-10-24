@@ -8,8 +8,8 @@
 
 | Project | Primary use | Computer / host | Signing or refresh model | Important caveat |
 | --- | --- | --- | --- | --- |
-| [AltStore Classic](https://github.com/altstoreio/AltStore) | Install and update IPA files | Windows/macOS AltServer, **or configured Remote AltServer** | Personal Apple Account; normal profile renewal | AltStore Classic 2.3 added Remote AltServer; remote functionality still needs a suitable server/backend |
-| [SideStore](https://github.com/SideStore/SideStore) | Install/refresh on device | Setup / pairing path varies | Personal Apple Account; on-device renewal with local VPN transport | Initial setup and VPN/pairing requirements vary by OS |
+| [AltStore Classic](https://github.com/altstoreio/AltStore) | Install and update IPA files | Windows/macOS AltServer, **or configured Remote AltServer** | Personal Apple Account; normal profile renewal | **AltStore Classic 2.3.1 (21 Oct 2026)** documents fixes for `-80045`, 2FA and background refresh; Classic 2.3 requires iOS 17.4+ |
+| [SideStore](https://github.com/SideStore/SideStore) | Install/refresh on device | Setup / pairing path varies | Personal Apple Account; on-device renewal with local VPN transport | **0.6.4 and earlier documented as unable to sign in**; 0.7.0-alpha addresses older 503 errors but October sign-in may still fail. Check nightly and official issues |
 | [AltLoad](https://github.com/mirazbakis/AltLoad) | Set up AltStore/SideStore/LiveContainer from iPhone | iOS **27+** self-pairing claimed; iOS 18–26 needs pairing record created on PC | Free Apple Account / LocalDevVPN | Early-stage; ordinary sideloading requires first installing AltLoad, and shared-certificate/DNS bootstrap is not equivalent to personal signing |
 | [Scarlet](https://usescarlet.com/) | On-device IPA installation, app sources, and tweak injection | Depends on installation mode (direct, computer, own certificate) | Shared certificate, personal developer account, or owned signing assets | Proprietary; direct/shared-certificate route can be revoked or unavailable |
 | [MultiStore](https://github.com/lungustefan/MultiStore) | Manage SideStore installs across Apple IDs | Initial setup/pairing via iloader or similar | Per-app signing identity, refresh grouped by Apple Account | Community fork; multiple accounts do **not** remove per-account or per-device Apple limits |
@@ -29,7 +29,7 @@
 | [BatSign](https://github.com/8yy/BatSign) | On-device signing, background updates | iOS 16+ claimed by upstream | Certificate-based | Automated installs/notifications are upstream claims; test on real devices and firmware |
 | [ForgeSign](https://github.com/Mesutcydev/ForgeSign-iOS) | On-device IPA re-signing and OTA install | iOS device | Your .p12 and profile | Check releases and supported firmware |
 | [EnSign](https://github.com/cc158999/EnSign) | On-device signing and update workflow | iPhone/iPad | Certificate-based | Check upstream docs and independent security evidence |
-| [LiveContainer](https://github.com/LiveContainer/LiveContainer) | Run guest apps inside a host | Host app must first be installed | Host's signing/refresh applies | Not every IPA or entitlement works inside a container |
+| [LiveContainer](https://github.com/LiveContainer/LiveContainer) | Run guest apps inside a host | Host app must first be installed via **supported signer** | Host's signing/refresh applies | Official guide rejects Sideloadly, i4/3u Tools, NB Tool and most online signers; standalone needs AltStore 2.2.1+ or SideStore 0.6.2+ |
 | [TrollStore](https://github.com/opa334/TrollStore) | Persistent installation | Depends on firmware-specific bootstrap | Exploit-based; not 7-day personal provisioning | Official supported firmware ranges only |
 | [SideInstaller](https://github.com/FrizzleM/SideInstaller) | On-device SideStore bootstrap | On iOS 27+: no PC path; earlier: pairing-file prerequisites | SideStore/free-account workflow after install | Author documents iOS 17.4+, with different pairing requirements |
 | [AltKeeper](https://github.com/BartolomeoRusso9/altkeeper) | Self-hosted AltServer and renewal | Always-on home machine; USB pairing once | AltStore protocol plus optional unattended profile renewal | **Experimental**; unattended mode stores account password on host |
@@ -50,6 +50,11 @@
 | Tool | Role | Key limitation |
 | --- | --- | --- |
 | [altsign-cli](https://github.com/xhzq233/altsign-cli) | Provision and re-sign .app/IPA through free Apple Account | macOS 12+, Command Line Tools and OpenSSL 3; not itself a background refresher |
+| [AltSign](https://github.com/rileytestut/AltSign) | Original Apple-account/re-signing framework used in sideloading ecosystem | Library (CocoaPods / iOS), not an installation UI |
+| [SideSign](https://github.com/SideStore/SideSign) | SideStore-maintained Swift framework for developer account API, provisioning, and IPA resigning | Library; Apple auth APIs can change without public notice |
+| [CodeSignKit](https://github.com/mahee96/CodeSignKit) | Swift Mach-O/code-signing and recursive app-bundle signing | Does not provision Apple accounts by itself; review AGPL terms |
+| [AnisetteKit](https://github.com/mahee96/AnisetteKit) | On-device Anisette generation/ADI emulation across Apple platforms | Cryptographic headers alone do not guarantee successful Apple sign-in |
+| [GSACryptoKit](https://github.com/mahee96/GSACryptoKit) | SRP-6a authentication and cryptography helpers | Protocol library, not a standalone IPA signing or installer service |
 | [node-applesign](https://github.com/nowsecure/node-applesign) | Re-sign IPA archives in Node.js CLI/app workflows | Requires valid signing identity and provisioning files |
 | [IPAID](https://github.com/shplash/IPAID) | Edit IPA bundle identifier and metadata | **Does not replace** installation and signing |
 | [ipa-extract-info](https://github.com/nowsecure/ipa-extract-info) | Extract an IPA's Info.plist | Metadata inspection only |
@@ -129,9 +134,24 @@ Newer iOS versions can require **remote pairing** records rather than older lock
 
 For safe deployment, keep it **LAN-only**, protect its pairing file, account state, and web UI, and follow upstream updates before treating it as a set-and-forget renewal solution.
 
+## Current compatibility snapshots
+
+These are **historical checkpoints dated 25 October 2026**, not a permanent “latest versions” matrix. Always confirm official upstream updates.
+
+| Project | Confirmed upstream reference | Practical interpretation |
+| --- | --- | --- |
+| **AltStore Classic** | [2.3.1 release notes (21 Oct 2026)](https://github.com/altstoreio/FAQ/blob/main/release-notes/altstore.md) | Fixes for authentication `-80045`, 2FA prompts, background refresh and Remote AltServer handling are documented. AltStore 2.3 raised the minimum to **iOS 17.4** |
+| **SideStore** | [0.6.4](https://github.com/SideStore/SideStore/releases/tag/0.6.4) and [0.7.0-alpha](https://github.com/SideStore/SideStore/releases/tag/0.7.0-alpha) | Upstream marks 0.6.4 and earlier `DO NOT USE` due to broken sign-in. 0.7.0-alpha targeted 503 but additional October issues exist; nightlies are **experimental** |
+| **LiveContainer** | [3.8.0 release notes](https://github.com/LiveContainer/LiveContainer/releases/tag/3.8.0) and [official install guide](https://livecontainer.github.io/docs/installation) | Standalone requires AltStore **2.2.1+** or SideStore **0.6.2+** to install; official docs specifically **do not support Sideloadly** and most online signers for installing LiveContainer |
+| **SideInstaller** | [1.5.0 changelog](https://github.com/FrizzleM/SideInstaller/blob/main/CHANGELOG.md) | Maintainer documents fixes to Apple sign-in after the 12 Oct change; the new solution still requires supported firmware/setup and is not proof of blanket account compatibility |
+
+### Selecting a supported installer for LiveContainer
+
+**LiveContainer is different from a generic IPA.** Its bundled frameworks, SideStore integration, app extensions and certificate-import process require the [officially supported installation paths](https://livecontainer.github.io/docs/installation). Use **iloader or Impactor** for the LiveContainer+SideStore bundle, or a sufficiently recent **AltStore/SideStore** for the standalone app. Check the [standalone setup guide](https://livecontainer.github.io/docs/installation/standalone) for JIT-less certificate import and diagnostic checks. A successful one-time install with some other signer does not imply future refresh, app extensions or nested frameworks will work.
+
 ## October 2026 Apple ID / Anisette disruptions
 
-**Snapshot: 25 October 2026.** Several third-party sideloading tools reported Apple-authentication failures from around **13–15 October 2026**. These are **upstream community reports**, not a proof of universal Apple ID bans, and should not be treated as a reason to repeatedly retry a password or replace an identity blindly.
+**Snapshot: 25 October 2026.** Several third-party sideloading tools reported Apple-authentication failures from around **13–15 October 2026**. AltStore 2.3.1 subsequently documented fixes for its own `-80045`/2FA/refresh workflow, whereas SideStore's open reports and experimental builds require separate treatment. These are **upstream community reports**, not a proof of universal Apple ID bans, and should not be treated as a reason to repeatedly retry a password or replace an identity blindly.
 
 | Symptom | Primary source | What is known |
 | --- | --- | --- |
