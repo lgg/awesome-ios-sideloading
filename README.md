@@ -21,6 +21,7 @@ _Last catalog review: 2026-10-25. Project descriptions are based on upstream doc
   - [Desktop installers and setup](#desktop-installers-and-setup)
   - [Refresh, AltServer, and self-hosting](#refresh-altserver-and-self-hosting)
   - [Signing and IPA tooling](#signing-and-ipa-tooling)
+  - [Signing and authentication libraries](#signing-and-authentication-libraries)
   - [IPA inspection and authorized research](#ipa-inspection-and-authorized-research)
   - [TrollStore ecosystem](#trollstore-ecosystem)
   - [JIT and local networking](#jit-and-local-networking)
@@ -57,17 +58,17 @@ Short descriptions deliberately keep this page readable. Technical prerequisites
 
 ### App installers and managers
 
-- **[AltStore Classic](https://github.com/altstoreio/AltStore)** — Open-source app manager that signs IPAs through an Apple Account; recent versions also support remote AltServer setups. [Website](https://altstore.io/).
+- **[AltStore Classic](https://github.com/altstoreio/AltStore)** — Open-source app manager that signs IPAs through an Apple Account, with Remote AltServer support since 2.3. [Website](https://altstore.io/). The [2.3.1 release notes](https://github.com/altstoreio/FAQ/blob/main/release-notes/altstore.md) document October 2026 fixes for `-80045`, 2FA and background refresh.
 - **[AltLoad](https://github.com/mirazbakis/AltLoad)** — Experimental on-device installer for AltStore, SideStore and LiveContainer. Its author documents iOS 27+ self-pairing; iOS 18–26 requires a pairing file from a computer. Avoid relying on third-party shared certificates/DNS install shortcuts.
 - **[Feather](https://github.com/claration/feather)** — Open-source, on-device IPA signing, installation, and source management using developer certificates.
 - **[Ksign](https://github.com/Nyasami/Ksign)** — Open-source on-device IPA signer and installer.
-- **[LiveContainer](https://github.com/LiveContainer/LiveContainer)** — Runs guest iOS apps inside a signed container rather than installing each guest as a separate Home Screen app; some apps and capabilities are incompatible.
+- **[LiveContainer](https://github.com/LiveContainer/LiveContainer)** — Runs guest iOS apps inside one signed container. Its [official installation guide](https://livecontainer.github.io/docs/installation) explicitly **does not support Sideloadly or most online signers** for installing LiveContainer; setup and guest compatibility vary.
 - **[MultiStore](https://github.com/lungustefan/MultiStore)** — Community SideStore fork that associates apps with multiple Apple Accounts and refreshes them per account; each account still has Apple's limits.
 - **[NexStore](https://github.com/NexSideloading/NexStore)** — Open-source, certificate-based on-device app signer and AltStore-source-compatible manager.
 - **[RyukSign](https://github.com/faroukbmiled/RyukSign)** — Feather-derived signer with on-device tweak management, local file transfer, and app-source support.
 - **[Scarlet](https://usescarlet.com/)** — Proprietary on-device app installer and source manager with direct-install, certificate-based and computer-assisted methods; shared certificates can be revoked. [Developer's GitHub page](https://github.com/DebianArch64/Scarlet).
 - **[SideInstaller](https://github.com/FrizzleM/SideInstaller)** — On-device SideStore/LiveContainer setup, including a no-PC path on supported iOS 27+ devices; earlier supported versions may still require a pairing file. **Use only [the author's official download site](https://sideinstaller.net/).**
-- **[SideStore](https://github.com/SideStore/SideStore)** — AltStore-derived sideloading manager designed to install and refresh apps on-device after setup.
+- **[SideStore](https://github.com/SideStore/SideStore)** — AltStore-derived sideloading manager that installs and refreshes apps on-device after setup. **Avoid 0.6.4 and earlier for current sign-in:** [0.6.4 release notes](https://github.com/SideStore/SideStore/releases/tag/0.6.4) explicitly warn authentication is broken; later alpha/nightly builds may still have issues.
 - **[TrollStore](https://github.com/opa334/TrollStore)** — Installs IPAs persistently via a CoreTrust vulnerability on **specific older firmware versions only**.
 
 ### Emerging on-device signers
@@ -127,6 +128,16 @@ These smaller or newer projects offer interesting functionality, but **activity 
 - **[node-applesign](https://github.com/nowsecure/node-applesign)** — Node.js CLI/module for re-signing IPA archives with appropriate signing identities and provisioning assets.
 - **[zsign](https://github.com/zhlynn/zsign)** — Cross-platform IPA signing tool for developer workflows.
 - **[cyan / pyzule-rw](https://github.com/asdfzxcvbn/pyzule-rw)** — IPA preparation CLI for authorized apps: edits metadata, injects tweaks/frameworks, and prepares output for signing; **not a standalone trusted-certificate signer**.
+
+### Signing and authentication libraries
+
+These are **developer libraries**, not standalone IPA installers. Apple authentication protocols can change without notice; successful signing also requires the correct developer identity and provisioning profile.
+
+- **[AltSign](https://github.com/rileytestut/AltSign)** — AltStore developer's iOS framework for Apple developer accounts and app re-signing.
+- **[AnisetteKit](https://github.com/mahee96/AnisetteKit)** — On-device Swift Anisette/ADI emulation library; upstream claims iOS, macOS, tvOS and visionOS support. Apple server compatibility can change.
+- **[CodeSignKit](https://github.com/mahee96/CodeSignKit)** — Swift Mach-O/app-bundle signer handling nested frameworks, entitlements and CMS signatures; review its stated AGPL obligations.
+- **[GSACryptoKit](https://github.com/mahee96/GSACryptoKit)** — Swift SRP-6a and cryptographic helpers for Apple's GrandSlam Authentication workflow.
+- **[SideSign](https://github.com/SideStore/SideSign)** — SideStore-team Swift library for IPA re-signing, developer certificates, provisioning profiles and Apple Developer APIs.
 
 ### IPA inspection and authorized research
 
@@ -219,6 +230,8 @@ These are **source catalogs and developer tools**, not assurances that all third
 - [AltStore official website and setup](https://altstore.io/)
 - [AltStore developer documentation](https://developer.altstore.io/)
 - [SideStore documentation](https://docs.sidestore.io/)
+- [AltStore Classic release notes](https://github.com/altstoreio/FAQ/blob/main/release-notes/altstore.md) — Version-specific sign-in fixes and remote refresh updates.
+- [LiveContainer official installation guide](https://livecontainer.github.io/docs/installation) — Supported installers and the differences between standalone and combined SideStore builds.
 - [Sideloadly official FAQ](https://sideloadly.io/faq.html) — Device setup, Windows USB drivers, Wi-Fi refresh, signing limits and Apple TV caveats.
 - [SideStore JIT guide](https://docs.sidestore.io/docs/advanced/jit)
 - [iOS Hub sideloading comparison](https://caseycz.github.io/iOS-Hub/guide.html) — Community-maintained overview; double-check claims against upstream.
@@ -239,6 +252,8 @@ These are independent discussion and support venues, **not verified download sou
 - **[r/jailbreak](https://www.reddit.com/r/jailbreak/)** — Adjacent jailbreak/firmware and TrollStore discussions; **not** a substitute for normal sideloading support and not every jailbreak applies to every OS version.
 - **[r/LegacyJailbreak](https://www.reddit.com/r/LegacyJailbreak/)** — Older iPhones/iPads, firmware-specific sideloading limitations and legacy installation tools.
 - **[r/Sideloadly](https://www.reddit.com/r/Sideloadly/)** — Sideloadly-specific setup, daemon, Wi-Fi and signing issues; linked by the project's [official FAQ](https://sideloadly.io/faq.html).
+- **[r/SideStore](https://www.reddit.com/r/SideStore/)** — Community reports on SideStore login, pairing and background renewal; check claims against maintainer releases.
+- **[r/Trollstore](https://www.reddit.com/r/Trollstore/)** — TrollStore and jailbreak-dependent TrollStore Lite discussions; not all methods support the same firmware.
 - **[r/sideloaded](https://www.reddit.com/r/sideloaded/)** — Large subreddit dedicated to non-jailbreak sideloading tools, setup, troubleshooting and release discussions. [Community Discord](https://discord.gg/pUHBuxYzSG) is advertised by the subreddit; its invite may change.
 - **[SideStore Discord](https://discord.gg/sidestore)** — Official community support linked from the [verified SideStore organization](https://github.com/SideStore). Also see [SideStore Discussions](https://github.com/orgs/SideStore/discussions) for feature reports and reproducible issues.
 - **[Apple Developer Forums: Code Signing](https://developer.apple.com/forums/topics/code-signing-topic/code-signing-topic-general)** — Primary-source discussion for signing identities, entitlements and provisioning-profile problems; not support for unauthorized signing services.
