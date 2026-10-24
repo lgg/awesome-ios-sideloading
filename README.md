@@ -219,6 +219,7 @@ These are **source catalogs and developer tools**, not assurances that all third
 - [AltStore official website and setup](https://altstore.io/)
 - [AltStore developer documentation](https://developer.altstore.io/)
 - [SideStore documentation](https://docs.sidestore.io/)
+- [Sideloadly official FAQ](https://sideloadly.io/faq.html) — Device setup, Windows USB drivers, Wi-Fi refresh, signing limits and Apple TV caveats.
 - [SideStore JIT guide](https://docs.sidestore.io/docs/advanced/jit)
 - [iOS Hub sideloading comparison](https://caseycz.github.io/iOS-Hub/guide.html) — Community-maintained overview; double-check claims against upstream.
 - [Apple Developer: Code signing](https://developer.apple.com/support/code-signing/)
@@ -236,6 +237,8 @@ These are independent discussion and support venues, **not verified download sou
 
 - **[r/AltStore](https://www.reddit.com/r/AltStore/)** — AltStore Classic/PAL, AltServer, installation and provisioning troubleshooting; compare community advice against [official AltStore documentation](https://faq.altstore.io/).
 - **[r/jailbreak](https://www.reddit.com/r/jailbreak/)** — Adjacent jailbreak/firmware and TrollStore discussions; **not** a substitute for normal sideloading support and not every jailbreak applies to every OS version.
+- **[r/LegacyJailbreak](https://www.reddit.com/r/LegacyJailbreak/)** — Older iPhones/iPads, firmware-specific sideloading limitations and legacy installation tools.
+- **[r/Sideloadly](https://www.reddit.com/r/Sideloadly/)** — Sideloadly-specific setup, daemon, Wi-Fi and signing issues; linked by the project's [official FAQ](https://sideloadly.io/faq.html).
 - **[r/sideloaded](https://www.reddit.com/r/sideloaded/)** — Large subreddit dedicated to non-jailbreak sideloading tools, setup, troubleshooting and release discussions. [Community Discord](https://discord.gg/pUHBuxYzSG) is advertised by the subreddit; its invite may change.
 - **[SideStore Discord](https://discord.gg/sidestore)** — Official community support linked from the [verified SideStore organization](https://github.com/SideStore). Also see [SideStore Discussions](https://github.com/orgs/SideStore/discussions) for feature reports and reproducible issues.
 - **[Apple Developer Forums: Code Signing](https://developer.apple.com/forums/topics/code-signing-topic/code-signing-topic-general)** — Primary-source discussion for signing identities, entitlements and provisioning-profile problems; not support for unauthorized signing services.
