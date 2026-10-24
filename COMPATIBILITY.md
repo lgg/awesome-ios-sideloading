@@ -15,6 +15,7 @@
 | [MultiStore](https://github.com/lungustefan/MultiStore) | Manage SideStore installs across Apple IDs | Initial setup/pairing via iloader or similar | Per-app signing identity, refresh grouped by Apple Account | Community fork; multiple accounts do **not** remove per-account or per-device Apple limits |
 | [Sideloadly](https://sideloadly.io/) | Direct desktop installation | Windows/macOS | Free/paid account; optional desktop auto-refresh | Needs running desktop for automated refresh; JIT is version-restricted |
 | [IPASIGN](https://github.com/CyberTKR/IpaSigner) | Desktop IPA re-signing and profile setup | macOS + Qt 6/Xcode command-line tools | Locally supplied signing identity, optional App Store Connect API keys | Early-stage; verify handling of privileged developer credentials and artifacts |
+| [IPAForge](https://github.com/IPAForge/ipaforge) | Cross-platform SideStore install, IPA signing and refresh | Windows/macOS/Linux (upstream release assets) | Free Apple Account, SideStore pairing and desktop refresh | **0.1.0-alpha.7 prerelease**; not independently tested, unsigned/not-notarized desktop installers may trigger OS warnings. Compare diagnostics and actual refresh separately |
 | [Feather Installer](https://github.com/yodaluca23/Feather-Installer) | Browser-assisted Feather bootstrap | Browser + **third-party ipasign.cc backend** | Uploaded `.p12`, profile and password | **Sensitive signing materials sent to third-party API**; use only with an appropriately isolated identity |
 | [Purple Installer](https://github.com/username252510/Purple-Installer) | Hosted web bootstrap for Feather/Ksign/SideInstaller | Browser + **third-party Daisuke Signer backend** | Uploaded `.p12`, profile and password | Browser local storage does not prevent material being sent to remote signer |
 | [iloader](https://github.com/nab138/iloader) | SideStore and IPA setup | Windows/macOS/Linux | Installer and pairing manager | A setup tool; not an independent background refresh service |
@@ -38,10 +39,12 @@
 | [AltDaemonModern](https://github.com/emp0ry/AltDaemonModern) | Jailbroken on-device refresh/signing | Rootless jailbreak and compatible package setup | Apple Account / AltDaemon | Requires jailbreak; **not** equivalent to SideStore on jailed devices |
 | [SideStore Auto Refresh](https://github.com/NRG-Wardog/sidestore-auto-refresh) | Community automatic-refresh workflow | Device/setup-dependent | Free Apple Account and SideStore-based process | Check upstream installation method and restrictions |
 | [SignTools](https://github.com/SignTools/SignTools) | Self-hosted signing web UI | Service host + macOS builder | Signing certificates and profiles | Builder/signing infrastructure needed |
+| [SignTools GitHub Actions Builder](https://github.com/maxexcloo/signtools-builder) | SignTools private build worker on GitHub Actions | GitHub macOS runner + Tailscale + private SignTools server | Reuses Apple session and SignTools signing credentials | Does **not** provide a standalone app installer; secrets/session and privileged GitHub Actions access require review |
 | [IPA Signer](https://github.com/aoyn1xw/ipa-signer) | Self-hosted web/API signing + OTA download | Linux/macOS + Node.js 22+ or Docker | Provided certificate, profile and IPA uploaded to the server | **Keep behind authentication/private network**; web-signing upload endpoint is sensitive |
 | [GithubStore](https://github.com/yazdipour/GithubStore) | Self-hosted AltStore source generated from GitHub Releases | Docker host | Feeds original GitHub IPA release URLs | Optional configuration UI has **no authentication**; scope to trusted upstream repos |
 | [App Distribution Server](https://github.com/significa/app-distribution-server) | Internal OTA/QR distribution of already signed IPA or APK builds | Your Docker host | **Does not sign** IPAs or register devices | Default `UPLOADS_SECRET_AUTH_TOKEN` is `secret`; change it, enforce HTTPS and access control before deploying |
 | [TeleStore](https://github.com/yazdipour/TeleStore) | Self-hosted AltStore source from Telegram channels | Docker host + Telegram API/session | Telegram-channel IPA assets | Protect Telegram session; only distribute apps with permission |
+| [IPA Signer Telegram bot](https://github.com/lxdxrx/ipa-signer) | zsign IPA signing and OTA delivery through private Telegram bot | Docker host + Telegram Bot API and local Bot API server | Uploaded certificate/profile and IPA or source URL | **Sensitive identity risk**: .p12/profile and sometimes password pass through bot/chat infrastructure. Restrict user IDs, rotate secrets, and avoid your primary key |
 | [AltServer-Linux](https://github.com/NyaMisty/AltServer-Linux) | AltServer-compatible Linux daemon | Linux host | Apple-account-based signing | Older project; check recent issues/releases first |
 | [atvloadly](https://github.com/bitxeno/atvloadly) | Apple TV sideloading | Linux/OpenWrt or other supported host | Device and account dependent | tvOS support is separate from iOS |
 
@@ -66,6 +69,7 @@
 | [go-ios](https://github.com/danielpaulus/go-ios) | Cross-platform device pairing/app installation/diagnostics | Device communication library/CLI; signing generally separate |
 | [xtool](https://github.com/xtool-org/xtool) | SwiftPM app build, codesign and deploy CLI on Windows, Linux and macOS | Intended primarily for development workflows, not a catalog/automatic IPA refresher |
 | [cyan / pyzule-rw](https://github.com/asdfzxcvbn/pyzule-rw) | Edit IPA metadata and inject authorized patches/tweaks | Fakesign or repackaging is **not** a trusted installable signature; run signing step separately |
+| [Sideloadly Monitor](https://github.com/recallsangel/sideloadly-monitor) | macOS launchd status/expiry monitor with Telegram alerts | Reads Sideloadly's internal SQLite database read-only | Can conditionally restart the daemon, not re-sign or redeploy an individual IPA |
 | [SideStore Anisette server list](https://github.com/SideStore/anisette-servers) | Community list of recommended Anisette services | Server inclusion/uptime does not guarantee privacy or auth-token safety |
 | [StikJIT](https://github.com/StikDebug/StikJIT) | Developer library to integrate JIT | Requires compatible target app and JIT transport; not a user-facing installer |
 
@@ -105,6 +109,17 @@ A JIT tool successfully connecting to a phone does not prove that an emulator or
 ### On-device signing is not automatic 7-day renewal
 
 Feather, Ksign, SwiftIPA, BatSign, EnSign, ForgeSign and similar apps sign with certificates you supply. A valid signing certificate does not automatically grant Apple Account free provisioning or sideloaded app refresh. In-app update-checking, re-signing, provisioning-profile renewal, and unattended installation are **different features**. Confirm each separately before promising uninterrupted use.
+
+### IPA discovery does not sign or verify packages
+
+[ryP0](https://github.com/Sami-Wali/ryP0), [ShrubLibrary](https://github.com/ShrubHub-iOS/ShrubLibrary) and [iOS Hub](https://github.com/CaseyCZ/iOS-Hub) are **catalogs/bridges**, not proof that a third-party build is signed, unmodified, or legally redistributable. For ryP0, upstream [release 2.2](https://github.com/Sami-Wali/ryP0/releases/tag/2.2) provides an unsigned IPA; signing/installation still requires a suitable tool.
+
+### Self-hosted signing secrets in chat or CI
+
+- **Telegram bots:** certificate archives sent to a bot can traverse Telegram's infrastructure even if the bot server is self-hosted. Encryption at rest of *passwords on your server* is not end-to-end secrecy for bot uploads. Restrict allowed Telegram users, storage, logs, and backup access; consider a locally run signer rather than a bot for important developer keys.
+- **GitHub Actions signing workers:** an Apple `FASTLANE_SESSION`, SignTools authentication key, signing certificate and repository-scoped secrets token are privileged credentials. Use minimal secret scopes, explicit permission boundaries, ephemeral workers and private connectivity. The community [SignTools builder](https://github.com/maxexcloo/signtools-builder) uses Tailscale and documents these requirements.
+- **Refresh monitors:** [Sideloadly Monitor](https://github.com/recallsangel/sideloadly-monitor) observes a proprietary app's private database format. Such a monitor can identify problems but does not create new Apple certificates or guarantee 7-day renewal.
+
 
 ### App source feeds are not installers
 
