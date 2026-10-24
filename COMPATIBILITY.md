@@ -13,6 +13,9 @@
 | [Scarlet](https://usescarlet.com/) | On-device IPA installation, app sources, and tweak injection | Depends on installation mode (direct, computer, own certificate) | Shared certificate, personal developer account, or owned signing assets | Proprietary; direct/shared-certificate route can be revoked or unavailable |
 | [MultiStore](https://github.com/lungustefan/MultiStore) | Manage SideStore installs across Apple IDs | Initial setup/pairing via iloader or similar | Per-app signing identity, refresh grouped by Apple Account | Community fork; multiple accounts do **not** remove per-account or per-device Apple limits |
 | [Sideloadly](https://sideloadly.io/) | Direct desktop installation | Windows/macOS | Free/paid account; optional desktop auto-refresh | Needs running desktop for automated refresh; JIT is version-restricted |
+| [IPASIGN](https://github.com/CyberTKR/IpaSigner) | Desktop IPA re-signing and profile setup | macOS + Qt 6/Xcode command-line tools | Locally supplied signing identity, optional App Store Connect API keys | Early-stage; verify handling of privileged developer credentials and artifacts |
+| [Feather Installer](https://github.com/yodaluca23/Feather-Installer) | Browser-assisted Feather bootstrap | Browser + **third-party ipasign.cc backend** | Uploaded `.p12`, profile and password | **Sensitive signing materials sent to third-party API**; use only with an appropriately isolated identity |
+| [Purple Installer](https://github.com/username252510/Purple-Installer) | Hosted web bootstrap for Feather/Ksign/SideInstaller | Browser + **third-party Daisuke Signer backend** | Uploaded `.p12`, profile and password | Browser local storage does not prevent material being sent to remote signer |
 | [iloader](https://github.com/nab138/iloader) | SideStore and IPA setup | Windows/macOS/Linux | Installer and pairing manager | A setup tool; not an independent background refresh service |
 | [Impactor](https://github.com/claration/impactor) | Cross-platform sideloading | Desktop (see upstream builds) | Depends on signing mode | Check available releases and platform instructions |
 | [althea](https://github.com/vyvir/althea) | GUI for AltServer-Linux | Linux desktop or supported ARM host | AltServer-Linux and Apple Account | Upstream marks project early-stage; do not assume support for every new iOS |
@@ -32,6 +35,9 @@
 | [AltDaemonModern](https://github.com/emp0ry/AltDaemonModern) | Jailbroken on-device refresh/signing | Rootless jailbreak and compatible package setup | Apple Account / AltDaemon | Requires jailbreak; **not** equivalent to SideStore on jailed devices |
 | [SideStore Auto Refresh](https://github.com/NRG-Wardog/sidestore-auto-refresh) | Community automatic-refresh workflow | Device/setup-dependent | Free Apple Account and SideStore-based process | Check upstream installation method and restrictions |
 | [SignTools](https://github.com/SignTools/SignTools) | Self-hosted signing web UI | Service host + macOS builder | Signing certificates and profiles | Builder/signing infrastructure needed |
+| [IPA Signer](https://github.com/aoyn1xw/ipa-signer) | Self-hosted web/API signing + OTA download | Linux/macOS + Node.js 22+ or Docker | Provided certificate, profile and IPA uploaded to the server | **Keep behind authentication/private network**; web-signing upload endpoint is sensitive |
+| [GithubStore](https://github.com/yazdipour/GithubStore) | Self-hosted AltStore source generated from GitHub Releases | Docker host | Feeds original GitHub IPA release URLs | Optional configuration UI has **no authentication**; scope to trusted upstream repos |
+| [TeleStore](https://github.com/yazdipour/TeleStore) | Self-hosted AltStore source from Telegram channels | Docker host + Telegram API/session | Telegram-channel IPA assets | Protect Telegram session; only distribute apps with permission |
 | [AltServer-Linux](https://github.com/NyaMisty/AltServer-Linux) | AltServer-compatible Linux daemon | Linux host | Apple-account-based signing | Older project; check recent issues/releases first |
 | [atvloadly](https://github.com/bitxeno/atvloadly) | Apple TV sideloading | Linux/OpenWrt or other supported host | Device and account dependent | tvOS support is separate from iOS |
 
@@ -48,7 +54,20 @@
 | [libplist](https://github.com/libimobiledevice/libplist) | Parse Apple property lists | Library, not a sideloading end-user interface |
 | [libusbmuxd](https://github.com/libimobiledevice/libusbmuxd) and [usbmuxd](https://github.com/libimobiledevice/usbmuxd) | Communicate with devices via USB | Transport libraries/services do not grant signing authorization |
 | [ios-deploy](https://github.com/ios-control/ios-deploy) | Mac command-line install/debug | Older tooling; verify support for your iOS/device |
+| [cyan / pyzule-rw](https://github.com/asdfzxcvbn/pyzule-rw) | Edit IPA metadata and inject authorized patches/tweaks | Fakesign or repackaging is **not** a trusted installable signature; run signing step separately |
+| [SideStore Anisette server list](https://github.com/SideStore/anisette-servers) | Community list of recommended Anisette services | Server inclusion/uptime does not guarantee privacy or auth-token safety |
 | [StikJIT](https://github.com/StikDebug/StikJIT) | Developer library to integrate JIT | Requires compatible target app and JIT transport; not a user-facing installer |
+
+### Local signing versus remote signing: where secrets go
+
+| Workflow | Where signing happens | What may be exposed | Recommended precautions |
+| --- | --- | --- | --- |
+| Desktop or on-device local signer (e.g. Feather or IPASIGN) | Your own device/computer | Local `.p12`, private key, profile, possibly Apple Account credentials | Use an official build, OS-protected credential store, and a separately scoped signing identity |
+| **Your own** web signer (e.g. IPA Signer, SignTools) | Server that you control | Uploaded IPA, signing profile, private key and server-side logs | Private network/authentication; restrict uploads/storage, avoid public exposure and delete temporary assets |
+| **Third-party** hosted signer (e.g. Purple Installer or Feather Installer's backend) | **Someone else's server** | Your signing certificate, `.p12` password, provisioning profile and potentially the uploaded IPA | Prefer not to use for personal production keys; do not treat HTTPS or a public front end as proof of backend trust |
+| Source browser (e.g. iOS Hub, ShrubLibrary) | No signing implied | Third-party metadata, app links and optionally browsing identifiers | Verify upstream release signatures, provenance, licensing and unexpected certificate requests |
+
+A `.p12` is a **portable copy of a private signing identity**. Its password is not the same as an Apple Account password, but handing over both the file and password can enable someone else to sign with that identity until revocation/expiry.
 
 ## Important platform distinctions
 
@@ -75,6 +94,13 @@ A JIT tool successfully connecting to a phone does not prove that an emulator or
 ### On-device signing is not automatic 7-day renewal
 
 Feather, Ksign, SwiftIPA, BatSign, EnSign, ForgeSign and similar apps sign with certificates you supply. A valid signing certificate does not automatically grant Apple Account free provisioning or sideloaded app refresh. In-app update-checking, re-signing, provisioning-profile renewal, and unattended installation are **different features**. Confirm each separately before promising uninterrupted use.
+
+### App source feeds are not installers
+
+- [SideStore Official Source](https://github.com/SideStore/apps.json) is maintained by the SideStore team; the [Community Source](https://github.com/SideStore/Community-Source) has separate submission criteria.
+- [GithubStore](https://github.com/yazdipour/GithubStore) builds a source using selected GitHub Releases. Its optional edit UI has no authentication; leave it disabled except on a trusted private network.
+- [TeleStore](https://github.com/yazdipour/TeleStore) reads Telegram via an account session. Restrict server access, protect Telegram API credentials and keep the source limited to apps you can legally distribute.
+- Online source browsers (including [iOS Hub](https://github.com/CaseyCZ/iOS-Hub) and [ShrubLibrary](https://github.com/ShrubHub-iOS/ShrubLibrary)) gather **third-party app metadata**. Successfully fetching a Source JSON, or presenting a green availability indicator, is not a malware/rights audit.
 
 ### Self-hosted services and credential boundaries
 
