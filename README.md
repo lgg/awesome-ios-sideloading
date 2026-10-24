@@ -88,7 +88,7 @@ Short descriptions deliberately keep this page readable. Technical prerequisites
 - **[TrollInstallerX](https://github.com/alfiecg24/TrollInstallerX)** — TrollStore installer for documented iOS 14–16 firmware ranges.
 - **[TrollRestore](https://github.com/JJTech0130/TrollRestore)** — Installation route for TrollStore on iOS 17.0.
 - **[TrollApps](https://github.com/TheResonanceTeam/TrollApps)** — Alternative app browser/catalog for TrollStore installations.
-- **[TrollStore](https://github.com/opa334/TrollStore)** — Main project, official compatibility range, and installation guidance.
+See the **[main TrollStore project](https://github.com/opa334/TrollStore)** for firmware compatibility and installation guidance.
 
 **Important:** TrollStore installation methods are **firmware-specific**. They do not turn newer iOS versions into generally supported targets.
 
