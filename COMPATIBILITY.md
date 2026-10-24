@@ -10,6 +10,7 @@
 | --- | --- | --- | --- | --- |
 | [AltStore Classic](https://github.com/altstoreio/AltStore) | Install and update IPA files | Windows/macOS AltServer, **or configured Remote AltServer** | Personal Apple Account; normal profile renewal | AltStore Classic 2.3 added Remote AltServer; remote functionality still needs a suitable server/backend |
 | [SideStore](https://github.com/SideStore/SideStore) | Install/refresh on device | Setup / pairing path varies | Personal Apple Account; on-device renewal with local VPN transport | Initial setup and VPN/pairing requirements vary by OS |
+| [AltLoad](https://github.com/mirazbakis/AltLoad) | Set up AltStore/SideStore/LiveContainer from iPhone | iOS **27+** self-pairing claimed; iOS 18–26 needs pairing record created on PC | Free Apple Account / LocalDevVPN | Early-stage; ordinary sideloading requires first installing AltLoad, and shared-certificate/DNS bootstrap is not equivalent to personal signing |
 | [Scarlet](https://usescarlet.com/) | On-device IPA installation, app sources, and tweak injection | Depends on installation mode (direct, computer, own certificate) | Shared certificate, personal developer account, or owned signing assets | Proprietary; direct/shared-certificate route can be revoked or unavailable |
 | [MultiStore](https://github.com/lungustefan/MultiStore) | Manage SideStore installs across Apple IDs | Initial setup/pairing via iloader or similar | Per-app signing identity, refresh grouped by Apple Account | Community fork; multiple accounts do **not** remove per-account or per-device Apple limits |
 | [Sideloadly](https://sideloadly.io/) | Direct desktop installation | Windows/macOS | Free/paid account; optional desktop auto-refresh | Needs running desktop for automated refresh; JIT is version-restricted |
@@ -20,6 +21,7 @@
 | [Impactor](https://github.com/claration/impactor) | Cross-platform sideloading | Desktop (see upstream builds) | Depends on signing mode | Check available releases and platform instructions |
 | [althea](https://github.com/vyvir/althea) | GUI for AltServer-Linux | Linux desktop or supported ARM host | AltServer-Linux and Apple Account | Upstream marks project early-stage; do not assume support for every new iOS |
 | [Splice](https://github.com/franklintra/splice) | Desktop sideloading and scheduled refresh | Linux, Windows or macOS (consult releases) | Apple Account re-sign/reinstall | Maintained fork of Sideloader; automatic refresh claims not independently tested |
+| [ModStaller](https://github.com/Crafttino21/ModStaller) | Install/refresh IPAs; experimental JIT and tvOS | Linux or Windows host; USB pairing initially | Free/paid Apple Account, desktop-driven renewal | New experimental tool; iOS 27/tvOS/JIT are upstream claims, not independent test results; Android-host version is **not implemented** |
 | [ipaverse](https://github.com/bahattinkoc/ipaverse) | App Store downloads, IPA inspection and installation | **Apple Silicon macOS 14.6+** | Personal signing certificate/profile for DRM-free IPA | FairPlay-encrypted App Store downloads are **not directly re-signable** |
 | [Feather](https://github.com/claration/feather) | On-device IPA sign and install | No desktop for ordinary certificate-based use | Your signing certificate/profile | Certificate expiry/revocation still applies |
 | [Ksign](https://github.com/Nyasami/Ksign) | On-device IPA signing | No desktop for ordinary certificate-based use | Your signing certificate/profile | Certificate provenance matters |
@@ -31,12 +33,14 @@
 | [TrollStore](https://github.com/opa334/TrollStore) | Persistent installation | Depends on firmware-specific bootstrap | Exploit-based; not 7-day personal provisioning | Official supported firmware ranges only |
 | [SideInstaller](https://github.com/FrizzleM/SideInstaller) | On-device SideStore bootstrap | On iOS 27+: no PC path; earlier: pairing-file prerequisites | SideStore/free-account workflow after install | Author documents iOS 17.4+, with different pairing requirements |
 | [AltKeeper](https://github.com/BartolomeoRusso9/altkeeper) | Self-hosted AltServer and renewal | Always-on home machine; USB pairing once | AltStore protocol plus optional unattended profile renewal | **Experimental**; unattended mode stores account password on host |
+| [Torch](https://github.com/trollzem/torch) | macOS automated IPA signing/reinstallation (iOS/iPadOS/tvOS) | macOS host that can reach/pair devices | Free Apple Account, six-day refresh claimed by author | Small experimental project; inspect bootstrap scripts and local credential handling before using |
 | [Sideloop](https://github.com/filippofinke/sideloop) | Scheduled re-sign/reinstall over Wi-Fi | Linux/macOS Docker server; pairing initially via USB | Free Apple Account with AltServer-Linux | Device must be unlocked, nearby, and on same Wi-Fi during refresh; 2FA and credentials on server |
 | [AltDaemonModern](https://github.com/emp0ry/AltDaemonModern) | Jailbroken on-device refresh/signing | Rootless jailbreak and compatible package setup | Apple Account / AltDaemon | Requires jailbreak; **not** equivalent to SideStore on jailed devices |
 | [SideStore Auto Refresh](https://github.com/NRG-Wardog/sidestore-auto-refresh) | Community automatic-refresh workflow | Device/setup-dependent | Free Apple Account and SideStore-based process | Check upstream installation method and restrictions |
 | [SignTools](https://github.com/SignTools/SignTools) | Self-hosted signing web UI | Service host + macOS builder | Signing certificates and profiles | Builder/signing infrastructure needed |
 | [IPA Signer](https://github.com/aoyn1xw/ipa-signer) | Self-hosted web/API signing + OTA download | Linux/macOS + Node.js 22+ or Docker | Provided certificate, profile and IPA uploaded to the server | **Keep behind authentication/private network**; web-signing upload endpoint is sensitive |
 | [GithubStore](https://github.com/yazdipour/GithubStore) | Self-hosted AltStore source generated from GitHub Releases | Docker host | Feeds original GitHub IPA release URLs | Optional configuration UI has **no authentication**; scope to trusted upstream repos |
+| [App Distribution Server](https://github.com/significa/app-distribution-server) | Internal OTA/QR distribution of already signed IPA or APK builds | Your Docker host | **Does not sign** IPAs or register devices | Default `UPLOADS_SECRET_AUTH_TOKEN` is `secret`; change it, enforce HTTPS and access control before deploying |
 | [TeleStore](https://github.com/yazdipour/TeleStore) | Self-hosted AltStore source from Telegram channels | Docker host + Telegram API/session | Telegram-channel IPA assets | Protect Telegram session; only distribute apps with permission |
 | [AltServer-Linux](https://github.com/NyaMisty/AltServer-Linux) | AltServer-compatible Linux daemon | Linux host | Apple-account-based signing | Older project; check recent issues/releases first |
 | [atvloadly](https://github.com/bitxeno/atvloadly) | Apple TV sideloading | Linux/OpenWrt or other supported host | Device and account dependent | tvOS support is separate from iOS |
@@ -54,6 +58,8 @@
 | [libplist](https://github.com/libimobiledevice/libplist) | Parse Apple property lists | Library, not a sideloading end-user interface |
 | [libusbmuxd](https://github.com/libimobiledevice/libusbmuxd) and [usbmuxd](https://github.com/libimobiledevice/usbmuxd) | Communicate with devices via USB | Transport libraries/services do not grant signing authorization |
 | [ios-deploy](https://github.com/ios-control/ios-deploy) | Mac command-line install/debug | Older tooling; verify support for your iOS/device |
+| [go-ios](https://github.com/danielpaulus/go-ios) | Cross-platform device pairing/app installation/diagnostics | Device communication library/CLI; signing generally separate |
+| [xtool](https://github.com/xtool-org/xtool) | SwiftPM app build, codesign and deploy CLI on Windows, Linux and macOS | Intended primarily for development workflows, not a catalog/automatic IPA refresher |
 | [cyan / pyzule-rw](https://github.com/asdfzxcvbn/pyzule-rw) | Edit IPA metadata and inject authorized patches/tweaks | Fakesign or repackaging is **not** a trusted installable signature; run signing step separately |
 | [SideStore Anisette server list](https://github.com/SideStore/anisette-servers) | Community list of recommended Anisette services | Server inclusion/uptime does not guarantee privacy or auth-token safety |
 | [StikJIT](https://github.com/StikDebug/StikJIT) | Developer library to integrate JIT | Requires compatible target app and JIT transport; not a user-facing installer |
@@ -122,6 +128,23 @@ Newer iOS versions can require **remote pairing** records rather than older lock
 - **Status:** experimental; upstream specifically notes that expiration-day behavior and long-running operation have not yet been fully tested. No JIT support.
 
 For safe deployment, keep it **LAN-only**, protect its pairing file, account state, and web UI, and follow upstream updates before treating it as a set-and-forget renewal solution.
+
+## October 2026 Apple ID / Anisette disruptions
+
+**Snapshot: 25 October 2026.** Several third-party sideloading tools reported Apple-authentication failures from around **13–15 October 2026**. These are **upstream community reports**, not a proof of universal Apple ID bans, and should not be treated as a reason to repeatedly retry a password or replace an identity blindly.
+
+| Symptom | Primary source | What is known |
+| --- | --- | --- |
+| `-80045` during SideStore login | [SideStore issue #1647](https://github.com/SideStore/SideStore/issues/1647) | Multiple October reports across build and anisette combinations; may involve identity/client mismatch, unavailable authentication paths or different errors surfaced with the same code |
+| HTTP `503`, failed 2FA, unable to connect to iCloud | [SideStore community discussion #1666](https://github.com/orgs/SideStore/discussions/1666) | Temporary Anisette and client-information adjustments vary across versions and can stop working after server-side Apple changes |
+| A proposed broader SideStore patch | [SideStore PR #1683](https://github.com/SideStore/SideStore/pull/1683) | **Open when reviewed**; do not imply that an unmerged PR is in the stable release |
+| macOS 27 AltServer login errors | [kimziro/altserver-macos27-anisette-fix](https://github.com/kimziro/altserver-macos27-anisette-fix) | **Unofficial, ad-hoc signed** macOS 27/Apple Silicon compatibility package. Author reports a successful USB install; refresh and remote operation are not independently established |
+
+**Safer troubleshooting order:** check the exact tool version and [official project releases](https://github.com/SideStore/SideStore/releases), read active [SideStore issues](https://github.com/SideStore/SideStore/issues) and [official Anisette server directory](https://github.com/SideStore/anisette-servers), avoid repeated failed logins, and protect pairing/session records. Error codes alone do not confirm an account ban. Prefer verified upstream fixes over arbitrary identity strings from old comments or unsigned binary mirrors.
+
+### Limits of multi-account setups
+
+Multiple Apple Accounts can provide distinct **App ID quota and certificates**, and [MultiStore](https://github.com/lungustefan/MultiStore) can associate different apps with each. That **does not necessarily increase the device-wide number of simultaneously active free-provisioned app slots**. The three-app limit is generally enforced on the device; do not assume three installed apps *per Apple Account*. LiveContainer's guest apps have separate compatibility/security tradeoffs.
 
 ## Maintenance and evidence
 
