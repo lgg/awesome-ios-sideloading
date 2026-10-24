@@ -45,7 +45,7 @@ Reference: **[0xdad0/awesome-iOS-security-tools](https://github.com/0xdad0/aweso
 
 ### Added: usable tools and supporting infrastructure
 
-- **Personal-account or on-device installation:** [MultiStore](https://github.com/lungustefan/MultiStore), [althea](https://github.com/vyvir/althea), [Splice](https://github.com/franklintra/splice), [ipaverse](https://github.com/bahattinkoc/ipaverse).
+- **Personal-account or on-device installation:** [MultiStore](https://github.com/lungustefan/MultiStore), [althea](https://github.com/vyvir/althea), [Splice](https://github.com/franklintra/splice), [ipaverse](https://github.com/bahattinkoc/ipaverse), [Scarlet](https://usescarlet.com/) (proprietary; certificate/installation method varies).
 - **Renewal/self-hosted:** [Sideloop](https://github.com/filippofinke/sideloop), [AltDaemonModern](https://github.com/emp0ry/AltDaemonModern) (requires jailbreak), [anisette-v3-server](https://github.com/Dadoum/anisette-v3-server), [omnisette-server](https://github.com/SideStore/omnisette-server).
 - **IPA preparation and signing:** [altsign-cli](https://github.com/xhzq233/altsign-cli), [IPAID](https://github.com/shplash/IPAID).
 - **Developers integrating JIT:** [StikJIT XCFramework](https://github.com/StikDebug/StikJIT).
@@ -58,6 +58,7 @@ These have repository code and descriptions of relevant features, but their secu
 
 ### Considered, intentionally omitted for now
 
+- ESign download mirrors and sites offering “permanent signing without certificates” on arbitrary new firmware — no clearly confirmed original maintainer download/source was established; avoid directing users to impersonator or untrusted IPA mirrors.
 - [BreakFree](https://github.com/FrizzleM/BreakFree) — its README explicitly describes **leaked enterprise certificates and blocking Apple verification domains**. We do not recommend this as a durable or low-risk method.
 - [FlareStore](https://flarestore.app/) — commercial certificate storefront / web signer with a requirement to upload sensitive signing assets in some workflows. Possible future entry if its on-device application, identity handling, and independent trust evidence justify inclusion, with a conspicuous warning.
 - [misaka26](https://github.com/straight-tamago/misaka26) — broad customization utility that includes TrollStore installation on some firmware, but is not primarily a sideloading tool.
