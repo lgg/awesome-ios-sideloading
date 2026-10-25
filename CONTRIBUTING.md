@@ -2,6 +2,14 @@
 
 Thank you for helping keep this list useful and trustworthy! Contributions are welcome for missing projects, corrections, broken links, changed requirements, and removals.
 
+## Automated upstream health checks
+
+The [weekly GitHub metadata audit](.github/workflows/upstream-audit.yml) checks **primary GitHub repository entries only**, using a read-only `GITHUB_TOKEN`. Its downloadable `github-upstream-report` artifact (JSON and Markdown, retained for 14 days) flags archived, disabled, renamed/transferred, missing and **365-day inactive** projects.
+
+To run the same metadata review manually: `python3 scripts/audit_github_projects.py --output-dir reports`. To test the logic **offline**: `python3 -m unittest discover -s tests -p 'test_audit_github_projects.py' -v`. It can also be triggered via GitHub Actions → **Audit GitHub project metadata** → Run workflow.
+
+**Do not automatically delete flagged projects.** Inactivity can be normal for stable software; HTTP 403/429, timeouts and GitHub API restrictions are **unknown**, not evidence that a project vanished. For moved repositories, update the canonical URL only after confirming the legitimate maintainer. The audit is not an IPA malware scan, link verification for all external websites, device test or endorsement of third-party signing services.
+
 ## What belongs here
 
 A project should have a direct, meaningful role in at least one of these workflows:

@@ -333,4 +333,40 @@ The repo already validates **local Markdown links and duplicate main entries** o
 
 Maintain separate evidence levels in any future compatibility report: **published artifact**, **maintainer-reported device test**, **independent reproduced test**, and **unverified claim**. Update release versions and minimum OS references as new builds appear rather than leaving 2026 snapshots as evergreen facts.
 
+## Eighth research pass: SideStore-derived apps, Linux packaging and beta channels (25 October 2026)
+
+**Discovery scope:** active GitHub topics `altstore`, `sidestore`, `altstore-source`, `ipa-signing`, `sideloading`; recent October 2026 developer reports in [r/SideStore](https://www.reddit.com/r/SideStore/) and [r/sideloaded](https://www.reddit.com/r/sideloaded/), and original upstream project READMEs, metadata and **published release assets**. The goal was to find distinct functionality while avoiding falsely declaring every freshly pushed Feather or SideStore fork safe.
+
+### Curated additions and evidence
+
+| New project | Why this is worth listing | Limits and evidence |
+| --- | --- | --- |
+| [SideKick](https://github.com/huzaifah1530-bot/SideKick) | Extends SideStore UX with a managed IPA library, GitHub Releases and **GitHub Actions artifact** update tracking, multiple named GitHub tokens, explicit LiveContainer guest app listings. Distinct from pure installer forks. | [v0.10.0 (20 October 2026)](https://github.com/huzaifah1530-bot/SideKick/releases/tag/v0.10.0) is a **pre-release**, ships `SideKick.ipa` and a corresponding-source archive. README expressly says core sign/install/refresh is supported but advanced feature integration and device test coverage are incomplete. It reuses SideStore's AGPL implementation. |
+| [DenizSigner](https://github.com/LaFAirs/DenizSigner) | Windows-only Rust/Tauri tool presenting Apple Account signing, USB installation, pairing management, and optional SideStore/LiveContainer bootstrap. Privacy-oriented design includes network allowlist and Windows local credentials. | [v0.1.0 (24 September 2026)](https://github.com/LaFAirs/DenizSigner/releases/tag/v0.1.0) publishes MSI, installer EXE, portable EXE. Real-device screenshots are explicitly unfinished; low adoption, **not independently security audited**. Apple services and a chosen Anisette server are external dependencies. |
+| [SignOs](https://github.com/ihateios/SignOs) | Public **Feather-derived** IPA signer exploring a unified app catalog, cloning, certificate management and scheduled updates. | [v1.0.0 (6 September 2026)](https://github.com/ihateios/SignOs/releases/tag/v1.0.0) has an IPA. Upstream asserts silently automated app installs and 7-day renewal; these are **not independently verified**, can be constrained by iOS background execution and system prompts, and should not be promoted as general jailbreak-free bypasses. |
+| [iloader Fedora COPR packaging](https://github.com/anudeepd/iloader-fedora-copr-ci) | Distinct installation *distribution* for Fedora x86_64, with scheduled upstream release checks and recorded SHA256 checking when packaging the established [iloader](https://github.com/nab138/iloader). | Not an official Fedora package and the maintainer **repackages the upstream RPM binary** instead of compiling from source. Review the linked [COPR repo](https://copr.fedorainfracloud.org/coprs/anudeepd/iloader/) and Fedora third-party repository trust implications. |
+| [Awesome TestFlight Links](https://github.com/pluwen/awesome-testflight-link) | Highly maintained catalog of official Apple TestFlight public betas across iPhone/iPad, Apple TV, Mac and Vision Pro. Covers **authorized developer-distributed beta software** not previously documented in the catalog. | Not an IPA signer, developer certificate solution, sideload bypass, or guarantee of open invitation slots. The per-app status displayed in the README can expire between checks; use Apple's official TestFlight app to join valid invitations. |
+
+### Focused October issues and communities
+
+- [r/sideloading](https://www.reddit.com/r/sideloading/) — distinct from r/sideloaded; [22 Oct reports](https://www.reddit.com/r/sideloading/comments/1xcsy5q/fix_for_error_80045_80046_and_app_closing_when/) distinguish `-80045`, `-80046`, and crashes after sign-in on SideStore. One-off Anisette reset instructions are not universal.
+- [r/SideStore: October 12 authentication thread](https://www.reddit.com/r/SideStore/comments/1x4ag7b/apple_account_logins_no_longer_working_sidestore/) — contains a multi-day history including iloader repair reports and contradictory Windows/Android/Mac Anisette workarounds. Community comments are *diagnostic leads*, not a standardized release process.
+- [r/sideloaded: October 21 login thread](https://www.reddit.com/r/sideloaded/comments/1xbht4m/sidestore_sign_in_not_working/) — multiple affected installers and changing Apple login behavior; platform, build and account state differ among reports.
+- [r/AltStore: October 22 discussion](https://www.reddit.com/r/AltStore/comments/1xcxi2u/please_explain_what_is_happening/) — users explicitly challenged the claim that `-80045` proves an account ban; reinforces our requirement not to conflate transport/client errors with confirmed Apple account penalties.
+- [SideStore PR #1683](https://github.com/SideStore/SideStore/pull/1683) was **still open on 25 Oct 2026** and therefore cannot be described as a shipped stable login fix.
+
+### Looked at but held back
+
+- [striker91n/SideKick](https://github.com/striker91n/SideKick) is merely a GitHub fork of the selected SideKick upstream without proven distinctive capability.
+- [tabbieelectric8182/SignOs](https://github.com/tabbieelectric8182/SignOs) has minimal independent identity or detailed test history versus [ihateios/SignOs](https://github.com/ihateios/SignOs); avoid a near-duplicate.
+- [nquangdungg/LiveContainer-Extended](https://github.com/nquangdungg/LiveContainer-Extended) remains questionable as a separate entry until concrete, reproducible differences from [official LiveContainer](https://github.com/LiveContainer/LiveContainer) are documented.
+- [RipeStore/altmaker](https://github.com/RipeStore/altmaker) is in the maintainer's *testing phase*, with limited proven features; [AltGen](https://github.com/bebound/AltGen) and [GithubStore](https://github.com/yazdipour/GithubStore) cover verified source-generation scenarios.
+- [LaFAirs/DenizSigner](https://github.com/LaFAirs/DenizSigner) and [huzaifah1530-bot/SideKick](https://github.com/huzaifah1530-bot/SideKick) were added as early-stage projects, **not endorsed for primary Apple Accounts**.
+- [pluwen/awesome-testflight-link](https://github.com/pluwen/awesome-testflight-link) is an adjacent **official Apple beta-distribution discovery resource**; its availability labels are not guarantees of invitation status.
+- [SignTools GitHub Actions Builder](https://github.com/maxexcloo/signtools-builder) and [anudeepd/iloader-fedora-copr-ci](https://github.com/anudeepd/iloader-fedora-copr-ci) are separate from upstream first-party release channels and should be clearly labelled.
+
+### Maintenance observations
+
+Catalog quality is now limited less by number of GitHub links than by evidence freshness. Future updates should record **first-party release date**, **actual artifact presence**, **trust boundary** (local signing vs third-party Anisette vs uploaded certificates), **firmware prerequisites**, and **provenance/reproducible on-device tests**. Optional full URL liveness checks must distinguish GitHub rate limits, temporary 403s and anti-bot pages from deleted repositories.
+
 Back to [README](README.md).

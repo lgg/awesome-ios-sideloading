@@ -236,6 +236,29 @@ The three device families below differ in **pairing**, **on-device vs hosted ref
 - **Modern JIT:** attaching a debugger once is **not** sufficient for all apps on iOS/tvOS/visionOS. Treat on-device JIT claims as specific to the chip, OS build, emulator and implementation, not as an automatic benefit of installing through a certain app.
 - **Auth/session isolation:** passwords, Anisette provisioning blobs, pairing records, app-signing certificates and local web admin passwords must be protected even when a tool is self-hosted.
 
+## Emerging signers, Fedora installation and TestFlight (reviewed 25 October 2026)
+
+This snapshot distinguishes **published GitHub artifacts**, **maintainer-advertised capability**, and **independently verified device compatibility**. Publishing a tagged IPA or Windows executable only verifies that an artifact exists, not that its signing or refresh workflow passes on current devices.
+
+| Project | Platform / distribution | Actual purpose | Trust and compatibility notes |
+| --- | --- | --- | --- |
+| [SideKick](https://github.com/huzaifah1530-bot/SideKick) | iOS 18+ target; [v0.10.0 prerelease](https://github.com/huzaifah1530-bot/SideKick/releases/tag/v0.10.0) with `SideKick.ipa` and source archive | SideStore-derived signing/installation with GitHub release and Actions artifact updates, IPA library and LiveContainer guest-app metadata | Early release explicitly marks **advanced features in progress**; SideStore engine, LocalDevVPN and Apple Account restrictions still apply; no independent hands-on validation |
+| [SignOs](https://github.com/ihateios/SignOs) | iOS on-device; [v1.0.0 signed? no—IPA artifact](https://github.com/ihateios/SignOs/releases/tag/v1.0.0) | Feather-based IPA signer claiming background updates, cloning and renewal | Background **silent installation** is upstream marketing, not established platform capability. App extensions, iOS prompts, entitlement limits and certificate revocation still apply |
+| [DenizSigner](https://github.com/LaFAirs/DenizSigner) | **Windows x64**; [v0.1.0](https://github.com/LaFAirs/DenizSigner/releases/tag/v0.1.0) portable EXE, setup EXE and MSI | Local USB IPA signing/install, SideStore/LiveContainer setup and certificate/account UI | Prototype v0.1.0. Uses Apple auth plus third-party Anisette headers. Local-first privacy claims and network allowlist are **author assertions**, not an independent security review; Windows signing is not yet a publisher-authenticated binary |
+| [iloader Fedora COPR](https://github.com/anudeepd/iloader-fedora-copr-ci) | **Fedora x86_64**, optional [community COPR package](https://copr.fedorainfracloud.org/coprs/anudeepd/iloader/) | Automated repackaging of upstream iloader RPM, checking recorded upstream SHA256 before submission | **Not an official Fedora package** and not built from source in COPR. Still trust upstream release provenance, package maintainer, and COPR signing |
+| [Awesome TestFlight Links](https://github.com/pluwen/awesome-testflight-link) | Apple-hosted TestFlight beta invitation links for iOS/iPadOS/macOS/tvOS/visionOS | Discover currently reported beta invitations, not IPA archives | **Not a sideloader**: Apple TestFlight handles beta installation/signing, free personal-development limits do not apply in the same way. Invite capacity, validity and listing statuses can become stale |
+
+### Why TestFlight is separate from IPA signing
+
+**Apple TestFlight** invites are author-controlled beta distribution. An Apple-hosted invite can install an authorized beta through the TestFlight app without uploading a personal `.p12` or using an arbitrary IPA signer. It cannot sideload a locally modified IPA or replace AltStore/SideStore for an app not enrolled by its developer. Community lists may contain expired or full programs.
+
+### October 2026 Apple authentication reports: reproducibility boundaries
+
+- [SideStore PR #1683](https://github.com/SideStore/SideStore/pull/1683) remained **open/unmerged on 25 Oct 2026**. Never describe its new login code as available in a stable release before upstream confirmation.
+- In [r/SideStore](https://www.reddit.com/r/SideStore/comments/1x4ag7b/apple_account_logins_no_longer_working_sidestore/), [r/sideloaded](https://www.reddit.com/r/sideloaded/comments/1xbht4m/sidestore_sign_in_not_working/) and [r/sideloading](https://www.reddit.com/r/sideloading/comments/1xcsy5q/fix_for_error_80045_80046_and_app_closing_when/), affected users report `-80045`, `-80046`, HTTP 503 and inconsistent Anisette/pairing outcomes. Posts dated **12–24 October** conflict about server selection and client headers.
+- Error codes **do not establish an Apple Account ban**. Different failures can look alike: Anisette provisioning, Apple client identity, an invalid pairing file, blocked OTP/2FA, profile issuance or account state. Prefer current official releases and clearly dated maintainer issue reports to copying static identity strings.
+- Avoid publishing any Apple ID password, OTP, pairing record, signing `.p12`, Apple session, or Anisette provisioning blob in GitHub Issues or public forum threads.
+
 ## Maintenance and evidence
 
 When changing a compatibility claim, include the **device**, **iOS/iPadOS version**, **tool version**, **signing type**, **date**, and a link to upstream documentation, changelog, or reproducible test notes. Add a statement like _not independently verified_ if the change only reflects a maintainer's claim.
