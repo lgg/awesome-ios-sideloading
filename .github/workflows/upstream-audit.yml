@@ -1,0 +1,32 @@
+name: Audit GitHub project metadata
+
+on:
+  schedule:
+    - cron: '0 7 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  upstreams:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Verify audit logic without network
+        run: python3 -m unittest discover -s tests -p 'test_audit_github_projects.py' -v
+      - name: Check listed upstream repositories
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 scripts/audit_github_projects.py --output-dir reports --stale-days 365
+      - name: Upload manual-review report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: github-upstream-report
+          path: reports/github-upstreams.*
+          retention-days: 14
+          if-no-files-found: warn
