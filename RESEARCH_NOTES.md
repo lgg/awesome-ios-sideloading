@@ -369,4 +369,48 @@ Maintain separate evidence levels in any future compatibility report: **publishe
 
 Catalog quality is now limited less by number of GitHub links than by evidence freshness. Future updates should record **first-party release date**, **actual artifact presence**, **trust boundary** (local signing vs third-party Anisette vs uploaded certificates), **firmware prerequisites**, and **provenance/reproducible on-device tests**. Optional full URL liveness checks must distinguish GitHub rate limits, temporary 403s and anti-bot pages from deleted repositories.
 
+## Ninth research pass: native IPA transfer, App Store SAP fixes and macOS 27 Anisette (25 October 2026)
+
+**Method.** Compared the 120-entry baseline to current GitHub `ipa`, `sideloading`, `altstore`, `ipatool` topics, read primary maintainer READMEs and GitHub releases, and consulted [r/EmulationOniOS](https://www.reddit.com/r/EmulationOniOS/) for nuanced JIT/pairing observations. Unlike some previous rounds, prioritized **correcting a stale compatibility narrative** alongside adding distinct workflows.
+
+### Six additions backed by maintainer source
+
+| Added tool | Evidence and distinct purpose | Qualification |
+| --- | --- | --- |
+| [Ferrie](https://github.com/leo1394/homebrew-ferrie) | [v0.2.8 published 22 Oct 2026](https://github.com/leo1394/homebrew-ferrie/releases/tag/v0.2.8) with platform binaries; cross-platform CLI wraps `go-ios`/CoreDevice to install APK/APKS/AAB and **previously signed** IPA. URL and local-file input, explicit confirmation before destructive reinstall. | Device installer only; **does not issue Apple certificates, sign, decrypt or bypass app restrictions**. End-to-end IPA deployment not independently tested. |
+| [ipatool-rs](https://github.com/Kosthi/ipatool-rs) | [v0.1.8 on 30 Aug 2026](https://github.com/Kosthi/ipatool-rs/releases/tag/v0.1.8) includes many release assets. Cross-platform independent Rust App Store TUI/CLI, 2FA and resumable downloads. | **Research correction:** upstream README compares with Go ipatool as if Go login is broken. But official ipatool received **v2.4.0 SAP**, **v2.5.0 fixes** and **v2.7.0 in October**; source claims may be old. Downloading encrypted App Store IPAs is not signing. |
+| [iOS IPA Extractor](https://github.com/iw00tr00t/ios-ipa-extractor) | Mac command line script enumerates an attached iPhone's apps through Frida, determines bundle IDs, then downloads an App Store package using official `ipatool` under that Apple account. | "Extractor" **does not read or decrypt the iPhone's protected app executable**. Frida enumeration can fail on non-jailbroken firmware without appropriate developer/debug privileges. Mac script has no dedicated GitHub Release; do not promise plug-and-play. |
+| [Windows iOS IPA Extractor](https://github.com/MayoMusic/ios-ipa-extractor-win) | [v1.0.0 published 21 Oct 2026](https://github.com/MayoMusic/ios-ipa-extractor-win/releases/tag/v1.0.0) provides a ZIP; PowerShell/Python `pymobiledevice3` enumerates installed app identifiers and delegates Apple CDN downloads to `ipatool` for the authorized Apple Account. | **Very young** repo with no independently verified device test. `Info.plist`/FairPlay `cryptid` inspections are metadata, not DRM removal. |
+| [Fletch](https://github.com/Aknaru404/Fletch) | iOS 17+ fork of Quiver Launcher, tracks GitHub **and GitLab/Codeberg**, hands discovered IPA files to an external signer through the iOS share sheet. README openly states it cannot install/launch other apps. | No public GitHub Releases at review; workflow artifacts contain **unsigned IPAs**. Early-stage, fork and no Apple Developer signing. |
+| [AltServer macOS 27 Anisette Fix](https://github.com/kimziro/altserver-macos27-anisette-fix) | [v1.3.3 published 23 Oct 2026](https://github.com/kimziro/altserver-macos27-anisette-fix/releases/tag/v1.3.3) includes Apple Silicon macOS 27 patched AltServer setup DMG, source archive, SHA sums and AltStore 2.3.1 companion. Detailed README distinguishes identity/machineID failure from other `-80045`/`-80046` pathways. | **Unofficial prerelease** with privileged Apple auth/device operations; macOS-only and unsigned/unnotarized. Reports narrow real-device USB install; **Remote AltServer and unattended refresh not verified**. Not a general-purpose fix. |
+
+### Official upstream reconciliation — important
+
+- [Official ipatool Releases](https://github.com/majd/ipatool/releases): **v2.7.0**, published **9 October 2026**. [ipatool-sapfix](https://github.com/maksimryabkin/ipatool-sapfix) documents official upstream SAP support in v2.4.0 and v2.5.0, and calls itself a **historical transition build**, not a mainstream current fork.
+- [Kosthi/ipatool-rs](https://github.com/Kosthi/ipatool-rs) remains useful as a different UI/client, but do **not** copy its outdated feature comparison about original Go ipatool's login status without dating it.
+- Legitimate Apple App Store IPA downloads can be protected by FairPlay and may not be usable as unsigned IPA files in SideStore/Sideloadly, particularly when re-signing a different user's copy.
+- Distinguish **asset verified to exist** from **maintainer-reported hardware result** and **independent reproduction**. None of the six new entries were tested here on a physical iPhone.
+
+### Specialized discussion research
+
+- [r/EmulationOniOS](https://www.reddit.com/r/EmulationOniOS/) — emulator-specific SideStore/StikDebug JIT problems; [September 19 2026 report](https://www.reddit.com/r/EmulationOniOS/comments/1wkl3gd/it_took_me_6_hours_but_i_got_jit_to_work_on_my/) separates the states `JIT available` versus actual activated JIT, and documents pairing/backend problems.
+- [r/EmulationOniOS iOS 26.4.2 megathread](https://www.reddit.com/r/EmulationOniOS/comments/1sufy0e/jit_on_ios_2642_and_ios_update_megathread/) contains **contradictory real-device results**; this is a prompt for device-specific bug reports, not justification for a blanket "JIT broken since 26.4" warning.
+- [AltStore Classic 2.3 remote server RC thread](https://www.reddit.com/r/AltStore/comments/1wdsurx/altstore_classic_23rc_get_onboard_remote_altserver/) is evidence of active Remote AltServer community communication; keep the main compatibility matrix tied to official release notes.
+- [Apple Developer Forums: Code Signing](https://developer.apple.com/forums/topics/code-signing-topic/code-signing-topic-general) are preferred for reproducible entitlement and provisioning questions, rather than shared credentials from public Telegram groups.
+
+### Other repositories researched but not added
+
+- [raynmahbub/VexSign](https://github.com/raynmahbub/VexSign): attractive Feather-derived UI and huge feature list, but README points to **another GitHub account** (`iamsmmh/VexSign`) for releases. The canonical release owner and security provenance should be resolved before promoting it.
+- [Forever18/osign](https://github.com/Forever18/osign): claims all `.p12`/IPA processing stays local, while promoting related **hosted web and Telegram signers**. Distinguish local app vs remote services; no clear standalone verifiable release in this review.
+- [zebooka/ipatool-mass](https://github.com/zebooka/ipatool-mass): a shell automation around Go ipatool with old documentation and unsupported assumptions about moving FairPlay downloads to other users' devices.
+- [Kosthi/ipatool-rs](https://github.com/Kosthi/ipatool-rs) is included for its **distinct Rust TUI**, not its negative claims about official Go ipatool.
+- [AetherVM/AetherMachO](https://github.com/AetherVM/AetherMachO) has a very sparse README with no demonstrated application-specific installation/signing value; too vague.
+- [maksimryabkin/ipatool-sapfix](https://github.com/maksimryabkin/ipatool-sapfix) is explicitly historical after official v2.5.0, so its active maintainer README is a **reference to retiring a workaround**, not a new default tool.
+- [krxzyuzivr/krxzyinstall](https://github.com/krxzyuzivr/krxzyinstall) is an **Android Meta Quest APK/OBB installer**, not iOS.
+- [leo1394/homebrew-ferrie](https://github.com/leo1394/homebrew-ferrie) also handles Android bundles but was admitted because **iOS IPA USB deployment is a documented genuine component**, unlike Android-only candidates.
+
+### Next audit idea
+
+The current weekly read-only GitHub upstream audit catches **archive/rename/inactivity** for catalog repositories. Future reports should also compare **release dates and release assets** for critical setup tools, plus a small allowlisted HTTP liveness review of **non-GitHub first-party documentation**. Avoid treating a token quota or GitHub 403 as an inaccessible project.
+
 Back to [README](README.md).
