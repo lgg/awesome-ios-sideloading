@@ -92,7 +92,7 @@ These smaller or newer projects offer interesting functionality, but **activity 
 ### Desktop installers and setup
 
 - **[althea](https://github.com/vyvir/althea)** — Linux GUI for AltServer-Linux with x86_64/ARM support; upstream calls it early-stage.
-- **[AppRestore](https://github.com/J3ckJ/AppRestore)** — Windows/macOS USB tool to restore **previously acquired** offloaded or removed App Store apps using your own Apple Account, or to install eligible existing IPA files. Does not defeat FairPlay or make unavailable paid apps free; signed GUI builds are not guaranteed.
+- **[AppRestore](https://github.com/J3ckJ/AppRestore)** — Windows/macOS USB tool to restore **previously acquired** offloaded or removed App Store apps using your own Apple Account, or to install eligible existing IPA files. Does not defeat FairPlay or make unavailable paid apps free; GUI release archives are unsigned and should be checked against upstream SHA-256 sums.
 - **[iloader](https://github.com/nab138/iloader)** — Cross-platform graphical installer for SideStore and IPAs, with pairing-file, certificate, and App ID management.
 - **[Catapult](https://github.com/byrvr/catapult)** — macOS 14+ signing/install workspace for iPhone, iPad and Apple TV, with planned renewal before seven-day expiry and **optional encrypted IPA sync** between your own Macs. Developer-reported functionality; private sessions and sync keys require protection.
 - **[Impactor](https://github.com/claration/impactor)** — Cross-platform iOS/iPadOS/tvOS sideloading application (formerly PlumeImpactor).
