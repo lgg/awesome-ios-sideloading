@@ -256,4 +256,40 @@ This pass searched GitHub's recently updated sideloading and IPA-signing topics,
 3. If adding a source-directory app, distinguish metadata discovery from signed IPA authenticity and installation.
 4. Treat forums as **issue discovery**; confirm compatibility and security statements from maintainers, reproducible device reports, and signed release artifacts.
 
+## Sixth research pass: AltSource automation, App Store acquisition and developer deployment (2026-10-25)
+
+**Approach:** searched GitHub topics (`sideloading`, `sideload`, `ipa`, `altstore`), read original project READMEs, inspected current GitHub repository metadata and release assets, cross-checked [OWASP's app installation guidance](https://mas.owasp.org/MASTG/techniques/ios/MASTG-TECH-0056/) and historical [The Apple Wiki](https://theapplewiki.com/wiki/Main_Page). Used forums as *lead generation*, not proof that a sideloading method works on all firmware.
+
+### Seven distinct additions
+
+| Project | Evidence | Fit and limitation |
+| --- | --- | --- |
+| [AltGen](https://github.com/bebound/AltGen) | Maintained Python/PyPI CLI; README demonstrates GitHub releases + TOML → AltStore `apps.json` and merge support, with offline test fixtures | **AltSource generator**, no signer or OTA service; no GitHub Release assets necessary when distributed via PyPI |
+| [IPATool GUI](https://github.com/a23bc/ipatool-gui) | Cross-platform Electron wrapper for [ipatool](https://github.com/majd/ipatool). Published [v0.2.0 on 21 Oct 2026](https://github.com/a23bc/ipatool-gui/releases/tag/v0.2.0) with Windows/macOS/Linux release packages. | App Store downloading and account management, **not IPA signing or DRM removal**. macOS builds are ad-hoc signed/not notarized; install restrictions apply |
+| [Appium resigner](https://github.com/appium/resigner) | Go tool for local IPA/.app inspection and re-signing in Appium/WebDriverAgent workflows. [v0.3.1 release](https://github.com/appium/resigner/releases/tag/v0.3.1) includes Windows/macOS/Linux assets. | Upstream says **do not use for production app signing**. Correct provisioning and private-key handling still necessary |
+| [iOS Developer Toolkit](https://github.com/hideouts-io/iOS-Developer-Toolkit) | macOS PySide6 workbench wrapping pymobiledevice3 with DDI mounting, device logs/backup, app inventory, IPA installation. [v0.3.4](https://github.com/hideouts-io/iOS-Developer-Toolkit/releases/tag/v0.3.4) has Mac builds and SHA256 manifests. | Device development & diagnostics; **does not sign apps, bypass sandboxes or jailbreak**. More broad functionality than a single IPA installer |
+| [KeepAlive](https://github.com/oli-zr/keepalive) | [v1.2.4 published 19 Oct 2026](https://github.com/oli-zr/keepalive/releases/tag/v1.2.4); macOS menu-bar task rebuilding Xcode applications and installing before 7-day free-account profile expiry. | **Only Xcode source projects you own**, not automatic refresh of arbitrary prebuilt IPAs; needs local Xcode and paired iPhone |
+| [SignTools Builder (official)](https://github.com/SignTools/SignTools-Builder) | First-party SignTools project, [v1.1.20 release](https://github.com/SignTools/SignTools-Builder/releases/tag/v1.1.20). Mac as self-hosted signing worker rather than a CI provider. | Original README explicitly warns: **no built-in TLS** and network-level access can enable arbitrary commands. Strong isolation required, preferably dedicated Mac |
+| [IpaDownloadTool](https://github.com/SmileZXLee/IpaDownloadTool) | Established MIT-licensed iOS tool for resolving OTA `itms-services` manifests and fetching development/enterprise IPA archives, with updated repository activity in October. | Useful **only for authorized distribution/inspection**; downloading a signed enterprise archive is not authorization to install/redistribute; it cannot remove Apple DRM |
+
+### More research resources
+
+- [OWASP MASTG: Installing Apps](https://mas.owasp.org/MASTG/techniques/ios/MASTG-TECH-0056/) explains `installd`, signatures and official versus jailbreak-specific installation options. It is **security testing documentation**, not an app-download platform.
+- [The Apple Wiki](https://theapplewiki.com/wiki/Main_Page) contains historical Apple/Jailbreak internals, signing and developer-component discussion. Some pages explicitly describe firmware-era APIs deprecated years ago; **never generalize legacy code-signature bypass recipes to current iOS**.
+- [r/sideloaded](https://www.reddit.com/r/sideloaded/), [r/jailbreakdevelopers](https://www.reddit.com/r/jailbreakdevelopers/) and [Apple Developer Forums](https://developer.apple.com/forums/) remain useful for spotting failure patterns, but unverified forum reports and single-device anecdotes cannot override actual release documentation.
+
+### Considered but not added
+
+- [pdx15/ipatool-webGUI](https://github.com/pdx15/ipatool-webGUI): useful Russian/English GUI and legacy App Store catalog, but its README describes Windows builds and simultaneously says authentication requires **macOS + cgo**. Needs clarified cross-platform evidence before adding next to IPATool GUI; FairPlay-encrypted archives remain tied to the acquiring account.
+- [RinTaigyoku/RhineSign](https://github.com/RinTaigyoku/RhineSign): very new Windows USB/Apple Account signer, initial release created 24 October 2026 with **limited independent history**; notably does not yet support IPAs containing App Extensions. Monitor for more device testing rather than presenting as proven.
+- [black-night-heron/iloader-export](https://github.com/black-night-heron/iloader-export): thin unofficial exporter of iLoader private signing certificate and key. Distinct use case but **high credential exposure risk** and very limited adoption; better treated as a security-relevant reference.
+- [oli-zr/keepalive](https://github.com/oli-zr/keepalive) **is not equivalent** to [Torch](https://github.com/trollzem/torch), [AltKeeper](https://github.com/BartolomeoRusso9/altkeeper) or [Sideloop](https://github.com/filippofinke/sideloop): their update/renewal models and host prerequisites are materially different.
+- [omeritzics/Updatium](https://github.com/omeritzics/Updatium): **Android APK** updater surfaced by a generic sideloading search, not iOS.
+- [kelvinBen/AppInfoScanner](https://github.com/kelvinBen/AppInfoScanner): valuable general red-team asset recon, but neither IPA installation nor signing pipeline-specific.
+- Broad app markets, pre-signed certificate shares, unauthorized modified IPAs and “permanent signing” claims on all firmware: don't promote without original provenance and reproducible device requirements.
+
+### Compatibility lesson
+
+A tool can **download an .ipa** and still have no means to sign or install it. An App Store-downloaded IPA may contain FairPlay-encrypted executables tied to the purchasing Apple account. A binary fetched from `itms-services` might already be signed but is subject to its provisioning profile, allowed UDIDs, expiry and licensing. A source JSON generator only compiles **metadata URLs**, not a verified build. A self-hosted signer must be treated as a privileged service, especially where user-provided signing keys or Apple sessions are involved.
+
 Back to [README](README.md).
