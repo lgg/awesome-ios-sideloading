@@ -413,4 +413,38 @@ Catalog quality is now limited less by number of GitHub links than by evidence f
 
 The current weekly read-only GitHub upstream audit catches **archive/rename/inactivity** for catalog repositories. Future reports should also compare **release dates and release assets** for critical setup tools, plus a small allowlisted HTTP liveness review of **non-GitHub first-party documentation**. Avoid treating a token quota or GitHub 403 as an inaccessible project.
 
+## Tenth research pass: LiveContainer tooling, authorized on-device App Store downloads and Debian renewal (25 October 2026)
+
+**Scope:** investigate gaps in the 126-project catalog, especially native iOS **guest-app managers**, restoration/download of already acquired App Store apps, self-hosted signing on a headless Debian machine, and enterprise/developer beta distribution. Verified original project READMEs, GitHub repository metadata and asset-level releases; explored [LiveContainer's upstream discussions](https://github.com/LiveContainer/LiveContainer/discussions), [upstream issues](https://github.com/LiveContainer/LiveContainer/issues) and the [official SideStore troubleshooting documents](https://docs.sidestore.io/docs/troubleshooting).
+
+### Four non-duplicative additions
+
+| Tool | Grounded evidence | Why included and what it does not do |
+| --- | --- | --- |
+| [LBox](https://github.com/Lolendor/LBox) | [v1.2, 8 Dec 2025](https://github.com/Lolendor/LBox/releases/tag/v1.2), with real `LBox.ipa` asset, iOS 17.6+ claims and LiveContainer folder/file-picker setup in README. Last upstream push in December 2025. | Standalone iOS repository/browser app with URL downloads and guest-app extraction into LiveContainer. More specific than a generic AltStore source viewer, but **no independent code signing or direct iOS installation**. LiveContainer may fail to launch individual guests; version age is not proof of breakage. |
+| [DLiPA](https://github.com/AhmedBafkir/DLiPA) | [v1.4, 3 Aug 2026](https://github.com/AhmedBafkir/DLiPA/releases/tag/v1.4) has an IPA. Maintainer documents iOS 13+, Apple Account search, multiple accounts and storefronts, specific older App Store versions and iOS file sharing. | Native iOS App Store client for **account-authorized downloads**, not a certificate-based sideloader. Its own README warns of possible missing automatic app updates after direct installation, recommending AirDrop in some scenarios. App Store rights and FairPlay limitations remain. |
+| [iPhoneLoadly](https://github.com/lemehavit/iPhoneLoadly) | [v0.3.0-alpha.5, 20 Oct 2026](https://github.com/lemehavit/iPhoneLoadly/releases/tag/v0.3.0-alpha.5), Debian Linux amd64 tarball with SHA-256 asset. The README's displayed 0.2.0-alpha badge **does not match latest release**, so release API was preferred. | Free Apple Account + interactive 2FA, USB pairing then LAN Wi-Fi signing/installation and day-1–6 configurable renewal. Needs **Debian 13 amd64 always-on host**, and no refresh guarantee after lost network/device session. Dashboard must stay behind private authenticated HTTPS; file-based credentials and pairing records are sensitive. |
+| [PGYER CLI](https://github.com/PGYER/pgyer-cli) | Official Pgyer developer distribution API 2.0 CLI, GitHub activity in Oct 2026. README documents `npm install -g @pgyer/cli`, streamed IPA/APK/HAP upload, version management, optional MCP server and noninteractive `PGYER_API_KEY`. No GitHub release artifacts at review time. | **Hosted developer build distribution**, not self-hosted, not Apple ID signing, and not a free enterprise signing certificate source. Credentials/API keys and all uploaded binaries reach third-party infrastructure; appropriate installation certificate/licensing still required. |
+
+### First-party specialized community sources
+
+- [LiveContainer Discussions](https://github.com/LiveContainer/LiveContainer/discussions) — developer-linked Q&A and ideas on LiveContainer+SideStore, guest-app compatibility, JIT and launch/multitasking. Its discussions currently include late September and October 2026 questions, but forum claims are not device test evidence.
+- [LiveContainer Issues](https://github.com/LiveContainer/LiveContainer/issues) — October 2026 guest app launch/shortcut regressions, SideStore authentication failures, and earlier source-management feature requests. Particularly useful to understand why a guest may behave differently from a separately installed IPA.
+- [LiveContainer official README](https://github.com/LiveContainer/LiveContainer) warns that **third-party closed-source builds have access to all guest application data**, including some sensitive content. Linking a LiveContainer companion is not an endorsement of modified binaries or untrusted IPA feeds.
+- [SideStore Troubleshooting](https://docs.sidestore.io/docs/troubleshooting) and [Error Codes](https://docs.sidestore.io/docs/troubleshooting/error-codes) explain distinctions between VPN reachability, pairing, account authentication, rate limits and app installation. Prefer documentation + exact iOS build evidence over copying one-off workaround strings from r/sideloaded.
+
+### Additional projects deliberately excluded
+
+- [username252510/Sideload-Cert-Checker-Shortcut](https://github.com/username252510/Sideload-Cert-Checker-Shortcut): explicit setup requires sending your **private `.p12` certificate archive, password and provisioning profile** to a third-party API. Despite useful output, severe signing-key confidentiality tradeoff makes it inappropriate for the recommended primary catalog.
+- [NexSideloading/certificates](https://github.com/NexSideloading/certificates): public enterprise certificate aggregation; frequent revocations and licensing/provenance concerns. Don't normalize opaque public certificates or Apple trust-bypass claims.
+- [sigma0440/Store-Remote-Releases](https://github.com/sigma0440/Store-Remote-Releases): Windows App Store restoration utility with HWID-bound paid activation, Telegram purchase bot and limited independent publisher assurance. Existing **AppRestore** and **ipatool** entries cover safer/easier-to-verify account-authorized workflows.
+- [toanbv-fabbi/Mirrorfox](https://github.com/toanbv-fabbi/Mirrorfox): Windows/macOS/Linux iPhone screen mirroring and QA product, but **does not install/sign IPA**. Useful developer tooling, out of scope for a sideloading-focused list.
+- [PGYER/pgyer-cli](https://github.com/PGYER/pgyer-cli) is included under **hosted developer beta distribution**, not under self-hosted sources, to avoid misrepresenting its trust model.
+- [0Charliecat/altsource.js](https://github.com/0Charliecat/altsource.js) and [Bonnie39/TrollAppsRepoCreator](https://github.com/Bonnie39/TrollAppsRepoCreator) are older, narrow source-generation tools; [AltGen](https://github.com/bebound/AltGen) already covers the main current AltSource release-generation need.
+- The current [r/EmulationOniOS](https://www.reddit.com/r/EmulationOniOS/) and [r/SideStore](https://www.reddit.com/r/SideStore/) discussions are useful for diagnosing JIT and Anisette paths, but **not a test certificate** for all firmware.
+
+### Practical guidance for the next maintenance pass
+
+The existing weekly `scripts/audit_github_projects.py` and workflow flag upstream archive/rename/inactivity, but they **do not audit release assets or installability**. An enhancement could record release dates/tags, differentiate stable from prerelease assets, and warn about seemingly current README badges that conflict with published releases (as seen with iPhoneLoadly). Such a monitor must also explicitly mark API 403/429 and timeouts as unknown rather than treating them as missing releases.
+
 Back to [README](README.md).
