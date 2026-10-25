@@ -280,6 +280,28 @@ This snapshot distinguishes **published GitHub artifacts**, **maintainer-adverti
 - [r/EmulationOniOS](https://www.reddit.com/r/EmulationOniOS/) has [concrete September 2026 pairing/JIT reports](https://www.reddit.com/r/EmulationOniOS/comments/1wkl3gd/it_took_me_6_hours_but_i_got_jit_to_work_on_my/) and conflicting 26.x JIT compatibility discussions. **"JIT available" in an emulator does not prove JIT is active**; check chip, firmware, backend, extension presence and a real device-level execution test.
 - Never upload your Apple Account passwords, OTPs, private certificates, provisioning profiles, auth tokens, or pairing records when asking for help on GitHub or Reddit.
 
+## On-device App Store discovery, LiveContainer integration and self-hosted renewals (25 October 2026)
+
+These are **four different distribution and installation models**. A downloaded IPA can remain encrypted and bound to an App Store license; an IPA in LiveContainer does not create a new developer signing identity; a hosting service does not issue a valid provisioning profile for arbitrary devices.
+
+| Project | Workflow / host | Observed release evidence and caveat |
+| --- | --- | --- |
+| [DLiPA](https://github.com/AhmedBafkir/DLiPA) | On-device iOS 13+ Apple Account App Store search, multiple accounts/storefronts, downloads of available older versions and file sharing | [v1.4 published 3 August 2026](https://github.com/AhmedBafkir/DLiPA/releases/tag/v1.4), `DLiPA_v1.4.ipa`. Its README warns about **missing automatic updates** after direct installation and recommends AirDrop in some cases. Apple licenses, FairPlay and app-version availability are independent constraints |
+| [LBox](https://github.com/Lolendor/LBox) | iOS 17.6+ download manager/source browser; selects Files-accessible LiveContainer folder, unpacks IPA into its applications area and opens via `livecontainer://` | [v1.2 IPA published 8 December 2025](https://github.com/Lolendor/LBox/releases/tag/v1.2). **Not a signing engine or a direct unrestricted iOS installer**; first-run bundle metadata errors, file picker permission and guest-app compatibility may block the workflow. Last recorded upstream push Dec 2025; mature or abandoned status unknown |
+| [iPhoneLoadly](https://github.com/lemehavit/iPhoneLoadly) | **Debian 13 x86_64** Rust signing daemon, free Apple Account provisioning, one-time USB pairing, subsequent Wi-Fi installs with configurable expiry-triggered renewal | [v0.3.0-alpha.5 published 20 October 2026](https://github.com/lemehavit/iPhoneLoadly/releases/tag/v0.3.0-alpha.5) with Linux archive and SHA256 sidecar. Its README badge lags behind the release version. **Experimental alpha; scheduled job cannot renew if phone is unreachable or the Apple login session requires 2FA** |
+| [PGYER CLI](https://github.com/PGYER/pgyer-cli) | Official hosted Pgyer developer build distribution, Node.js 20+, IPA/APK/HAP uploads, invited/password access, CI and MCP automation | GitHub source updated Oct 2026, **no GitHub Releases artifacts at review time**; tool is distributed via `@pgyer/cli` on npm. **Hosted provider receives uploaded IPA and metadata**; API keys and install passwords must be protected; this is not a free-account IPA signer |
+
+### Security boundaries
+
+- **Apple Account/App Store:** DLiPA and `ipatool` operate against Apple's stores. An IPA may be encrypted and restricted to the purchasing account; download and share affordances do not grant license-transfer rights. Older versions may disappear from App Store availability even when a version ID is known.
+- **LiveContainer guest installation:** LBox requires explicit Files permission to the correct LiveContainer folder. Unpacking and launching a guest app is different from installing a separately signed app through `installd`; extension, keychain, entitlement and notification behavior may differ.
+- **Debian signer:** iPhoneLoadly stores device pairing records and may optionally persist encrypted Apple Account secrets. Prefer its local `127.0.0.1` binding plus the documented authenticated TLS reverse-proxy/SSH tunnel pattern; do **not** expose signing/admin endpoints on public Internet.
+- **Commercial hosting:** PGYER is a hosted distribution service. A published IPA still needs correct iOS signature, provisioning/distribution method, device eligibility and the owner's redistribution rights. Sending a production build to a third party is a separate confidentiality decision.
+
+### Better primary-source troubleshooting
+
+[SideStore's own troubleshooting guide](https://docs.sidestore.io/docs/troubleshooting) and [error codes](https://docs.sidestore.io/docs/troubleshooting/error-codes) distinguish VPN/tunnel reachability, pairing file, Apple Account/Anisette services, profile expiry and app-installation issues. Community fixes from [r/SideStore](https://www.reddit.com/r/SideStore/) or [r/EmulationOniOS](https://www.reddit.com/r/EmulationOniOS/) are best treated as **OS- and device-specific bug reports**, not one-size-fits-all fixes. A displayed `JIT available` status is also not proof that JIT actually activated in an emulator.
+
 ## Maintenance and evidence
 
 When changing a compatibility claim, include the **device**, **iOS/iPadOS version**, **tool version**, **signing type**, **date**, and a link to upstream documentation, changelog, or reproducible test notes. Add a statement like _not independently verified_ if the change only reflects a maintainer's claim.
