@@ -69,6 +69,7 @@ Short descriptions deliberately keep this page readable. Technical prerequisites
 - **[RyukSign](https://github.com/faroukbmiled/RyukSign)** — Feather-derived signer with on-device tweak management, local file transfer, and app-source support.
 - **[Scarlet](https://usescarlet.com/)** — Proprietary on-device app installer and source manager with direct-install, certificate-based and computer-assisted methods; shared certificates can be revoked. [Developer's GitHub page](https://github.com/DebianArch64/Scarlet).
 - **[SideKick](https://github.com/huzaifah1530-bot/SideKick)** — SideStore-derived iOS app manager with IPA library, GitHub Releases/Actions update tracking, multiple Apple Account identities and LiveContainer integration. **Early prerelease v0.10.0:** maintainer explicitly says many advanced functions are still being integrated/tested; requires SideStore-compatible signing and device setup.
+- **[DLiPA](https://github.com/AhmedBafkir/DLiPA)** — On-device iOS 13+ App Store client for authorized Apple Account downloads, older versions, storefront choice and multiple accounts. [v1.4](https://github.com/AhmedBafkir/DLiPA/releases/tag/v1.4) ships an IPA; **App Store FairPlay/entitlements still apply** and the maintainer warns that its direct-install workflow may not preserve normal update behavior.
 - **[SideInstaller](https://github.com/FrizzleM/SideInstaller)** — On-device SideStore/LiveContainer setup, including a no-PC path on supported iOS 27+ devices; earlier supported versions may still require a pairing file. **Use only [the author's official download site](https://sideinstaller.net/).**
 - **[SideStore](https://github.com/SideStore/SideStore)** — AltStore-derived sideloading manager that installs and refreshes apps on-device after setup. **Avoid 0.6.4 and earlier for current sign-in:** [0.6.4 release notes](https://github.com/SideStore/SideStore/releases/tag/0.6.4) explicitly warn authentication is broken; later alpha/nightly builds may still have issues.
 - **[TrollStore](https://github.com/opa334/TrollStore)** — Installs IPAs persistently via a CoreTrust vulnerability on **specific older firmware versions only**.
@@ -117,6 +118,7 @@ These smaller or newer projects offer interesting functionality, but **activity 
 
 - **[AltDaemonModern](https://github.com/emp0ry/AltDaemonModern)** — Rootless-jailbreak-specific AltStore/AltDaemon adaptation for on-device signing; **not** a no-jailbreak alternative.
 - **[KeepAlive](https://github.com/oli-zr/keepalive)** — macOS menu-bar app that rebuilds and re-installs **your own Xcode projects** before free developer profiles expire via `xcodebuild` and `devicectl`; requires macOS 14+, Xcode 15+ and a periodically reachable iPhone. **Not a generic IPA refresher.**
+- **[iPhoneLoadly](https://github.com/lemehavit/iPhoneLoadly)** — Experimental **Debian 13 amd64** self-hosted Rust signer with Apple Account/2FA, one-time USB pairing, Wi-Fi installation and scheduled renewal before free-signing expiry. [v0.3.0-alpha.5](https://github.com/lemehavit/iPhoneLoadly/releases/tag/v0.3.0-alpha.5) ships Linux tarball and checksum; **requires an always-on host**, and pairing/auth data must stay behind private authenticated HTTPS.
 - **[AltKeeper](https://github.com/BartolomeoRusso9/altkeeper)** — **Experimental** self-hosted AltServer-compatible service for iOS 17+, with Docker, a web UI, and profile-renewal commands. Can serve AltStore Classic over home Wi-Fi; unattended renewal requires Apple credentials stored on the server. Read the upstream test-status and security notes.
 - **[AltServer macOS 27 Anisette Fix](https://github.com/kimziro/altserver-macos27-anisette-fix)** — **Unofficial experimental** patched AltServer for **Apple Silicon macOS 27**, addressing specific Anisette identity/`machineID` installation failures. v1.3.3 includes a companion AltStore build; only a narrow USB install scenario is reported tested, **not unattended refresh or all Apple login errors**.
 - **[AltServer-Linux](https://github.com/NyaMisty/AltServer-Linux)** — Linux port of the AltServer protocol/CLI; review current compatibility and maintenance before deployment.
@@ -224,8 +226,15 @@ These are **source catalogs and developer tools**, not assurances that all third
 - **[SideStore Official Source](https://github.com/SideStore/apps.json)** — Official AltSource feed for SideStore and related project releases; typically preconfigured in SideStore.
 - **[SideStoreAndAltStore-Sources](https://github.com/luh-99/SideStoreAndAltStore-Sources)** — Community collection of source URLs for AltStore and SideStore.
 - **[Sideload-Sources](https://github.com/KB01111/Sideload-Sources)** — Community source pointing to upstream GitHub Release assets; verify individual apps before installing.
+- **[LBox](https://github.com/Lolendor/LBox)** — iOS 17.6+ on-device AltStore-style repository browser/downloader tightly integrated with **LiveContainer** folders: can unpack downloaded IPAs into the container and launch via its URL scheme. [v1.2](https://github.com/Lolendor/LBox/releases/tag/v1.2) has an IPA; **not an Apple Account signer** and cannot make incompatible guest apps run.
 - **[ryP0](https://github.com/Sami-Wali/ryP0)** — iOS app catalog with release/update tracking, third-party JSON sources and handoff to LiveContainer/AltStore/SideStore; **not** a signer, and linked IPAs require independent provenance checks.
 - **[ShrubLibrary](https://github.com/ShrubHub-iOS/ShrubLibrary)** — Web directory of iOS apps and AltStore-compatible repositories, with search and source import; **repository documents the website, not its source code**, and third-party IPA listings aren't vetted.
+
+### Hosted developer beta distribution
+
+These services distribute builds **you are authorized to publish**, not third-party certificates or a way to install arbitrary unsigned apps. Uploading an IPA moves the app binary and associated metadata to the provider's infrastructure.
+
+- **[PGYER CLI](https://github.com/PGYER/pgyer-cli)** — Official Node.js 20+ command-line client for Pgyer developer distribution: uploads **already signed** IPA/APK/HAP, manages release versions, passwords/invites, CI and optional MCP actions. **Hosted commercial service, not self-hosted**; an API key/account is required, and iOS provisioning restrictions still apply.
 
 ### Self-hosted distribution and app sources
 
@@ -261,6 +270,7 @@ These are **source catalogs and developer tools**, not assurances that all third
 - [AltStore official website and setup](https://altstore.io/)
 - [AltStore developer documentation](https://developer.altstore.io/)
 - [SideStore documentation](https://docs.sidestore.io/)
+- [SideStore troubleshooting](https://docs.sidestore.io/docs/troubleshooting) and [error code reference](https://docs.sidestore.io/docs/troubleshooting/error-codes) — Maintainer documentation on pairing, VPN tunneling, signing errors and Anisette issues; check exact tool/iOS version before applying fixes.
 - [AltStore Classic release notes](https://github.com/altstoreio/FAQ/blob/main/release-notes/altstore.md) — Version-specific sign-in fixes and remote refresh updates.
 - [LiveContainer official installation guide](https://livecontainer.github.io/docs/installation) — Supported installers and the differences between standalone and combined SideStore builds.
 - [Sideloadly official FAQ](https://sideloadly.io/faq.html) — Device setup, Windows USB drivers, Wi-Fi refresh, signing limits and Apple TV caveats.
