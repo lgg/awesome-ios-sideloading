@@ -9,6 +9,9 @@ on:
       - 'CONTRIBUTING.md'
       - 'RESEARCH_NOTES.md'
       - 'scripts/validate_catalog.py'
+      - 'scripts/audit_github_projects.py'
+      - 'tests/test_audit_github_projects.py'
+      - '.github/workflows/upstream-audit.yml'
       - '.github/workflows/catalog-validation.yml'
   pull_request:
     paths:
@@ -17,6 +20,9 @@ on:
       - 'CONTRIBUTING.md'
       - 'RESEARCH_NOTES.md'
       - 'scripts/validate_catalog.py'
+      - 'scripts/audit_github_projects.py'
+      - 'tests/test_audit_github_projects.py'
+      - '.github/workflows/upstream-audit.yml'
       - '.github/workflows/catalog-validation.yml'
   workflow_dispatch:
 
@@ -33,3 +39,5 @@ jobs:
           persist-credentials: false
       - name: Validate links, anchors and unique projects
         run: python3 scripts/validate_catalog.py
+      - name: Test scheduled upstream metadata audit offline
+        run: python3 -m unittest discover -s tests -p 'test_audit_github_projects.py' -v
