@@ -96,6 +96,7 @@ These smaller or newer projects offer interesting functionality, but **activity 
 - **[ipaverse](https://github.com/bahattinkoc/ipaverse)** — Apple Silicon macOS app for IPA acquisition, inspection, re-signing, and device installation; downloaded FairPlay-encrypted packages are not automatically re-signable.
 - **[iPASide](https://github.com/pwnapplehat/iPASide)** — Open-source Windows-focused IPA installer using an Apple Account.
 - **[iOS App Signer](https://github.com/DanTheMan827/ios-app-signer)** — macOS utility for re-signing apps and producing installable IPA files.
+- **[IPAForge](https://github.com/IPAForge/ipaforge)** — Cross-platform desktop installer for SideStore, LiveContainer+SideStore and personal-account IPA signing/refresh. **Alpha 0.1.0-alpha.7** with official Linux/Windows/macOS release assets and Sigstore attestations; not independently tested, and desktop notarization/code signing is incomplete.
 - **[IPASIGN](https://github.com/CyberTKR/IpaSigner)** — Qt 6 macOS GUI/CLI for local IPA re-signing with zsign and optional App Store Connect provisioning; early-stage project.
 - **[ModStaller](https://github.com/Crafttino21/ModStaller)** — Early-stage Linux/Windows IPA installer with Apple Account signing, Wi-Fi renewal and JIT; upstream claims iOS 27 and tvOS support, but Android-host installation is **planned, not available**.
 - **[ios-deploy](https://github.com/ios-control/ios-deploy)** — macOS command-line installation and debugging of apps on physical iOS devices; older development workflow, check recent device support.
@@ -114,6 +115,8 @@ These smaller or newer projects offer interesting functionality, but **activity 
 - **[SideStore Auto Refresh](https://github.com/NRG-Wardog/sidestore-auto-refresh)** — Community project combining LiveContainer and SideStore with an automatic-refresh workflow; check upstream prerequisites.
 - **[Sideloop](https://github.com/filippofinke/sideloop)** — Self-hosted Linux/macOS service to re-sign and reinstall IPAs over local Wi-Fi before free provisioning expires; host must remain available and the iPhone unlocked for refresh.
 - **[SignTools](https://github.com/SignTools/SignTools)** — Self-hosted web service for signing and installing apps using a macOS signing builder.
+- **[Sideloadly Monitor](https://github.com/recallsangel/sideloadly-monitor)** — Experimental macOS launchd monitor for Sideloadly's renewal daemon with Telegram alerts, status and conditional restart. Reads Sideloadly's internal SQLite state, so compatibility may break after Sideloadly updates.
+- **[SignTools GitHub Actions Builder](https://github.com/maxexcloo/signtools-builder)** — Community-maintained macOS Actions worker for SignTools using Tailscale and reusable Apple authentication sessions; requires tightly scoped repository secrets and a private signing backend.
 - **[Torch](https://github.com/trollzem/torch)** — Experimental macOS menu-bar app for free-account signing and 6-day re-installation of iPhone, iPad and Apple TV IPAs; host must remain available for refresh.
 - **[IPA Signer (self-hosted)](https://github.com/aoyn1xw/ipa-signer)** — Node.js/Docker web interface and API for re-signing IPAs with zsign and serving OTA links; **self-host it privately**, as uploaded certificates and app packages reach the server.
 
@@ -197,12 +200,14 @@ These are **source catalogs and developer tools**, not assurances that all third
 - **[SideStore Official Source](https://github.com/SideStore/apps.json)** — Official AltSource feed for SideStore and related project releases; typically preconfigured in SideStore.
 - **[SideStoreAndAltStore-Sources](https://github.com/luh-99/SideStoreAndAltStore-Sources)** — Community collection of source URLs for AltStore and SideStore.
 - **[Sideload-Sources](https://github.com/KB01111/Sideload-Sources)** — Community source pointing to upstream GitHub Release assets; verify individual apps before installing.
+- **[ryP0](https://github.com/Sami-Wali/ryP0)** — iOS app catalog with release/update tracking, third-party JSON sources and handoff to LiveContainer/AltStore/SideStore; **not** a signer, and linked IPAs require independent provenance checks.
 - **[ShrubLibrary](https://github.com/ShrubHub-iOS/ShrubLibrary)** — Web directory of iOS apps and AltStore-compatible repositories, with search and source import; **repository documents the website, not its source code**, and third-party IPA listings aren't vetted.
 
 ### Self-hosted distribution and app sources
 
 - **[App Distribution Server](https://github.com/significa/app-distribution-server)** — Docker service for distributing **already signed** iOS IPA/Android APK builds through an installation page and QR code; no Apple Account signing or provisioning. Change its documented default upload token before deployment.
 
+- **[IPA Signer Telegram bot](https://github.com/lxdxrx/ipa-signer)** — Self-hosted Telegram bot for zsign-based IPA signing and OTA links. **High-sensitivity setup:** certificate archives/passwords may be sent via Telegram chat to the bot; lock down allowed user IDs, bot access, storage and keys.
 - **[GithubStore](https://github.com/yazdipour/GithubStore)** — Docker-hosted AltStore/SideStore/LiveContainer feed generated from selected GitHub releases; optional configuration web UI has **no authentication** and should stay private.
 - **[TeleStore](https://github.com/yazdipour/TeleStore)** — Self-hosted AltStore-compatible feed from Telegram channels; requires your Telegram API credentials/session and may expose unauthorized third-party IPAs. Use only channels and apps you have rights to distribute.
 
@@ -251,9 +256,11 @@ These are independent discussion and support venues, **not verified download sou
 - **[r/AltStore](https://www.reddit.com/r/AltStore/)** — AltStore Classic/PAL, AltServer, installation and provisioning troubleshooting; compare community advice against [official AltStore documentation](https://faq.altstore.io/).
 - **[r/jailbreak](https://www.reddit.com/r/jailbreak/)** — Adjacent jailbreak/firmware and TrollStore discussions; **not** a substitute for normal sideloading support and not every jailbreak applies to every OS version.
 - **[r/LegacyJailbreak](https://www.reddit.com/r/LegacyJailbreak/)** — Older iPhones/iPads, firmware-specific sideloading limitations and legacy installation tools.
+- **[MacRumors iOS Jailbreaks forum](https://forums.macrumors.com/forums/ios-jailbreaks.105/)** — Long-running forum for legacy jailbreak/restore and device-specific experiences; not an authoritative source for current IPA signing methods.
 - **[r/Sideloadly](https://www.reddit.com/r/Sideloadly/)** — Sideloadly-specific setup, daemon, Wi-Fi and signing issues; linked by the project's [official FAQ](https://sideloadly.io/faq.html).
 - **[r/SideStore](https://www.reddit.com/r/SideStore/)** — Community reports on SideStore login, pairing and background renewal; check claims against maintainer releases.
 - **[r/Trollstore](https://www.reddit.com/r/Trollstore/)** — TrollStore and jailbreak-dependent TrollStore Lite discussions; not all methods support the same firmware.
+- **[r/jailbreakdevelopers](https://www.reddit.com/r/jailbreakdevelopers/)** — Developer-centric iOS tweak, signing, entitlements and jailbreak-extension troubleshooting; adjacent to standard sideloading.
 - **[r/sideloaded](https://www.reddit.com/r/sideloaded/)** — Large subreddit dedicated to non-jailbreak sideloading tools, setup, troubleshooting and release discussions. [Community Discord](https://discord.gg/pUHBuxYzSG) is advertised by the subreddit; its invite may change.
 - **[SideStore Discord](https://discord.gg/sidestore)** — Official community support linked from the [verified SideStore organization](https://github.com/SideStore). Also see [SideStore Discussions](https://github.com/orgs/SideStore/discussions) for feature reports and reproducible issues.
 - **[Apple Developer Forums: Code Signing](https://developer.apple.com/forums/topics/code-signing-topic/code-signing-topic-general)** — Primary-source discussion for signing identities, entitlements and provisioning-profile problems; not support for unauthorized signing services.

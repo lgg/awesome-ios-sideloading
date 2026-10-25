@@ -215,4 +215,45 @@ The underlying implementation matters more than GitHub popularity here: [SideSig
 
 The most valuable gap in the previous version was **compatibility guidance**, not a raw project count. Fixing the version-specific AltStore/SideStore/LiveContainer information is intended to prevent broken real-world setups. All “works on iOS X” statements remain upstream claims unless accompanied by independent reproducible test evidence.
 
+## Fifth research pass: cross-platform installers, private signers and specialized support (25 Oct 2026)
+
+This pass searched GitHub's recently updated sideloading and IPA-signing topics, projects' **original READMEs and release metadata**, the source catalogs gathered by [iOS Hub](https://caseycz.github.io/iOS-Hub/), and discussions on [r/sideloaded](https://www.reddit.com/r/sideloaded/) and focused developer forums. We prioritized **distinct workflows**, checked whether a source provides a real distribution artifact, and separated availability/claims from verified functionality.
+
+### New projects worth including
+
+| Project | Evidence and why it was added | Qualification |
+| --- | --- | --- |
+| [IPAForge](https://github.com/IPAForge/ipaforge) | Developer ships [v0.1.0-alpha.7](https://github.com/IPAForge/ipaforge/releases/tag/v0.1.0-alpha.7) (published **21 Oct 2026**) with platform installers and Sigstore-related assets. Cross-platform free-Apple-Account setup of SideStore and LiveContainer+SideStore, IPA signing and refresh. | **Alpha**; very young project with little independent community evidence. GitHub artifacts and published signatures do not certify correct installation on every iOS version; macOS/Windows installer trust requirements vary. |
+| [ryP0](https://github.com/Sami-Wali/ryP0) | Released [2.2 on 23 Oct 2026](https://github.com/Sami-Wali/ryP0/releases/tag/2.2) with `ryP0-unsigned.ipa`; browses community IPA feeds, versions, and opens supported installers. | A **catalog**, not a signer. Release asset is explicitly unsigned. Sources and individual applications must be checked for provenance, rights and security. |
+| [SignTools GitHub Actions Builder](https://github.com/maxexcloo/signtools-builder) | Distinct workflow: a private SignTools service dispatches signing jobs onto macOS GitHub Actions workers over Tailscale, with persistent Apple authentication sessions. | Newly created, small **community implementation** (not an official SignTools component). Stores/reuses high-value `FASTLANE_SESSION` and repository secrets; security review required before deployment. No formal releases. |
+| [IPA Signer Telegram Bot](https://github.com/lxdxrx/ipa-signer) | MIT-licensed self-hosted Telegram signing bot using `zsign`, Docker, local Telegram Bot API and OTA links. | The upstream instructions permit uploading `.p12`/`.mobileprovision` via chat. **Encryption at rest does not prevent the bot/Telegram service from receiving sensitive material**. No formal releases. |
+| [Sideloadly Monitor](https://github.com/recallsangel/sideloadly-monitor) | Novel macOS launchd watcher for expiry, failed renewals, daemon health and Telegram alerts. Its own documentation states that Sideloadly's `installations.db` is opened read-only. | Community add-on, documented mostly in Traditional Chinese. Relies on **private Sideloadly database fields** that can change between proprietary releases. A daemon restart is not selective IPA redeployment. No formal releases. |
+
+### More focused forums and knowledge sources
+
+- **[r/jailbreakdevelopers](https://www.reddit.com/r/jailbreakdevelopers/)**: development discussion relevant to signing, entitlements, Mach-O injection, Theos, and the limits of jailbreak-dependent installations. [The Apple Wiki Developer pages](https://theapplewiki.com/wiki/Main_Page/Developer) point to this developer community and other technical resources.
+- **[MacRumors iOS Jailbreaks](https://forums.macrumors.com/forums/ios-jailbreaks.105/)**: long-running site with actual recent (2026) threads but much older historical guidance; useful for **legacy cases only**, not proof that an exploit works on newer firmware.
+- **[Apple Developer Forums](https://developer.apple.com/support/forums)**: first-party source for code signing, provisioning and App Store distribution questions. Its tag/topic pages provide **RSS feeds**, which could be monitored to spot platform changes.
+- **[r/sideloaded discussion: state of sideloading, Sep 2026](https://www.reddit.com/r/sideloaded/comments/1wp031h/state_of_sideloading/)**: competing community recommendations for LiveContainer+SideStore via iloader and certificate services. Comments conflict about account bans; never treat anecdotes as evidence of policy.
+- **[iOS Hub directory](https://caseycz.github.io/iOS-Hub/)**: regularly checks the reachability of AltStore-compatible feeds. The directory may include modified app feeds, so **online ≠ official/safe**; we did not rehost or copy its app links.
+- **[GitHub sideloadly topic](https://github.com/topics/sideloadly)** and **[GitHub sideloading topic](https://github.com/topics/sideloading)**: used for discovery, with caution around unofficial projects impersonating commercial installer distribution.
+
+### Investigated but excluded from the main list
+
+- [laamarizineddine-max/webipagui](https://github.com/laamarizineddine-max/webipagui) — copied/promotional readme makes sweeping claims about browser-side installation on Windows, macOS, Linux and iOS 14+ but directs readers to a direct ZIP file rather than attributable release assets or documented signing infrastructure. A repo description saying “no data leaves your device” conflicts with sections implying online installers; **not reliable enough** to recommend.
+- [Nemesis-Surf/webipagui](https://github.com/Nemesis-Surf/webipagui) — source project is archived (previously reviewed); not a maintained default.
+- [Kasumi-dta/LemonSign](https://github.com/Kasumi-dta/LemonSign) — repository explicitly marked **discontinued**, despite recent commit activity; don't mistake “recently pushed” for “maintained”.
+- [OpsNexusDev/XcodeNexus](https://github.com/OpsNexusDev/XcodeNexus) and [OpsNexusDev/NexusSign](https://github.com/OpsNexusDev/NexusSign) — surfaced in one GitHub-topic index but the canonical GitHub API returned **404** during verification; don't link to an unconfirmed repository.
+- [bikram-agarwal/ObtainX](https://github.com/bikram-agarwal/ObtainX) — a project for **Android** app updates despite overlapping `sideloading` topic tags. Not iOS.
+- [pwnless/AutoFLEX](https://github.com/pwnless/AutoFLEX) — relevant to authorized instrumentation but is primarily a jailbreak-adjacent debug utility, not an IPA signing/installation/update tool.
+- `SideloadlyiOS/Sideloadly-Download` and similar keyword-stuffed third-party installers — do not promote as official binaries. Prefer [Sideloadly's own website](https://sideloadly.io/) and official FAQ.
+- Broader communities distributing cracked commercial IPAs or shared enterprise certificates — excluded from direct download recommendations; redistribution and certificate trust are separate questions from technical sideloading.
+
+### Follow-up verification priorities
+
+1. Periodically re-check new alpha releases and vendor issue trackers for actual paired-device test evidence, especially **IPAForge**.
+2. Monitor signing **trust boundaries**: remote server vs local device, Telegram uploads, GitHub Actions secrets, and key storage. Do not assume open-source front-end code guarantees backend confidentiality.
+3. If adding a source-directory app, distinguish metadata discovery from signed IPA authenticity and installation.
+4. Treat forums as **issue discovery**; confirm compatibility and security statements from maintainers, reproducible device reports, and signed release artifacts.
+
 Back to [README](README.md).
