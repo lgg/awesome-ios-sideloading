@@ -107,6 +107,7 @@ These smaller or newer projects offer interesting functionality, but **activity 
 ### Refresh, AltServer, and self-hosting
 
 - **[AltDaemonModern](https://github.com/emp0ry/AltDaemonModern)** — Rootless-jailbreak-specific AltStore/AltDaemon adaptation for on-device signing; **not** a no-jailbreak alternative.
+- **[KeepAlive](https://github.com/oli-zr/keepalive)** — macOS menu-bar app that rebuilds and re-installs **your own Xcode projects** before free developer profiles expire via `xcodebuild` and `devicectl`; requires macOS 14+, Xcode 15+ and a periodically reachable iPhone. **Not a generic IPA refresher.**
 - **[AltKeeper](https://github.com/BartolomeoRusso9/altkeeper)** — **Experimental** self-hosted AltServer-compatible service for iOS 17+, with Docker, a web UI, and profile-renewal commands. Can serve AltStore Classic over home Wi-Fi; unattended renewal requires Apple credentials stored on the server. Read the upstream test-status and security notes.
 - **[AltServer-Linux](https://github.com/NyaMisty/AltServer-Linux)** — Linux port of the AltServer protocol/CLI; review current compatibility and maintenance before deployment.
 - **[anisette-v3-server](https://github.com/Dadoum/anisette-v3-server)** — Self-hosted Anisette v1/v3 identity service compatible with SideStore-style signing and AltServer-Linux; Apple authentication changes can break compatibility.
@@ -117,6 +118,7 @@ These smaller or newer projects offer interesting functionality, but **activity 
 - **[SignTools](https://github.com/SignTools/SignTools)** — Self-hosted web service for signing and installing apps using a macOS signing builder.
 - **[Sideloadly Monitor](https://github.com/recallsangel/sideloadly-monitor)** — Experimental macOS launchd monitor for Sideloadly's renewal daemon with Telegram alerts, status and conditional restart. Reads Sideloadly's internal SQLite state, so compatibility may break after Sideloadly updates.
 - **[SignTools GitHub Actions Builder](https://github.com/maxexcloo/signtools-builder)** — Community-maintained macOS Actions worker for SignTools using Tailscale and reusable Apple authentication sessions; requires tightly scoped repository secrets and a private signing backend.
+- **[SignTools Builder (official)](https://github.com/SignTools/SignTools-Builder)** — First-party standalone worker for your own Mac, instead of an external CI provider. **No built-in HTTPS**; its README warns that other devices on the network may be able to run commands through the service. Keep isolated and protect credentials.
 - **[Torch](https://github.com/trollzem/torch)** — Experimental macOS menu-bar app for free-account signing and 6-day re-installation of iPhone, iPad and Apple TV IPAs; host must remain available for refresh.
 - **[IPA Signer (self-hosted)](https://github.com/aoyn1xw/ipa-signer)** — Node.js/Docker web interface and API for re-signing IPAs with zsign and serving OTA links; **self-host it privately**, as uploaded certificates and app packages reach the server.
 
@@ -127,8 +129,10 @@ These smaller or newer projects offer interesting functionality, but **activity 
 - **[altsign-cli](https://github.com/xhzq233/altsign-cli)** — macOS CLI for provisioning and re-signing an IPA or .app through a free Apple Account, with managed certificates and 2FA.
 - **[IPAID](https://github.com/shplash/IPAID)** — On-device editor for IPA bundle identifiers and app metadata (not a standalone signing service).
 - **[ipatool](https://github.com/majd/ipatool)** — CLI to find and download App Store app packages for authorized use; downloading an IPA does not give you redistribution rights.
+- **[IPATool GUI](https://github.com/a23bc/ipatool-gui)** — Cross-platform Electron frontend for `ipatool`, with App Store search, multiple accounts, version selection and resumable downloads. **Does not sign/decrypt IPAs**; requires a legitimate Apple ID and a separate signing method if applicable. Releases include v0.2.0 (Oct 2026).
 - **[ldid (Procursus)](https://github.com/ProcursusTeam/ldid)** — Mach-O signing/entitlements utility used in the iOS development and jailbreak ecosystem.
 - **[node-applesign](https://github.com/nowsecure/node-applesign)** — Node.js CLI/module for re-signing IPA archives with appropriate signing identities and provisioning assets.
+- **[Appium resigner](https://github.com/appium/resigner)** — Go library/CLI for inspecting and re-signing IPA/.app bundles on Windows/macOS/Linux for WebDriverAgent/test setups; upstream explicitly says **not for production signing**.
 - **[zsign](https://github.com/zhlynn/zsign)** — Cross-platform IPA signing tool for developer workflows.
 - **[cyan / pyzule-rw](https://github.com/asdfzxcvbn/pyzule-rw)** — IPA preparation CLI for authorized apps: edits metadata, injects tweaks/frameworks, and prepares output for signing; **not a standalone trusted-certificate signer**.
 
@@ -148,6 +152,7 @@ These help inspect or extract app packages **you own or are authorized to resear
 
 - **[frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump)** — Extracts decrypted IPA packages from a jailbroken device for authorized analysis; not a general sideloading installer.
 - **[ipa-extract-info](https://github.com/nowsecure/ipa-extract-info)** — Lightweight Node.js/browser library to read `Info.plist` from IPA archives.
+- **[IpaDownloadTool](https://github.com/SmileZXLee/IpaDownloadTool)** — iOS utility for inspecting `itms-services` manifests and downloading IPA packages from **your own authorized OTA/test distribution pages**; downloading does not bypass signing requirements or authorize redistribution.
 
 
 ### TrollStore ecosystem
@@ -175,6 +180,7 @@ JIT capability is **not** implied by successful IPA installation; check the app,
 ### Device pairing and developer infrastructure
 
 - **[go-ios](https://github.com/danielpaulus/go-ios)** — Cross-platform Go CLI/library for pairing, deploying apps and testing/debugging devices; complements, rather than replaces, an Apple signing identity.
+- **[iOS Developer Toolkit](https://github.com/hideouts-io/iOS-Developer-Toolkit)** — macOS graphical workbench for `pymobiledevice3`, modern Developer Disk Images, device logs, app inventory and **installation of already-eligible IPAs**; also includes backup/diagnostic tools, not Apple Account signing or a jailbreak.
 - **[idevice](https://github.com/jkcoxson/idevice)** — Rust libraries for interacting with iOS services.
 - **[idevice_pair](https://github.com/jkcoxson/idevice_pair)** — Desktop utility to generate/export pairing records for newer iOS connectivity workflows.
 - **[ideviceinstaller](https://github.com/libimobiledevice/ideviceinstaller)** — Command-line management of installed iOS apps.
@@ -208,6 +214,7 @@ These are **source catalogs and developer tools**, not assurances that all third
 - **[App Distribution Server](https://github.com/significa/app-distribution-server)** — Docker service for distributing **already signed** iOS IPA/Android APK builds through an installation page and QR code; no Apple Account signing or provisioning. Change its documented default upload token before deployment.
 
 - **[IPA Signer Telegram bot](https://github.com/lxdxrx/ipa-signer)** — Self-hosted Telegram bot for zsign-based IPA signing and OTA links. **High-sensitivity setup:** certificate archives/passwords may be sent via Telegram chat to the bot; lock down allowed user IDs, bot access, storage and keys.
+- **[AltGen](https://github.com/bebound/AltGen)** — Python CLI/PyPI utility for producing or merging AltStore-compatible `apps.json` from **GitHub Release IPA assets** and TOML metadata; generates **source JSON**, not signatures or a hosting service.
 - **[GithubStore](https://github.com/yazdipour/GithubStore)** — Docker-hosted AltStore/SideStore/LiveContainer feed generated from selected GitHub releases; optional configuration web UI has **no authentication** and should stay private.
 - **[TeleStore](https://github.com/yazdipour/TeleStore)** — Self-hosted AltStore-compatible feed from Telegram channels; requires your Telegram API credentials/session and may expose unauthorized third-party IPAs. Use only channels and apps you have rights to distribute.
 
@@ -241,6 +248,7 @@ These are **source catalogs and developer tools**, not assurances that all third
 - [SideStore JIT guide](https://docs.sidestore.io/docs/advanced/jit)
 - [iOS Hub sideloading comparison](https://caseycz.github.io/iOS-Hub/guide.html) — Community-maintained overview; double-check claims against upstream.
 - [Apple Developer: Code signing](https://developer.apple.com/support/code-signing/)
+- [OWASP MASTG: Installing iOS apps](https://mas.owasp.org/MASTG/techniques/ios/MASTG-TECH-0056/) — Technical explanation of IPA signing, `installd` and device installation; security-testing information, not a source of pre-signed apps.
 - [Compatibility and caveats in this repository](COMPATIBILITY.md)
 - [SideStore: reported October 2026 Apple ID login errors](https://github.com/SideStore/SideStore/issues/1647) — Follow maintainer updates rather than copying outdated Anisette identity strings from old guides.
 - [SideStore: community authentication troubleshooting](https://github.com/orgs/SideStore/discussions/1666) — Discussion of temporary `-80045` / HTTP 503 / 2FA problems; solutions vary by build.
@@ -257,6 +265,7 @@ These are independent discussion and support venues, **not verified download sou
 - **[r/jailbreak](https://www.reddit.com/r/jailbreak/)** — Adjacent jailbreak/firmware and TrollStore discussions; **not** a substitute for normal sideloading support and not every jailbreak applies to every OS version.
 - **[r/LegacyJailbreak](https://www.reddit.com/r/LegacyJailbreak/)** — Older iPhones/iPads, firmware-specific sideloading limitations and legacy installation tools.
 - **[MacRumors iOS Jailbreaks forum](https://forums.macrumors.com/forums/ios-jailbreaks.105/)** — Long-running forum for legacy jailbreak/restore and device-specific experiences; not an authoritative source for current IPA signing methods.
+- **[The Apple Wiki](https://theapplewiki.com/wiki/Main_Page)** — Community-maintained technical reference on historical iOS internals, code signing and jailbreak components; older instructions must **not** be applied to modern firmware.
 - **[r/Sideloadly](https://www.reddit.com/r/Sideloadly/)** — Sideloadly-specific setup, daemon, Wi-Fi and signing issues; linked by the project's [official FAQ](https://sideloadly.io/faq.html).
 - **[r/SideStore](https://www.reddit.com/r/SideStore/)** — Community reports on SideStore login, pairing and background renewal; check claims against maintainer releases.
 - **[r/Trollstore](https://www.reddit.com/r/Trollstore/)** — TrollStore and jailbreak-dependent TrollStore Lite discussions; not all methods support the same firmware.
