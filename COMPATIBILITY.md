@@ -181,6 +181,31 @@ These are **historical checkpoints dated 25 October 2026**, not a permanent “l
 
 Multiple Apple Accounts can provide distinct **App ID quota and certificates**, and [MultiStore](https://github.com/lungustefan/MultiStore) can associate different apps with each. That **does not necessarily increase the device-wide number of simultaneously active free-provisioned app slots**. The three-app limit is generally enforced on the device; do not assume three installed apps *per Apple Account*. LiveContainer's guest apps have separate compatibility/security tradeoffs.
 
+## Additional developer tooling reviewed 25 October 2026
+
+These tools serve very different stages of the sideloading workflow; do not choose an IPA downloader when you actually need an installer or a profile refresher.
+
+| Project | Role and host | Actual signing/install scope | Major limitation |
+| --- | --- | --- | --- |
+| [KeepAlive](https://github.com/oli-zr/keepalive) | macOS 14+, Xcode 15+ menu-bar scheduled **rebuild** of projects you own | Builds with `xcodebuild` and installs via `devicectl` | **Not an arbitrary IPA signer**; Mac/Xcode and a reachable registered device required. App entitlements remain limited by Apple Personal Team |
+| [SignTools Builder](https://github.com/SignTools/SignTools-Builder) | Official standalone macOS worker for self-hosted SignTools | Signs apps requested by SignTools server | Upstream has **no native HTTPS** and warns about possible remote command execution by other reachable machines; run on a dedicated Mac behind authenticated TLS/private network |
+| [AltGen](https://github.com/bebound/AltGen) | Python 3.10+ CLI; GitHub Releases → AltSource `apps.json` | Generates/merges repository JSON; **no IPA signing/install** | Release and IPA URLs are upstream inputs; operator still controls trust, license and hosting |
+| [IPATool GUI](https://github.com/a23bc/ipatool-gui) | Windows/macOS/Linux GUI wrapping `majd/ipatool` | Downloads App Store packages acquired by user's Apple Account; **no re-signing** | FairPlay-encrypted downloaded IPAs are not automatically re-signable; private Apple protocols and device compatibility change |
+| [Appium resigner](https://github.com/appium/resigner) | Go CLI/library on Windows/macOS/Linux | Local re-signing and inspection of `.ipa` / `.app` for Appium/WebDriverAgent | **Maintainer warns not to use for production signing**, requires appropriate `.p12` and provisioning profiles |
+| [iOS Developer Toolkit](https://github.com/hideouts-io/iOS-Developer-Toolkit) | macOS PySide6 GUI built around `pymobiledevice3` | Device diagnostics, Developer Disk Images, IPA inspection and installation **when already eligible/signed** | Not a sideload signing/provisioning service, not a jailbreak or sandbox escape; sensitive backup/device evidence requires controlled storage |
+| [IpaDownloadTool](https://github.com/SmileZXLee/IpaDownloadTool) | iOS app for handling OTA `itms-services` and distribution manifests | Resolves/downloading IPAs for authorized testing and inspection | Does **not** remove signature/DRM or expand install eligibility; some OTA distribution links may reveal UDID or private app access |
+
+### Separate four workflows before choosing a tool
+
+1. **Acquire IPA:** `ipatool` and IPATool GUI may download **FairPlay-encrypted** App Store purchases; an authorized private OTA package source is another route. Neither gives rights to redistribute.
+2. **Sign or re-sign IPA:** Appium resigner, AltSign/SideSign, zsign and similar tools need an appropriate signing identity/provisioning profile and correctly signed embedded extensions.
+3. **Install and refresh:** iloader, SideStore, AltStore, KeepAlive and SignTools have different installation mechanisms and **very different** background renewal capabilities. KeepAlive rebuilds **your own Xcode source**; SignTools serves **prebuilt IPAs** after remote signing.
+4. **Publish a source:** AltGen produces `apps.json`, whereas GithubStore dynamically serves sources and App Distribution Server hosts already-signed download files. Those tools are not substitutes for profile creation, encryption removal, or device signing.
+
+#### Safeguards for developer machines
+
+Keep certificates, `.p12` passwords, Apple Account sessions and iOS device pairing records outside published repositories and public issue logs. A Mac acting as a SignTools builder should use a protected private network and TLS termination; see the project's own warning on remote code execution. Downloaded App Store archives can be bound to an Apple Account through FairPlay even if the archive has an `.ipa` extension.
+
 ## Maintenance and evidence
 
 When changing a compatibility claim, include the **device**, **iOS/iPadOS version**, **tool version**, **signing type**, **date**, and a link to upstream documentation, changelog, or reproducible test notes. Add a statement like _not independently verified_ if the change only reflects a maintainer's claim.
