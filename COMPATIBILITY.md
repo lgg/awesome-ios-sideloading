@@ -208,7 +208,7 @@ Keep certificates, `.p12` passwords, Apple Account sessions and iOS device pairi
 
 ## Apple TV, Vision Pro, restoration and app-analysis tools (reviewed 25 October 2026)
 
-The three device families below differ in **pairing**, **on-device vs hosted refresh**, and **JIT**. A list of supported platforms in an upstream README is not a physical-device certification. See [further research and release evidence](RESEARCH_NOTES.md#seventh-research-pass-tvos-visionos-and-offloaded-app-restoration-25-oct-2026).
+The three device families below differ in **pairing**, **on-device vs hosted refresh**, and **JIT**. A list of supported platforms in an upstream README is not a physical-device certification. See [further research and release evidence](RESEARCH_NOTES.md#seventh-research-pass-tvos-visionos-and-offloaded-app-restoration-25-october-2026).
 
 | Tool | Requirements and workflow | Renewal / installation | What is and is not verified |
 | --- | --- | --- | --- |
