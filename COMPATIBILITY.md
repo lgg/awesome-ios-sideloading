@@ -206,6 +206,36 @@ These tools serve very different stages of the sideloading workflow; do not choo
 
 Keep certificates, `.p12` passwords, Apple Account sessions and iOS device pairing records outside published repositories and public issue logs. A Mac acting as a SignTools builder should use a protected private network and TLS termination; see the project's own warning on remote code execution. Downloaded App Store archives can be bound to an Apple Account through FairPlay even if the archive has an `.ipa` extension.
 
+## Apple TV, Vision Pro, restoration and app-analysis tools (reviewed 25 October 2026)
+
+The three device families below differ in **pairing**, **on-device vs hosted refresh**, and **JIT**. A list of supported platforms in an upstream README is not a physical-device certification. See [further research and release evidence](RESEARCH_NOTES.md#seventh-research-pass-tvos-visionos-and-offloaded-app-restoration-25-october-2026).
+
+| Tool | Requirements and workflow | Renewal / installation | What is and is not verified |
+| --- | --- | --- | --- |
+| [Apparition](https://github.com/illixion/Apparition) | Initial install via desktop on Windows/macOS/Linux; iPhone/iPad USB pairing or TV/Vision Pro network pairing; subsequent on-device app uses LocalDevVPN or a companion | On-device IPA signing, installation, refresh and newer-firmware JIT are **maintainer claims** | Early project with [v0.3.2 releases](https://github.com/illixion/Apparition/releases/tag/v0.3.2); JIT on modern visionOS/iOS needs version-and-app-specific evaluation. Background operation and VPN/location permissions should be reviewed |
+| [Lodestar](https://github.com/asroya/lodestar) | **macOS Apple Silicon**, own Apple Account; iPhone USB or previously paired Apple TV 4K | **Manual one-click refresh**, no unattended auto-refresh | Maintainer [v1.0.0](https://github.com/asroya/lodestar/releases/tag/v1.0.0) reports physical iPhone USB and paired Apple TV install; first pairing by TV code, SMS 2FA and refresh have explicitly limited/no hardware verification |
+| [Catapult](https://github.com/byrvr/catapult) | macOS 14+, local SwiftUI/Python backend, Apple developer account; optional encrypted IPA vault synchronized between Macs | Offers scheduled refresh before free provisioning expires | [v0.4.2 macOS DMG](https://github.com/byrvr/catapult/releases/tag/v0.4.2); cross-device sync is **opt-in**, and exposing IPA blobs or signing sessions to a cloud folder must be evaluated independently |
+| [tvsign](https://github.com/esalwey/tvsign) | Always-on **Windows 10/11 or Docker on Linux, Raspberry Pi/NAS**; free Apple Account; Apple TV/iPhone/iPad must be reachable across local network | Signs/installs, monitors GitHub releases and attempts renewal before 7-day expiry | [v1.0.1](https://github.com/esalwey/tvsign/releases/tag/v1.0.1); Docker Desktop on Windows/macOS is **not** the documented supported host, and mDNS across VLANs may require addressing/network adjustments. Don't expose auth UI to the Internet |
+| [TapOk IPA Tools](https://github.com/TapOk38/tapok-ipa-tools) | Experimental Windows Store downloader plus separate **Windows or Android USB installer** | Installs IPA that meets device's existing code-signing requirements; does **not** make unsigned apps installable | [suite-v1.0.0-beta.5](https://github.com/TapOk38/tapok-ipa-tools/releases/tag/suite-v1.0.0-beta.5), very little independent testing; Android host is notable but should be validated on exact phone and iOS build |
+| [AppRestore](https://github.com/J3ckJ/AppRestore) | Windows/macOS computer, USB cable and authorized Apple Account ownership or existing eligible IPA | Attempts to restore **offloaded or removed** App Store apps, often without needing a new developer signing process | [v0.4.0](https://github.com/J3ckJ/AppRestore/releases/tag/v0.4.0) offers GUI/CLI artifacts. **No FairPlay decryption/DRM bypass**, and an account cannot simply reinstall an app it never obtained or an app unavailable to its license |
+| [AppInspect](https://github.com/iCrazeiOS/AppInspect) | Windows/macOS/Linux offline Electron workbench for IPA, DEB, Mach-O, app extensions and frameworks | **Read-only static inspection**, no actual signing, installing, JIT or Apple authentication | Useful for examining entitlements, symbols, Info.plist and potential security findings. Static heuristics do **not** prove an IPA is malware-free. No published GitHub releases at review time |
+| [SignTools CI](https://github.com/SignTools/SignTools-CI) | GitHub Actions/Semaphore template in a **private repository**; connects to self-hosted SignTools | Remote worker signs requested apps; signing profile managed by SignTools | **Official SignTools** implementation, but upstream explicitly states that **free Apple developer accounts are unsupported from SignTools 3.0 onward**. Privileged CI API tokens/sessions require minimal access scope |
+
+### Restoration is not sideloading
+
+**Offloaded App Store app:** the icon may remain but the binary is gone. AppRestore first asks the device/App Store to restore it; if Apple cannot serve it, an already acquired and valid IPA may be needed. An arbitrary downloaded IPA from a different Apple ID does not guarantee installation.
+
+**Developer-signed IPA:** separate from an App Store app and typically subject to seven-day free developer provisioning. Updating its contents or signing a new bundle is not equivalent to redownloading an offloaded Store app.
+
+**Inspecting before installation:** AppInspect can show an embedded bundle identifier, app extensions and signature entitlements. It does not independently verify source provenance, runtime behavior, Apple authorization, or DRM status.
+
+### Apple TV pairing, renewals and JIT
+
+- **Paired vs first-time pairing:** many tools can reuse an existing tvOS pairing record even when PIN-based first-time pairing is untested; do not advertise both as verified.
+- **Renewal:** manual one-click re-install (Lodestar), desktop-driven scheduled refresh (Catapult), Docker/Windows hosted scheduled renewal (tvsign), and on-device refresh (Apparition) are distinct capabilities.
+- **Modern JIT:** attaching a debugger once is **not** sufficient for all apps on iOS/tvOS/visionOS. Treat on-device JIT claims as specific to the chip, OS build, emulator and implementation, not as an automatic benefit of installing through a certain app.
+- **Auth/session isolation:** passwords, Anisette provisioning blobs, pairing records, app-signing certificates and local web admin passwords must be protected even when a tool is self-hosted.
+
 ## Maintenance and evidence
 
 When changing a compatibility claim, include the **device**, **iOS/iPadOS version**, **tool version**, **signing type**, **date**, and a link to upstream documentation, changelog, or reproducible test notes. Add a statement like _not independently verified_ if the change only reflects a maintainer's claim.

@@ -60,6 +60,7 @@ Short descriptions deliberately keep this page readable. Technical prerequisites
 
 - **[AltStore Classic](https://github.com/altstoreio/AltStore)** — Open-source app manager that signs IPAs through an Apple Account, with Remote AltServer support since 2.3. [Website](https://altstore.io/). The [2.3.1 release notes](https://github.com/altstoreio/FAQ/blob/main/release-notes/altstore.md) document October 2026 fixes for `-80045`, 2FA and background refresh.
 - **[AltLoad](https://github.com/mirazbakis/AltLoad)** — Experimental on-device installer for AltStore, SideStore and LiveContainer. Its author documents iOS 27+ self-pairing; iOS 18–26 requires a pairing file from a computer. Avoid relying on third-party shared certificates/DNS install shortcuts.
+- **[Apparition](https://github.com/illixion/Apparition)** — Experimental on-device IPA/DEB signing, install and refresh for iPhone/iPad, Apple TV and **Apple Vision Pro**, with desktop-assisted pairing, optional LocalDevVPN, and JIT methods claimed on supported firmware. First installation requires a computer; inspect supported hardware and app requirements.
 - **[Feather](https://github.com/claration/feather)** — Open-source, on-device IPA signing, installation, and source management using developer certificates.
 - **[Ksign](https://github.com/Nyasami/Ksign)** — Open-source on-device IPA signer and installer.
 - **[LiveContainer](https://github.com/LiveContainer/LiveContainer)** — Runs guest iOS apps inside one signed container. Its [official installation guide](https://livecontainer.github.io/docs/installation) explicitly **does not support Sideloadly or most online signers** for installing LiveContainer; setup and guest compatibility vary.
@@ -91,13 +92,16 @@ These smaller or newer projects offer interesting functionality, but **activity 
 ### Desktop installers and setup
 
 - **[althea](https://github.com/vyvir/althea)** — Linux GUI for AltServer-Linux with x86_64/ARM support; upstream calls it early-stage.
+- **[AppRestore](https://github.com/J3ckJ/AppRestore)** — Windows/macOS USB tool to restore **previously acquired** offloaded or removed App Store apps using your own Apple Account, or to install eligible existing IPA files. Does not defeat FairPlay or make unavailable paid apps free; GUI release archives are unsigned and should be checked against upstream SHA-256 sums.
 - **[iloader](https://github.com/nab138/iloader)** — Cross-platform graphical installer for SideStore and IPAs, with pairing-file, certificate, and App ID management.
+- **[Catapult](https://github.com/byrvr/catapult)** — macOS 14+ signing/install workspace for iPhone, iPad and Apple TV, with planned renewal before seven-day expiry and **optional encrypted IPA sync** between your own Macs. Developer-reported functionality; private sessions and sync keys require protection.
 - **[Impactor](https://github.com/claration/impactor)** — Cross-platform iOS/iPadOS/tvOS sideloading application (formerly PlumeImpactor).
 - **[ipaverse](https://github.com/bahattinkoc/ipaverse)** — Apple Silicon macOS app for IPA acquisition, inspection, re-signing, and device installation; downloaded FairPlay-encrypted packages are not automatically re-signable.
 - **[iPASide](https://github.com/pwnapplehat/iPASide)** — Open-source Windows-focused IPA installer using an Apple Account.
 - **[iOS App Signer](https://github.com/DanTheMan827/ios-app-signer)** — macOS utility for re-signing apps and producing installable IPA files.
 - **[IPAForge](https://github.com/IPAForge/ipaforge)** — Cross-platform desktop installer for SideStore, LiveContainer+SideStore and personal-account IPA signing/refresh. **Alpha 0.1.0-alpha.7** with official Linux/Windows/macOS release assets and Sigstore attestations; not independently tested, and desktop notarization/code signing is incomplete.
 - **[IPASIGN](https://github.com/CyberTKR/IpaSigner)** — Qt 6 macOS GUI/CLI for local IPA re-signing with zsign and optional App Store Connect provisioning; early-stage project.
+- **[Lodestar](https://github.com/asroya/lodestar)** — Experimental native Rust macOS Apple Account sideloader for iPhone/iPad/tvOS. Maintainer reports actual USB iPhone and already-paired Apple TV 4K installs; **refresh is manual**, initial Apple TV pairing and some JIT/OS paths unverified.
 - **[ModStaller](https://github.com/Crafttino21/ModStaller)** — Early-stage Linux/Windows IPA installer with Apple Account signing, Wi-Fi renewal and JIT; upstream claims iOS 27 and tvOS support, but Android-host installation is **planned, not available**.
 - **[ios-deploy](https://github.com/ios-control/ios-deploy)** — macOS command-line installation and debugging of apps on physical iOS devices; older development workflow, check recent device support.
 - **[Sideloadly](https://sideloadly.io/)** — Windows/macOS sideloading utility with Wi-Fi installation and optional automatic refresh. Proprietary; official website.
@@ -118,8 +122,10 @@ These smaller or newer projects offer interesting functionality, but **activity 
 - **[SignTools](https://github.com/SignTools/SignTools)** — Self-hosted web service for signing and installing apps using a macOS signing builder.
 - **[Sideloadly Monitor](https://github.com/recallsangel/sideloadly-monitor)** — Experimental macOS launchd monitor for Sideloadly's renewal daemon with Telegram alerts, status and conditional restart. Reads Sideloadly's internal SQLite state, so compatibility may break after Sideloadly updates.
 - **[SignTools GitHub Actions Builder](https://github.com/maxexcloo/signtools-builder)** — Community-maintained macOS Actions worker for SignTools using Tailscale and reusable Apple authentication sessions; requires tightly scoped repository secrets and a private signing backend.
+- **[SignTools CI (official)](https://github.com/SignTools/SignTools-CI)** — Official GitHub Actions/Semaphore signing-worker template for self-hosted SignTools. **SignTools 3.0+ does not support free developer accounts** according to this project's README; use a private repo and protect CI tokens/sessions.
 - **[SignTools Builder (official)](https://github.com/SignTools/SignTools-Builder)** — First-party standalone worker for your own Mac, instead of an external CI provider. **No built-in HTTPS**; its README warns that other devices on the network may be able to run commands through the service. Keep isolated and protect credentials.
 - **[Torch](https://github.com/trollzem/torch)** — Experimental macOS menu-bar app for free-account signing and 6-day re-installation of iPhone, iPad and Apple TV IPAs; host must remain available for refresh.
+- **[tvsign](https://github.com/esalwey/tvsign)** — Self-hosted Apple TV (and supported iOS/iPadOS) IPA signer/renewal tool with **Windows tray app or Docker on Linux/NAS/Raspberry Pi**; uses free Apple Account and local network pairing, with periodic renewal. Requires an always-on host; isolate its web UI and Apple session.
 - **[IPA Signer (self-hosted)](https://github.com/aoyn1xw/ipa-signer)** — Node.js/Docker web interface and API for re-signing IPAs with zsign and serving OTA links; **self-host it privately**, as uploaded certificates and app packages reach the server.
 
 **Related:** AltStore Classic 2.3 introduced [Remote AltServer support](https://github.com/altstoreio/AltStore/releases); it is no longer accurate to describe every AltStore setup as requiring a continuously running desktop AltServer.
@@ -150,6 +156,7 @@ These are **developer libraries**, not standalone IPA installers. Apple authenti
 
 These help inspect or extract app packages **you own or are authorized to research**. They do not grant permission to bypass DRM or redistribute applications.
 
+- **[AppInspect](https://github.com/iCrazeiOS/AppInspect)** — Cross-platform, offline Electron IPA/DEB/Mach-O inspector: checks signatures, entitlements, linked frameworks, embedded strings and basic security findings. **Static analysis**, not a code signer or guarantee of app safety.
 - **[frida-ios-dump](https://github.com/AloneMonkey/frida-ios-dump)** — Extracts decrypted IPA packages from a jailbroken device for authorized analysis; not a general sideloading installer.
 - **[ipa-extract-info](https://github.com/nowsecure/ipa-extract-info)** — Lightweight Node.js/browser library to read `Info.plist` from IPA archives.
 - **[IpaDownloadTool](https://github.com/SmileZXLee/IpaDownloadTool)** — iOS utility for inspecting `itms-services` manifests and downloading IPA packages from **your own authorized OTA/test distribution pages**; downloading does not bypass signing requirements or authorize redistribution.
@@ -227,6 +234,7 @@ These are **source catalogs and developer tools**, not assurances that all third
 
 - **[atvloadly](https://github.com/bitxeno/atvloadly)** — Apple TV IPA sideloading and self-hosted workflows.
 - **[atv-sideload](https://github.com/Lauch2/atv-sideload)** — Experimental Linux scripts to package tvOS apps and install them via a separately supplied `plumesign` binary. Upstream pairing scripts are incomplete; not a turnkey installer.
+- **[TapOk IPA Tools](https://github.com/TapOk38/tapok-ipa-tools)** — Early beta toolkit for **Windows App Store IPA downloads** and installing eligible IPAs on iPhone via **Windows or Android USB host**. Distinguish this from signing: documentation does not establish universal unsigned-IPA installation or broad device compatibility.
 - **[Legacy iOS Kit](https://github.com/LukeZGD/Legacy-iOS-Kit)** — Toolkit for older iOS devices with a [Linux sideloading guide](https://github.com/LukeZGD/Legacy-iOS-Kit/wiki/Sideloading-on-Linux). Best treated separately from modern signing methods.
 
 ## Region-specific marketplaces
@@ -269,8 +277,11 @@ These are independent discussion and support venues, **not verified download sou
 - **[r/Sideloadly](https://www.reddit.com/r/Sideloadly/)** — Sideloadly-specific setup, daemon, Wi-Fi and signing issues; linked by the project's [official FAQ](https://sideloadly.io/faq.html).
 - **[r/SideStore](https://www.reddit.com/r/SideStore/)** — Community reports on SideStore login, pairing and background renewal; check claims against maintainer releases.
 - **[r/Trollstore](https://www.reddit.com/r/Trollstore/)** — TrollStore and jailbreak-dependent TrollStore Lite discussions; not all methods support the same firmware.
+- **[r/visionosdev](https://www.reddit.com/r/visionosdev/)** — Specialized visionOS/Apple Vision Pro development community, useful for platform entitlements and deployment; on-device JIT claims require extra scrutiny.
 - **[r/jailbreakdevelopers](https://www.reddit.com/r/jailbreakdevelopers/)** — Developer-centric iOS tweak, signing, entitlements and jailbreak-extension troubleshooting; adjacent to standard sideloading.
+- **[r/iosdev](https://www.reddit.com/r/iosdev/)** — Apple Developer provisioning profiles, certificates, Xcode signing and IPA distribution; mostly legitimate app development, not a download site.
 - **[r/sideloaded](https://www.reddit.com/r/sideloaded/)** — Large subreddit dedicated to non-jailbreak sideloading tools, setup, troubleshooting and release discussions. [Community Discord](https://discord.gg/pUHBuxYzSG) is advertised by the subreddit; its invite may change.
+- **[Apple TV sideloading discussion (Oct 2026)](https://www.reddit.com/r/sideloaded/comments/1x1s4js/apple_tv_sideloading_scene_in_2026/)** — Current community reports about tvOS app compatibility, free vs paid signing and renewals; **anecdotal**, not device-by-device validation.
 - **[SideStore Discord](https://discord.gg/sidestore)** — Official community support linked from the [verified SideStore organization](https://github.com/SideStore). Also see [SideStore Discussions](https://github.com/orgs/SideStore/discussions) for feature reports and reproducible issues.
 - **[Apple Developer Forums: Code Signing](https://developer.apple.com/forums/topics/code-signing-topic/code-signing-topic-general)** — Primary-source discussion for signing identities, entitlements and provisioning-profile problems; not support for unauthorized signing services.
 - **[iOS Guide](https://ios.cfw.guide/installing-trollstore/)** — Firmware-specific TrollStore installation instructions and links to the wider iOS jailbreak community; firmware-specific guidance is essential.
