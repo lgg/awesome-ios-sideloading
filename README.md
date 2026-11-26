@@ -95,6 +95,7 @@ These smaller or newer projects offer interesting functionality, but **activity 
 ### Desktop installers and setup
 
 - **[althea](https://github.com/vyvir/althea)** — Linux GUI for AltServer-Linux with x86_64/ARM support; upstream calls it early-stage.
+- **[BeamIPA](https://github.com/nonenoobgamer-lab/BeamIPA)** — Native Apple Silicon macOS app for wireless and USB IPA signing and 7-day refresh on Apple TV, iPhone, and iPad using either Apple ID + Anisette or Xcode automatic provisioning. Proprietary; official GitHub release.
 - **[AppRestore](https://github.com/J3ckJ/AppRestore)** — Windows/macOS USB tool to restore **previously acquired** offloaded or removed App Store apps using your own Apple Account, or to install eligible existing IPA files. Does not defeat FairPlay or make unavailable paid apps free; GUI release archives are unsigned and should be checked against upstream SHA-256 sums.
 - **[iloader](https://github.com/nab138/iloader)** — Cross-platform graphical installer for SideStore and IPAs, with pairing-file, certificate, and App ID management.
 - **[iloader Fedora COPR packaging](https://github.com/anudeepd/iloader-fedora-copr-ci)** — Fedora x86_64 community packaging and scheduled upstream version checks for iloader, distributed via **COPR**, not official Fedora repositories. Rewraps upstream binary RPM rather than compiling from source; follow upstream signing/trust guidance.
