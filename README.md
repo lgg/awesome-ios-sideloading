@@ -110,6 +110,7 @@ These smaller or newer projects offer interesting functionality, but **activity 
 - **[Lodestar](https://github.com/asroya/lodestar)** — Experimental native Rust macOS Apple Account sideloader for iPhone/iPad/tvOS. Maintainer reports actual USB iPhone and already-paired Apple TV 4K installs; **refresh is manual**, initial Apple TV pairing and some JIT/OS paths unverified.
 - **[ModStaller](https://github.com/Crafttino21/ModStaller)** — Early-stage Linux/Windows IPA installer with Apple Account signing, Wi-Fi renewal and JIT; upstream claims iOS 27 and tvOS support, but Android-host installation is **planned, not available**.
 - **[ios-deploy](https://github.com/ios-control/ios-deploy)** — macOS command-line installation and debugging of apps on physical iOS devices; older development workflow, check recent device support.
+- **[RestoreAppStore](https://github.com/freeon1989/RestoreAppStore)** — Windows app that re-downloads official, Apple-signed IPAs from your own App Store purchase history and can install them on iPhone or iPad over USB.
 - **[Sideloadly](https://sideloadly.io/)** — Windows/macOS sideloading utility with Wi-Fi installation and optional automatic refresh. Proprietary; official website.
 - **[Sideloader](https://github.com/Dadoum/Sideloader)** — Open-source cross-platform IPA installation alternative, including Linux.
 - **[Splice](https://github.com/franklintra/splice)** — Sideloader fork adding cross-platform, multi-account refresh scheduling and installation management; community-maintained, check supported versions.
