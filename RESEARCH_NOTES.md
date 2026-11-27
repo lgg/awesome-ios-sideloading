@@ -4,6 +4,16 @@
 
 This file records **why** projects were included or excluded. It is not a security audit or a claim that every advertised feature was tested. For feature-level details, follow each project’s primary README, release notes, and [compatibility table](COMPATIBILITY.md).
 
+## IPA-Decrypt (2026-11-27)
+
+[Re13orn/IPA-Decrypt](https://github.com/Re13orn/IPA-Decrypt) — added to **IPA inspection and authorized research**, with a row in [COMPATIBILITY.md](COMPATIBILITY.md).
+
+Evidence at review: repository created 2026-11-20 with pushes through 2026-11-23, two platform release lines (macOS 1.0.9 arm64 DMG, iOS 1.0.3 unsigned IPA), GPL-3.0, and dedicated English/Chinese docs for credentials, installation, known issues, privacy and build.
+
+Why it belongs: it is the only listed entry that covers *both* halves of the pipeline — account-authorized store/TestFlight download **and** FairPlay decryption — instead of stopping at extraction. `ipatool`-based extractors in the category explicitly leave output encrypted; the frida-based dumper needs a jailbroken device and a live process. IPA-Decrypt also documents a jailbreak-free path (recovering a local FairPlay model on a supported Apple Silicon Mac) and keeps the untouched original package until a credential passes license verification.
+
+Disclosed limits taken from upstream: macOS build is ad-hoc signed and **not notarized**; Mac models cannot be converted to 16-byte `credential.bin` or used by the iOS app; TestFlight relies on a non-public client protocol and can be affected by Apple service changes; a full first-install run on a fresh physical device is still listed as not accepted upstream. It does not sign, so the output is not automatically installable.
+
 ## Review of 0xdad0/awesome-iOS-security-tools
 
 Reference: **[0xdad0/awesome-iOS-security-tools](https://github.com/0xdad0/awesome-iOS-security-tools)**, a broad security/reverse-engineering list. Its purpose is different: most tools there are useful for *analyzing* iOS apps, rather than *signing, installing or refreshing* IPAs.
