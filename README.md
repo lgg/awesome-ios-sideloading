@@ -9,7 +9,7 @@
 
 This list focuses on **the sideloading ecosystem itself**, not collections of modified or pirated IPA files. Links prefer original developers and primary documentation. Inclusion is **not an endorsement or a security audit**. Project availability, signing restrictions, iOS support, and maintenance can change.
 
-_Last catalog review: 2026-10-25. Project descriptions are based on upstream documentation unless stated otherwise; entries are **not independently security-audited or tested on all physical devices**._
+_Last catalog review: 2026-10-25. Android-host and pairing entries reviewed: 2026-11-28. Project descriptions are based on upstream documentation unless stated otherwise; entries are **not independently security-audited or tested on all physical devices**._
 
 ## Contents
 
@@ -19,6 +19,7 @@ _Last catalog review: 2026-10-25. Project descriptions are based on upstream doc
   - [Emerging on-device signers](#emerging-on-device-signers)
   - [Hosted signing front ends](#hosted-signing-front-ends)
   - [Desktop installers and setup](#desktop-installers-and-setup)
+  - [Android-host sideloading](#android-host-sideloading)
   - [Refresh, AltServer, and self-hosting](#refresh-altserver-and-self-hosting)
   - [Signing and IPA tooling](#signing-and-ipa-tooling)
   - [Signing and authentication libraries](#signing-and-authentication-libraries)
@@ -44,6 +45,7 @@ _Last catalog review: 2026-10-25. Project descriptions are based on upstream doc
 | Install IPAs using a free Apple Account | [AltStore Classic](https://github.com/altstoreio/AltStore), [SideStore](https://github.com/SideStore/SideStore), [Sideloadly](https://sideloadly.io/) |
 | Refresh apps without relying on a desktop session | [SideStore](https://github.com/SideStore/SideStore), [MultiStore](https://github.com/lungustefan/MultiStore), [AltStore Classic + Remote AltServer](https://github.com/altstoreio/AltStore/releases), [AltKeeper](https://github.com/BartolomeoRusso9/altkeeper) (experimental) |
 | Set up from Windows, macOS, or Linux | [iloader](https://github.com/nab138/iloader), [Impactor](https://github.com/claration/impactor), [Sideloader](https://github.com/Dadoum/Sideloader), [Splice](https://github.com/franklintra/splice) |
+| Try sideloading from Android | [iDroidLoader](https://github.com/AvianJay/idroidloader), [iloader-android](https://github.com/Souitou-iop/iloader-android), [Termux-usbmuxd](https://github.com/usedoperative-sudo/termux-usbmuxd) (experimental; see prerequisites below) |
 | Sign apps on my iPhone with my own certificate | [Feather](https://github.com/claration/feather), [Ksign](https://github.com/Nyasami/Ksign) |
 | Run several guest apps inside one signed host | [LiveContainer](https://github.com/LiveContainer/LiveContainer) |
 | Install apps without 7-day free-account expiration on **supported** iOS versions | [TrollStore](https://github.com/opa334/TrollStore) |
@@ -70,7 +72,7 @@ Short descriptions deliberately keep this page readable. Technical prerequisites
 - **[Scarlet](https://usescarlet.com/)** — Proprietary on-device app installer and source manager with direct-install, certificate-based and computer-assisted methods; shared certificates can be revoked. [Developer's GitHub page](https://github.com/DebianArch64/Scarlet).
 - **[SideKick](https://github.com/huzaifah1530-bot/SideKick)** — SideStore-derived iOS app manager with IPA library, GitHub Releases/Actions update tracking, multiple Apple Account identities and LiveContainer integration. **Early prerelease v0.10.0:** maintainer explicitly says many advanced functions are still being integrated/tested; requires SideStore-compatible signing and device setup.
 - **[DLiPA](https://github.com/AhmedBafkir/DLiPA)** — On-device iOS 13+ App Store client for authorized Apple Account downloads, older versions, storefront choice and multiple accounts. [v1.4](https://github.com/AhmedBafkir/DLiPA/releases/tag/v1.4) ships an IPA; **App Store FairPlay/entitlements still apply** and the maintainer warns that its direct-install workflow may not preserve normal update behavior.
-- **[SideInstaller](https://github.com/FrizzleM/SideInstaller)** — On-device SideStore/LiveContainer setup, including a no-PC path on supported iOS 27+ devices; earlier supported versions may still require a pairing file. **Use only [the author's official download site](https://sideinstaller.net/).**
+- **[SideInstaller](https://github.com/FrizzleM/SideInstaller)** — On-device AltStore Classic, SideStore and LiveContainer + SideStore setup, with self-pairing on supported iOS 27+ devices; earlier supported versions require an existing compatible pairing file. SideInstaller itself must first be installed through an eligible bootstrap method. **Use only [the author's official download site](https://sideinstaller.net/).**
 - **[SideStore](https://github.com/SideStore/SideStore)** — AltStore-derived sideloading manager that installs and refreshes apps on-device after setup. **Avoid 0.6.4 and earlier for current sign-in:** [0.6.4 release notes](https://github.com/SideStore/SideStore/releases/tag/0.6.4) explicitly warn authentication is broken; later alpha/nightly builds may still have issues.
 - **[TrollStore](https://github.com/opa334/TrollStore)** — Installs IPAs persistently via a CoreTrust vulnerability on **specific older firmware versions only**.
 
@@ -113,6 +115,14 @@ These smaller or newer projects offer interesting functionality, but **activity 
 - **[Sideloadly](https://sideloadly.io/)** — Windows/macOS sideloading utility with Wi-Fi installation and optional automatic refresh. Proprietary; official website.
 - **[Sideloader](https://github.com/Dadoum/Sideloader)** — Open-source cross-platform IPA installation alternative, including Linux.
 - **[Splice](https://github.com/franklintra/splice)** — Sideloader fork adding cross-platform, multi-account refresh scheduling and installation management; community-maintained, check supported versions.
+
+### Android-host sideloading
+
+These unofficial projects explore using Android as the installation or pairing host rather than a desktop. Distinguish first-time pairing, IPA signing, and installing an already-signed IPA. None is independently verified here on physical iOS devices.
+
+- **[iDroidLoader](https://github.com/AvianJay/idroidloader)** — Community Android port of [iloader](https://github.com/nab138/iloader) with signed ARM64 [nightly APKs](https://github.com/AvianJay/idroidloader/releases/tag/nightly), Apple Account signing and Wi-Fi IPA installation. Its [Android guide](https://github.com/AvianJay/idroidloader/blob/main/ANDROID.md) documents initial wireless RemotePairing on iOS 27+, but earlier iOS needs an existing compatible pairing record and Wi-Fi connectivity configured beforehand. No root required; upstream reports emulator and protocol tests, not a complete physical-device installation test.
+- **[iloader-android](https://github.com/Souitou-iop/iloader-android)** — Separate unofficial experimental port of [iloader](https://github.com/nab138/iloader) targeting direct Android-to-iPhone USB-OTG installation with built-in usbmuxd. **Upstream explicitly says it has not been tested on a real iPhone.**
+- **[Termux-usbmuxd](https://github.com/usedoperative-sudo/termux-usbmuxd)** — Rootless Termux wrapper for usbmuxd using Termux:API USB access; documents USB-OTG pairing with `idevicepair` and device communication. It is a transport/pairing building block, not a standalone Apple Account signer; modern RemotePairing and end-to-end SideStore bootstrap are not independently verified.
 
 ### Refresh, AltServer, and self-hosting
 
@@ -203,6 +213,7 @@ JIT capability is **not** implied by successful IPA installation; check the app,
 - **[idevice_pair](https://github.com/jkcoxson/idevice_pair)** — Desktop utility to generate/export pairing records for newer iOS connectivity workflows.
 - **[ideviceinstaller](https://github.com/libimobiledevice/ideviceinstaller)** — Command-line management of installed iOS apps.
 - **[isideload](https://github.com/nab138/isideload)** — Rust library for sideloading apps, used by iloader.
+- **[Jitterbug / JitterbugPair](https://github.com/osy/Jitterbug)** — Older iOS debugger/JIT launcher and Windows/macOS/Linux utility to generate `.mobiledevicepairing` records over USB. Check firmware compatibility; older Lockdown records are not interchangeable with modern RemotePairing records.
 - **[libplist](https://github.com/libimobiledevice/libplist)** — Parses and writes Apple binary/XML property lists used in IPA metadata and device tooling.
 - **[libimobiledevice](https://github.com/libimobiledevice/libimobiledevice)** — Cross-platform iOS device communication protocol library.
 - **[libusbmuxd](https://github.com/libimobiledevice/libusbmuxd)** — Client-side USB multiplexing transport used by desktop device-installation utilities.
