@@ -2,7 +2,7 @@
 
 > An intentionally compact companion to [README.md](README.md). The main list stays easy to scan; this document records setup differences, signing constraints, and known limitations.
 
-**Last reviewed:** 2026-10-25. **Legend:** `Yes` = feature documented by the maintainer; `Setup` = computer needed for initial pairing/bootstrap; `Varies` = depends on the particular installation method, certificate, or firmware; `—` = not applicable. **Not a hands-on test certification.**
+**Last reviewed:** 2026-10-25. **Android-host and pairing notes updated:** 2026-11-28. **Legend:** `Yes` = feature documented by the maintainer; `Setup` = computer needed for initial pairing/bootstrap; `Varies` = depends on the particular installation method, certificate, or firmware; `—` = not applicable. **Not a hands-on test certification.**
 
 ## Choose an installation workflow
 
@@ -19,6 +19,9 @@
 | [Feather Installer](https://github.com/yodaluca23/Feather-Installer) | Browser-assisted Feather bootstrap | Browser + **third-party ipasign.cc backend** | Uploaded `.p12`, profile and password | **Sensitive signing materials sent to third-party API**; use only with an appropriately isolated identity |
 | [Purple Installer](https://github.com/username252510/Purple-Installer) | Hosted web bootstrap for Feather/Ksign/SideInstaller | Browser + **third-party Daisuke Signer backend** | Uploaded `.p12`, profile and password | Browser local storage does not prevent material being sent to remote signer |
 | [iloader](https://github.com/nab138/iloader) | SideStore and IPA setup | Windows/macOS/Linux | Installer and pairing manager | A setup tool; not an independent background refresh service |
+| [iDroidLoader](https://github.com/AvianJay/idroidloader) | Sign/install IPA or set up SideStore from Android | Android ARM64; same Wi-Fi; iOS 27+ wireless first pairing, earlier iOS requires existing compatible pairing file | Personal Apple Account or eligible pre-signed IPA | Community port; signed nightly APK available; upstream emulator/protocol tests do not establish physical-device success |
+| [iloader-android](https://github.com/Souitou-iop/iloader-android) | Experimental USB-OTG sideloading host | Android + USB-OTG cable | Intended Apple Account signing/IPA installation | Upstream explicitly reports no real iPhone testing; first pairing and installation not established |
+| [Termux-usbmuxd](https://github.com/usedoperative-sudo/termux-usbmuxd) | USB transport and pairing | Android + Termux:API + USB-OTG, no root | No signing by itself | Documents `idevicepair pair` (Lockdown); compatibility with modern RemotePairing and complete SideStore setup needs testing |
 | [Impactor](https://github.com/claration/impactor) | Cross-platform sideloading | Desktop (see upstream builds) | Depends on signing mode | Check available releases and platform instructions |
 | [althea](https://github.com/vyvir/althea) | GUI for AltServer-Linux | Linux desktop or supported ARM host | AltServer-Linux and Apple Account | Upstream marks project early-stage; do not assume support for every new iOS |
 | [Splice](https://github.com/franklintra/splice) | Desktop sideloading and scheduled refresh | Linux, Windows or macOS (consult releases) | Apple Account re-sign/reinstall | Maintained fork of Sideloader; automatic refresh claims not independently tested |
@@ -32,7 +35,7 @@
 | [EnSign](https://github.com/cc158999/EnSign) | On-device signing and update workflow | iPhone/iPad | Certificate-based | Check upstream docs and independent security evidence |
 | [LiveContainer](https://github.com/LiveContainer/LiveContainer) | Run guest apps inside a host | Host app must first be installed via **supported signer** | Host's signing/refresh applies | Official guide rejects Sideloadly, i4/3u Tools, NB Tool and most online signers; standalone needs AltStore 2.2.1+ or SideStore 0.6.2+ |
 | [TrollStore](https://github.com/opa334/TrollStore) | Persistent installation | Depends on firmware-specific bootstrap | Exploit-based; not 7-day personal provisioning | Official supported firmware ranges only |
-| [SideInstaller](https://github.com/FrizzleM/SideInstaller) | On-device SideStore bootstrap | On iOS 27+: no PC path; earlier: pairing-file prerequisites | SideStore/free-account workflow after install | Author documents iOS 17.4+, with different pairing requirements |
+| [SideInstaller](https://github.com/FrizzleM/SideInstaller) | On-device AltStore Classic, SideStore and LiveContainer + SideStore setup | iOS 27+: self-pairing; earlier supported versions: existing compatible pairing file | Personal Apple Account and local VPN transport | Author documents iOS 17.4+; SideInstaller itself needs an eligible installation/bootstrap path; no universal no-PC guarantee |
 | [AltKeeper](https://github.com/BartolomeoRusso9/altkeeper) | Self-hosted AltServer and renewal | Always-on home machine; USB pairing once | AltStore protocol plus optional unattended profile renewal | **Experimental**; unattended mode stores account password on host |
 | [Torch](https://github.com/trollzem/torch) | macOS automated IPA signing/reinstallation (iOS/iPadOS/tvOS) | macOS host that can reach/pair devices | Free Apple Account, six-day refresh claimed by author | Small experimental project; inspect bootstrap scripts and local credential handling before using |
 | [Sideloop](https://github.com/filippofinke/sideloop) | Scheduled re-sign/reinstall over Wi-Fi | Linux/macOS Docker server; pairing initially via USB | Free Apple Account with AltServer-Linux | Device must be unlocked, nearby, and on same Wi-Fi during refresh; 2FA and credentials on server |
@@ -135,6 +138,10 @@ Feather, Ksign, SwiftIPA, BatSign, EnSign, ForgeSign and similar apps sign with 
 - A public signing website that asks for your **private certificate** or .p12 password is a qualitatively different trust boundary from a client that signs locally. Evaluate who can retain your certificate before uploading.
 
 ### Pairing files and local networking
+
+- **Lockdown versus RemotePairing:** these are distinct trust records. [JitterbugPair](https://github.com/osy/Jitterbug) and traditional `idevicepair` generate older Lockdown records; use the format required by the target app. A successful USB trust prompt does not prove that a modern remote tunnel or signing workflow works.
+- **Android first-time pairing:** [iDroidLoader's Android guide](https://github.com/AvianJay/idroidloader/blob/main/ANDROID.md) documents device-initiated Wi-Fi pairing on iOS 27+ and imported Lockdown/combined records for older iOS. [Termux-usbmuxd](https://github.com/usedoperative-sudo/termux-usbmuxd) documents rootless Android USB pairing, but a complete modern sideloading bootstrap has not been verified here. The separate USB-OTG iloader fork explicitly reports no physical iPhone testing.
+- **Recommended baseline:** use the official [SideStore pairing-file guide](https://docs.sidestore.io/docs/advanced/pairing-file) with a trusted desktop when reliability matters; a pairing record may need to be regenerated after an iOS update or device reset. Pairing is separate from signing and seven-day profile expiry.
 
 Newer iOS versions can require **remote pairing** records rather than older lockdown pairing files for some loopback workflows. [iloader](https://github.com/nab138/iloader), [idevice_pair](https://github.com/jkcoxson/idevice_pair), and [SideInstaller](https://github.com/FrizzleM/SideInstaller) provide documentation and/or workflows for this. **Never upload pairing records to a public issue.**
 
